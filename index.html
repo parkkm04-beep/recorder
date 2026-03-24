@@ -583,8 +583,9 @@ return {
 label:ym.slice(5)+'월',
 plusGain:prev?last.plusSh-prev.plusSh:last.plusSh-recs[0].plusSh,
 kodexGain:prev?last.kodexSh-prev.kodexSh:last.kodexSh-recs[0].kodexSh,
-divGain:prev?(last.plusSh*156+last.kodexSh*244-(prev.plusSh*156+prev.kodexSh*244))/10000:0
+divGain:prev?(last.plusSh*156+last.kodexSh*244-(prev.plusSh*156+prev.kodexSh*244))/10000 : (last.plusSh*156+last.kodexSh*244-(recs[0].plusSh*156+recs[0].kodexSh*244))/10000
 };
+
 }).filter(Boolean);
 
 wrap.innerHTML='';
