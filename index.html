@@ -50,12 +50,10 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .btn-qs{width:100%;padding:12px;border-radius:10px;border:none;cursor:pointer;font-size:13px;font-weight:700;font-family:'Noto Sans KR',sans-serif;margin-top:6px;}
 .btn-qs:not(:disabled){background:linear-gradient(135deg,#065f46,#34d399);color:#000;}
 .btn-qs:disabled{background:#112035;color:#4a6080;cursor:not-allowed;}
-/* 통계 */
 .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:20px;}
 .stat-c{background:#0c1525;border:1px solid #182a40;border-radius:10px;padding:10px;text-align:center;}
 .stat-v{font-size:14px;font-weight:700;font-family:'Space Mono',monospace;}
 .stat-l{font-size:8px;color:#4a6080;margin-top:2px;}
-/* 월 선택 */
 .month-scroll{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none;margin-bottom:16px;}
 .month-scroll::-webkit-scrollbar{display:none;}
 .month-btn{flex-shrink:0;padding:6px 14px;border-radius:20px;border:1px solid #182a40;background:transparent;color:#4a6080;font-size:11px;font-weight:700;cursor:pointer;font-family:'Space Mono',monospace;}
@@ -63,7 +61,6 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .month-btn.all-btn{border-color:#a78bfa;color:#a78bfa;}
 .month-btn.all-btn.active{background:rgba(167,139,250,.2);}
 
-/* ── 전역 달성도 섹션 ── */
 .discharge-section{background:#0c1525;border:1px solid rgba(0,229,255,.2);border-radius:14px;padding:16px;margin-bottom:16px;}
 .ds-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
 .ds-title{font-size:13px;font-weight:700;color:#00e5ff;font-family:'Space Mono',monospace;}
@@ -81,7 +78,6 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .mn-goal{font-size:10px;color:#4a6080;margin-top:2px;}
 .mn-pct{font-size:11px;font-weight:700;margin-top:2px;font-family:'Space Mono',monospace;}
 
-/* ── 월별 달성도 ── */
 .month-goal-card{background:#0c1525;border:1px solid rgba(52,211,153,.2);border-radius:14px;padding:16px;margin-bottom:16px;display:none;}
 .month-goal-card.show{display:block;animation:fadeUp .3s ease;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
@@ -96,12 +92,10 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .mg-bar-wrap{background:#182a40;border-radius:4px;height:5px;overflow:hidden;margin-top:4px;}
 .mg-bar{height:100%;border-radius:4px;transition:width .6s ease;}
 
-/* 차트 */
 .chart-box{background:#0c1525;border:1px solid #182a40;border-radius:14px;padding:14px;margin-bottom:10px;}
 .chart-title{font-size:11px;font-weight:700;font-family:'Space Mono',monospace;margin-bottom:10px;letter-spacing:1px;}
 canvas{width:100%!important;}
 
-/* 월별 상세 */
 .month-detail{background:#0c1525;border:1px solid rgba(0,229,255,.2);border-radius:14px;padding:16px;margin-bottom:16px;display:none;}
 .month-detail.show{display:block;animation:fadeUp .3s ease;}
 .md-title{font-size:13px;font-weight:700;color:#00e5ff;font-family:'Space Mono',monospace;margin-bottom:14px;}
@@ -110,10 +104,9 @@ canvas{width:100%!important;}
 .md-label{font-size:9px;color:#4a6080;letter-spacing:1px;margin-bottom:6px;font-family:'Space Mono',monospace;}
 .md-val{font-size:18px;font-weight:900;font-family:'Space Mono',monospace;}
 .md-delta{font-size:11px;margin-top:3px;}
-.md-delta.up{color:#34d399;}.md-delta.dn{color:#fb7185;}.md-delta.neu{color:#4a6080;}
+.md-delta.up{color:#fb923c;}.md-delta.dn{color:#fb7185;}.md-delta.neu{color:#4a6080;}
 .close-btn{width:100%;padding:9px;border-radius:8px;border:1px solid #182a40;background:transparent;color:#4a6080;font-size:11px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;}
 
-/* 로그 */
 .log-item{background:#0c1525;border:1px solid #182a40;border-radius:12px;padding:14px;margin-bottom:8px;position:relative;}
 .log-item.latest{border-color:rgba(0,229,255,.35);}
 .log-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
@@ -127,10 +120,9 @@ canvas{width:100%!important;}
 .ld{font-size:10px;}
 .ld-plus-up{color:#00e5ff;}.ld-plus-dn{color:#0ea5e9;}.ld-plus-neu{color:#4a6080;}
 .ld-kodex-up{color:#a78bfa;}.ld-kodex-dn{color:#7c3aed;}.ld-kodex-neu{color:#4a6080;}
-.ld-div-up{color:#34d399;}.ld-div-dn{color:#f87171;}.ld-div-neu{color:#4a6080;}
+.ld-div-up{color:#fb923c;}.ld-div-dn{color:#f97316;}.ld-div-neu{color:#4a6080;}
 .ld-tot-up{color:#fbbf24;}.ld-tot-dn{color:#fb7185;}.ld-tot-neu{color:#4a6080;}
 .log-del{position:absolute;top:10px;right:12px;background:transparent;border:none;color:#4a6080;cursor:pointer;font-size:13px;}
-/* 백업 */
 .backup-panel{background:#0c1525;border:1px solid rgba(251,191,36,.2);border-radius:12px;padding:14px;margin-bottom:16px;}
 .backup-title{font-size:9px;color:#fbbf24;font-weight:700;font-family:'Space Mono',monospace;margin-bottom:10px;letter-spacing:2px;}
 .backup-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
@@ -173,7 +165,7 @@ textarea.paste-area{width:100%;background:#112035;border:1px solid #182a40;borde
       <div><div class="qp-l">날짜</div><div class="qp-v" style="color:#00e5ff" id="qp-date">-</div></div>
       <div><div class="qp-l">PLUS</div><div class="qp-v" style="color:#00e5ff" id="qp-plus">-</div></div>
       <div><div class="qp-l">KODEX</div><div class="qp-v" style="color:#a78bfa" id="qp-kodex">-</div></div>
-      <div><div class="qp-l">월배당</div><div class="qp-v" style="color:#34d399" id="qp-div">-</div></div>
+      <div><div class="qp-l">월배당</div><div class="qp-v" style="color:#fb923c" id="qp-div">-</div></div>
     </div>
     <div id="qs-goal-preview" style="display:none;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.2);border-radius:8px;padding:10px 12px;margin:8px 0;font-size:11px;color:#fbbf24;font-family:'Space Mono',monospace;"></div>
     <button class="btn-qs" id="btn-qs" onclick="quickSave()" disabled>⚡ 바로 저장</button>
@@ -202,7 +194,7 @@ textarea.paste-area{width:100%;background:#112035;border:1px solid #182a40;borde
       <div class="preview-grid">
         <div class="pv-item"><div class="pv-l">PLUS</div><div class="pv-v" style="color:#00e5ff" id="pv-plus">-</div></div>
         <div class="pv-item"><div class="pv-l">KODEX</div><div class="pv-v" style="color:#a78bfa" id="pv-kodex">-</div></div>
-        <div class="pv-item"><div class="pv-l">월배당</div><div class="pv-v" style="color:#34d399" id="pv-div">-</div></div>
+        <div class="pv-item"><div class="pv-l">월배당</div><div class="pv-v" style="color:#fb923c" id="pv-div">-</div></div>
         <div class="pv-item"><div class="pv-l">총자산</div><div class="pv-v" style="color:#fbbf24" id="pv-total">-</div></div>
       </div>
     </div>
@@ -216,7 +208,7 @@ textarea.paste-area{width:100%;background:#112035;border:1px solid #182a40;borde
     <div class="stat-c"><div class="stat-v" style="color:#fbbf24" id="s-cnt">-</div><div class="stat-l">체크 횟수</div></div>
     <div class="stat-c"><div class="stat-v" style="color:#00e5ff" id="s-plus">-</div><div class="stat-l">PLUS 증가</div></div>
     <div class="stat-c"><div class="stat-v" style="color:#a78bfa" id="s-kodex">-</div><div class="stat-l">KODEX 증가</div></div>
-    <div class="stat-c"><div class="stat-v" style="color:#34d399" id="s-div">-</div><div class="stat-l">배당 증가</div></div>
+    <div class="stat-c"><div class="stat-v" style="color:#fb923c" id="s-div">-</div><div class="stat-l">배당 증가</div></div>
   </div>
 
   <div class="sec">월별 보기</div>
@@ -270,12 +262,11 @@ const GKEY = 'invest-goals-v1';
 let records = [];
 let goals = null;
 let charts = {};
-let qsParsed = null; // {save, goal} 객체
+let qsParsed = null;
 let selectedMonth = 'all';
 
 document.getElementById('inp-date').value = new Date().toISOString().slice(0,10);
 
-// ── SAVE:: + GOAL:: 동시 파싱 ──
 function onQSInput() {
 const raw = document.getElementById('qs-input').value.trim();
 const btn = document.getElementById('btn-qs');
@@ -286,7 +277,6 @@ preview.style.display = 'none'; goalPrev.style.display = 'none';
 
 const result = {};
 
-// SAVE:: 파싱
 const saveMatch = raw.match(/SAVE::({[^\n]+})/);
 if (saveMatch) {
 try {
@@ -303,7 +293,6 @@ preview.style.display = 'grid';
 } catch(e) {}
 }
 
-// GOAL:: 파싱
 const goalMatch = raw.match(/GOAL::({[^\n]+})/);
 if (goalMatch) {
 try {
@@ -419,28 +408,25 @@ persist();
 }
 }
 
-// ── 프로그레스 바 색상/라벨 ──
-// isFuture=true 이면 경고 없이 진행률 색상만 표시
 function pctColor(pct, isFuture){
 if(isFuture){
 if(pct>=80) return '#00e5ff';
 if(pct>=50) return '#a78bfa';
 return '#4a6080';
 }
-if(pct>=105) return '#34d399';
+if(pct>=105) return '#fb923c';
 if(pct>=95)  return '#00e5ff';
 if(pct>=85)  return '#fbbf24';
 return '#fb7185';
 }
 function pctLabel(pct, isFuture){
-if(isFuture) return '';  // 미래 목표는 라벨 없음
+if(isFuture) return '';
 if(pct>=105) return '초과 달성 🚀';
 if(pct>=95)  return '정상 궤도 ✅';
 if(pct>=85)  return '소폭 미달 ⚠️';
 return '계획 수정 필요 ❗';
 }
 
-// ── 전역 달성도 렌더 ──
 function renderDischarge(){
 const sec = document.getElementById('discharge-section');
 const latest = records.length ? records[records.length-1] : null;
@@ -458,12 +444,11 @@ const pPct=Math.round(latest.plusSh/ms.plusSh*100);
 const kPct=Math.round(latest.kodexSh/ms.kodexSh*100);
 const dPct=Math.round(curDiv/ms.div*100);
 const avg=Math.round((pPct+kPct+dPct)/3);
-// 미래 목표 → isFuture=true (경고 없음)
-milestonesHtml+=` <div style="background:#112035;border-radius:10px;padding:12px;margin-bottom:10px;"> <div style="display:flex;justify-content:space-between;margin-bottom:8px;"> <span style="font-size:11px;font-weight:700;color:#e2e8f0;">${ms.label}</span> <span style="font-size:10px;font-family:'Space Mono',monospace;color:#4a6080;">${avg}% 진행</span> </div> <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;"> ${mkMini('PLUS','#00e5ff',latest.plusSh,ms.plusSh,'주',pPct,true)} ${mkMini('KODEX','#a78bfa',latest.kodexSh,ms.kodexSh,'주',kPct,true)} ${mkMini('배당','#34d399',curDiv.toFixed(1),ms.div,'만',dPct,true)} </div> </div>`;
+milestonesHtml+=` <div style="background:#112035;border-radius:10px;padding:12px;margin-bottom:10px;"> <div style="display:flex;justify-content:space-between;margin-bottom:8px;"> <span style="font-size:11px;font-weight:700;color:#e2e8f0;">${ms.label}</span> <span style="font-size:10px;font-family:'Space Mono',monospace;color:#4a6080;">${avg}% 진행</span> </div> <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;"> ${mkMini('PLUS','#00e5ff',latest.plusSh,ms.plusSh,'주',pPct,true)} ${mkMini('KODEX','#a78bfa',latest.kodexSh,ms.kodexSh,'주',kPct,true)} ${mkMini('배당','#fb923c',curDiv.toFixed(1),ms.div,'만',dPct,true)} </div> </div>`;
 });
 }
 
-sec.innerHTML=` <div class="ds-header"> <div class="ds-title">🎖️ 전역 목표</div> <div class="ds-date">${d.date}</div> </div> ${milestonesHtml} <div style="background:#112035;border-radius:10px;padding:12px;border:1px solid rgba(0,229,255,.15);"> <div style="display:flex;justify-content:space-between;margin-bottom:10px;"> <span style="font-size:12px;font-weight:700;color:#00e5ff;">🏁 전역 최종 목표</span> <span style="font-size:10px;color:#4a6080;font-family:'Space Mono',monospace;">${Math.round((plusPct+kodexPct+divPct)/3)}% 진행</span> </div> <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;"> ${mkMini('PLUS','#00e5ff',latest.plusSh,d.plusSh,'주',plusPct,true)} ${mkMini('KODEX','#a78bfa',latest.kodexSh,d.kodexSh,'주',kodexPct,true)} ${mkMini('배당','#34d399',curDiv.toFixed(1),d.div,'만',divPct,true)} </div> </div>`;
+sec.innerHTML=` <div class="ds-header"> <div class="ds-title">🎖️ 전역 목표</div> <div class="ds-date">${d.date}</div> </div> ${milestonesHtml} <div style="background:#112035;border-radius:10px;padding:12px;border:1px solid rgba(0,229,255,.15);"> <div style="display:flex;justify-content:space-between;margin-bottom:10px;"> <span style="font-size:12px;font-weight:700;color:#00e5ff;">🏁 전역 최종 목표</span> <span style="font-size:10px;color:#4a6080;font-family:'Space Mono',monospace;">${Math.round((plusPct+kodexPct+divPct)/3)}% 진행</span> </div> <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;"> ${mkMini('PLUS','#00e5ff',latest.plusSh,d.plusSh,'주',plusPct,true)} ${mkMini('KODEX','#a78bfa',latest.kodexSh,d.kodexSh,'주',kodexPct,true)} ${mkMini('배당','#fb923c',curDiv.toFixed(1),d.div,'만',divPct,true)} </div> </div>`;
 }
 
 function mkMini(label,color,cur,goal,unit,pct,isFuture){
@@ -478,11 +463,9 @@ return `<div style="background:#0c1525;border-radius:8px;padding:8px;">
 <div style="width:${w}%;height:100%;background:${c};border-radius:3px;"></div>
 </div>
 <div style="font-size:9px;color:${c};font-family:'Space Mono',monospace;margin-top:2px;">${pct}% ${lbl}</div>
-
-  </div>`;
+</div>`;
 }
 
-// ── 월별 달성도 렌더 ──
 function renderMonthGoal(ym){
 const card = document.getElementById('month-goal-card');
 const monthRecs = records.filter(r=>r.date.startsWith(ym));
@@ -499,7 +482,7 @@ const plusPct  = Math.round(latest.plusSh/mg.plusSh*100);
 const kodexPct = Math.round(latest.kodexSh/mg.kodexSh*100);
 const divPct   = Math.round(curDiv/mg.div*100);
 
-card.innerHTML=` <div class="mg-header"> <div class="mg-title">📅 ${ym.slice(5)}월 목표</div> <div style="font-size:10px;color:#4a6080;font-family:'Space Mono',monospace;">${mg.ym} 기준</div> </div> <div class="mg-grid"> ${mkMonthItem('PLUS','#00e5ff',latest.plusSh,mg.plusSh,'주',plusPct)} ${mkMonthItem('KODEX','#a78bfa',latest.kodexSh,mg.kodexSh,'주',kodexPct)} ${mkMonthItem('월배당','#34d399',curDiv.toFixed(2),mg.div,'만',divPct)} </div>`;
+card.innerHTML=` <div class="mg-header"> <div class="mg-title">📅 ${ym.slice(5)}월 목표</div> <div style="font-size:10px;color:#4a6080;font-family:'Space Mono',monospace;">${mg.ym} 기준</div> </div> <div class="mg-grid"> ${mkMonthItem('PLUS','#00e5ff',latest.plusSh,mg.plusSh,'주',plusPct)} ${mkMonthItem('KODEX','#a78bfa',latest.kodexSh,mg.kodexSh,'주',kodexPct)} ${mkMonthItem('월배당','#fb923c',curDiv.toFixed(2),mg.div,'만',divPct)} </div>`;
 }
 
 function mkMonthItem(label,color,cur,goal,unit,pct){
@@ -511,11 +494,9 @@ return `<div class="mg-item">
 <div class="mg-goal">목표 ${goal}${unit}</div>
 <div class="mg-bar-wrap"><div class="mg-bar" style="width:${w}%;background:${c};"></div></div>
 <div class="mg-pct" style="color:${c}">${pct}% ${lbl}</div>
-
-  </div>`;
+</div>`;
 }
 
-// ── 월 선택기 ──
 function getMonths(){return [...new Set(records.map(r=>r.date.slice(0,7)))].sort();}
 
 function renderMonthSelector(){
@@ -540,7 +521,6 @@ document.getElementById('section-all').style.display=which==='all'?'block':'none
 document.getElementById('section-month').style.display=which==='month'?'block':'none';
 }
 
-// ── 월별 섹션 렌더 ──
 function renderMonthSection(ym){
 document.getElementById('month-section-title').textContent=ym.slice(5)+'월';
 renderMonthGoal(ym);
@@ -566,7 +546,6 @@ scales:{x:{grid:{color:'#182a40'},ticks:{color:'#4a6080',font:{size:9}}},y:{grid
 });
 }
 
-// ── 월별 증가량 차트 (전체 탭) ──
 function renderMonthlyCharts(){
 const wrap=document.getElementById('monthly-charts');
 ['mc-shares','mc-div'].forEach(k=>{try{if(charts[k])charts[k].destroy();}catch(e){}});
@@ -585,7 +564,6 @@ plusGain:prev?last.plusSh-prev.plusSh:last.plusSh-recs[0].plusSh,
 kodexGain:prev?last.kodexSh-prev.kodexSh:last.kodexSh-recs[0].kodexSh,
 divGain:prev?(last.plusSh*156+last.kodexSh*244-(prev.plusSh*156+prev.kodexSh*244))/10000 : (last.plusSh*156+last.kodexSh*244-(recs[0].plusSh*156+recs[0].kodexSh*244))/10000
 };
-
 }).filter(Boolean);
 
 wrap.innerHTML='';
@@ -602,16 +580,15 @@ scales:{x:{grid:{color:'#182a40'},ticks:{color:'#4a6080',font:{size:10}}},y:{gri
 });
 
 const r2=document.createElement('div');r2.className='chart-box';
-r2.innerHTML='<div class="chart-title" style="color:#34d399">📈 월 배당 증가액 (월별)</div><canvas id="mc-div" height="120"></canvas>';
+r2.innerHTML='<div class="chart-title" style="color:#fb923c">📈 월 배당 증가액 (월별)</div><canvas id="mc-div" height="120"></canvas>';
 wrap.appendChild(r2);
 charts['mc-div']=new Chart(document.getElementById('mc-div').getContext('2d'),{type:'bar',
-data:{labels:monthData.map(d=>d.label),datasets:[{label:'배당 증가',data:monthData.map(d=>+d.divGain.toFixed(2)),backgroundColor:'rgba(52,211,153,.7)',borderColor:'#34d399',borderWidth:1,borderRadius:4}]},
-options:{responsive:true,plugins:{legend:{display:false},tooltip:{backgroundColor:'#0c1525',borderColor:'#34d399',borderWidth:1,titleColor:'#e2e8f0',bodyColor:'#34d399',callbacks:{label:c=>` +${c.parsed.y.toFixed(2)}만원`}}},
+data:{labels:monthData.map(d=>d.label),datasets:[{label:'배당 증가',data:monthData.map(d=>+d.divGain.toFixed(2)),backgroundColor:'rgba(251,146,60,.7)',borderColor:'#fb923c',borderWidth:1,borderRadius:4}]},
+options:{responsive:true,plugins:{legend:{display:false},tooltip:{backgroundColor:'#0c1525',borderColor:'#fb923c',borderWidth:1,titleColor:'#e2e8f0',bodyColor:'#fb923c',callbacks:{label:c=>` +${c.parsed.y.toFixed(2)}만원`}}},
 scales:{x:{grid:{color:'#182a40'},ticks:{color:'#4a6080',font:{size:10}}},y:{grid:{color:'#182a40'},ticks:{color:'#4a6080',font:{size:9}}}}}
 });
 }
 
-// ── 로그 리스트 ──
 function renderLogList(listEl,emptyEl,filterYm){
 let filtered=filterYm?records.filter(r=>r.date.startsWith(filterYm)):[...records];
 if(!filtered.length){listEl.innerHTML='';emptyEl.style.display='block';return;}
@@ -628,11 +605,10 @@ const dp=r.plusSh-prev.plusSh,dk=r.kodexSh-prev.kodexSh;
 const dd=md-(prev.plusSh*156+prev.kodexSh*244),dt=r.total-prev.total;
 delta=`<div class="log-delta"> <span class="ld ${dp>0?'ld-plus-up':dp<0?'ld-plus-dn':'ld-plus-neu'}">PLUS ${dp>=0?'+':''}${dp}주</span> <span class="ld ${dk>0?'ld-kodex-up':dk<0?'ld-kodex-dn':'ld-kodex-neu'}">KODEX ${dk>=0?'+':''}${dk}주</span> <span class="ld ${dd>0?'ld-div-up':dd<0?'ld-div-dn':'ld-div-neu'}">배당 ${dd>=0?'+':''}${(dd/10000).toFixed(2)}만</span> <span class="ld ${dt>0?'ld-tot-up':dt<0?'ld-tot-dn':'ld-tot-neu'}">자산 ${dt>=0?'+':''}${(dt/10000).toFixed(0)}만</span> </div>`;
 }
-return `<div class="log-item ${isLatest?'latest':''}"> <button class="log-del" onclick="delRec('${r.date}')">✕</button> <div class="log-top"><span class="log-date">${r.date}</span>${isLatest?'<span class="log-badge">LATEST</span>':''}</div> <div class="log-nums"> <div><div class="ln-l">PLUS</div><div class="ln-v" style="color:#00e5ff">${r.plusSh}주</div></div> <div><div class="ln-l">KODEX</div><div class="ln-v" style="color:#a78bfa">${r.kodexSh}주</div></div> <div><div class="ln-l">월배당</div><div class="ln-v" style="color:#34d399">${(md/10000).toFixed(2)}만</div></div> <div><div class="ln-l">총자산</div><div class="ln-v" style="color:#fbbf24">${r.total?(r.total/10000).toFixed(0):'-'}만</div></div> </div> <div class="log-detail">@${r.plusP?r.plusP.toLocaleString():'-'} · @${r.kodexP?r.kodexP.toLocaleString():'-'} · 주문 ${r.orders}건</div> ${delta} </div>`;
+return `<div class="log-item ${isLatest?'latest':''}"> <button class="log-del" onclick="delRec('${r.date}')">✕</button> <div class="log-top"><span class="log-date">${r.date}</span>${isLatest?'<span class="log-badge">LATEST</span>':''}</div> <div class="log-nums"> <div><div class="ln-l">PLUS</div><div class="ln-v" style="color:#00e5ff">${r.plusSh}주</div></div> <div><div class="ln-l">KODEX</div><div class="ln-v" style="color:#a78bfa">${r.kodexSh}주</div></div> <div><div class="ln-l">월배당</div><div class="ln-v" style="color:#fb923c">${(md/10000).toFixed(2)}만</div></div> <div><div class="ln-l">총자산</div><div class="ln-v" style="color:#fbbf24">${r.total?(r.total/10000).toFixed(0):'-'}만</div></div> </div> <div class="log-detail">@${r.plusP?r.plusP.toLocaleString():'-'} · @${r.kodexP?r.kodexP.toLocaleString():'-'} · 주문 ${r.orders}건</div> ${delta} </div>`;
 }).join('');
 }
 
-// ── 전체 렌더 ──
 function renderAll(){
 const n=records.length;
 document.getElementById('s-cnt').textContent=n+'회';
@@ -661,7 +637,7 @@ function exportData(){const json=JSON.stringify(records,null,2);navigator.clipbo
 function importFile(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{doImport(JSON.parse(ev.target.result));}catch{toast('형식 오류',true);}};r.readAsText(f);}
 function importText(){const t=document.getElementById('paste-area').value.trim();if(!t){toast('텍스트를 붙여넣어 주세요',true);return;}try{doImport(JSON.parse(t));document.getElementById('paste-area').value='';}catch{toast('형식 오류',true);}}
 function doImport(arr){if(!Array.isArray(arr)){toast('올바른 형식이 아니에요',true);return;}const merged=[...records];for(const r of arr){const i=merged.findIndex(m=>m.date===r.date);if(i>=0)merged[i]=r;else merged.push(r);}merged.sort((a,b)=>a.date.localeCompare(b.date));records=merged;persist();renderAll();toast(arr.length+'개 기록 복원 완료!');}
-function toast(msg,isErr=false){const t=document.getElementById('toast');t.textContent=msg;t.style.background=isErr?'#fb7185':'#34d399';t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2400);}
+function toast(msg,isErr=false){const t=document.getElementById('toast');t.textContent=msg;t.style.background=isErr?'#fb7185':'#fb923c';t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2400);}
 
 loadData();
 document.getElementById('inp-date').value=new Date().toISOString().slice(0,10);
