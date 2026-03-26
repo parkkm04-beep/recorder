@@ -104,7 +104,7 @@ canvas{width:100%!important;}
 .md-label{font-size:9px;color:#4a6080;letter-spacing:1px;margin-bottom:6px;font-family:'Space Mono',monospace;}
 .md-val{font-size:18px;font-weight:900;font-family:'Space Mono',monospace;}
 .md-delta{font-size:11px;margin-top:3px;}
-.md-delta.up{color:#fb923c;}.md-delta.dn{color:#fb7185;}.md-delta.neu{color:#4a6080;}
+.md-delta.up{color:#fbbf24;}.md-delta.dn{color:#fb7185;}.md-delta.neu{color:#4a6080;}
 .close-btn{width:100%;padding:9px;border-radius:8px;border:1px solid #182a40;background:transparent;color:#4a6080;font-size:11px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;}
 
 .log-item{background:#0c1525;border:1px solid #182a40;border-radius:12px;padding:14px;margin-bottom:8px;position:relative;}
@@ -221,6 +221,14 @@ textarea.paste-area{width:100%;background:#112035;border:1px solid #182a40;borde
     </div>
     <div class="sec">월별 증가량</div>
     <div id="monthly-charts"></div>
+
+ <div class="sec">목표 진행률</div>
+
+ <div class="chart-box" id="goal-progress-box" style="display:none">
+  <div class="chart-title" style="color:#e2e8f0">🎯 목표 대비 진행률 변화</div>
+  <canvas id="goal-progress-chart" height="140"></canvas>
+</div>
+
     <div class="sec">전체 기록</div>
     <div id="log-list-all"></div>
     <div class="empty-state" id="empty-all" style="display:none">아직 저장된 기록이 없어요.</div>
@@ -324,11 +332,19 @@ kodexSh:d.kodexSh||0, kodexP:d.kodexP||0, div:d.div||0, orders:d.orders||0 };
 upsertRecord(rec); persist();
 msg.push('기록 저장 ✅');
 }
+
 if (qsParsed.goal) {
-goals = qsParsed.goal;
-localStorage.setItem(GKEY, JSON.stringify(goals));
-msg.push('목표 업데이트 🎯');
+  goals = qsParsed.goal;
+
+  // 🔥 날짜 자동 갱신 추가
+  goals.updatedAt = new Date().toISOString().slice(0,10);
+
+  localStorage.setItem(GKEY, JSON.stringify(goals));
+  msg.push('목표 업데이트 🎯');
 }
+
+<div class="ds-date">${goals.updatedAt || d.date}</div>
+
 toast(msg.join(' · '));
 document.getElementById('qs-input').value='';
 document.getElementById('qs-preview').style.display='none';
@@ -580,7 +596,7 @@ scales:{x:{grid:{color:'#182a40'},ticks:{color:'#4a6080',font:{size:10}}},y:{gri
 });
 
 const r2=document.createElement('div');r2.className='chart-box';
-r2.innerHTML='<div class="chart-title" style="color:#fb923c">📈 월 배당 증가액 (월별)</div><canvas id="mc-div" height="120"></canvas>';
+r2.innerHTML='<div class="chart-title" style="color:#e2e8f0">📈 월 배당 증가액 (월별)</div><canvas id="mc-div" height="120"></canvas>';
 wrap.appendChild(r2);
 charts['mc-div']=new Chart(document.getElementById('mc-div').getContext('2d'),{type:'bar',
 data:{labels:monthData.map(d=>d.label),datasets:[{label:'배당 증가',data:monthData.map(d=>+d.divGain.toFixed(2)),backgroundColor:'rgba(251,146,60,.7)',borderColor:'#fb923c',borderWidth:1,borderRadius:4}]},
@@ -618,6 +634,10 @@ document.getElementById('s-plus').textContent='+'+(l.plusSh-f.plusSh)+'주';
 document.getElementById('s-kodex').textContent='+'+(l.kodexSh-f.kodexSh)+'주';
 const dd=(l.plusSh*156+l.kodexSh*244)-(f.plusSh*156+f.kodexSh*244);
 document.getElementById('s-div').textContent='+'+(dd/10000).toFixed(2)+'만';
+renderDischarge();
+renderMonthlyCharts();
+renderGoalProgressChart();
+
 }
 renderMonthSelector();
 if(selectedMonth==='all'){
@@ -638,6 +658,103 @@ function importFile(e){const f=e.target.files[0];if(!f)return;const r=new FileRe
 function importText(){const t=document.getElementById('paste-area').value.trim();if(!t){toast('텍스트를 붙여넣어 주세요',true);return;}try{doImport(JSON.parse(t));document.getElementById('paste-area').value='';}catch{toast('형식 오류',true);}}
 function doImport(arr){if(!Array.isArray(arr)){toast('올바른 형식이 아니에요',true);return;}const merged=[...records];for(const r of arr){const i=merged.findIndex(m=>m.date===r.date);if(i>=0)merged[i]=r;else merged.push(r);}merged.sort((a,b)=>a.date.localeCompare(b.date));records=merged;persist();renderAll();toast(arr.length+'개 기록 복원 완료!');}
 function toast(msg,isErr=false){const t=document.getElementById('toast');t.textContent=msg;t.style.background=isErr?'#fb7185':'#fb923c';t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2400);}
+
+function renderGoalProgressChart(){
+
+const box = document.getElementById('goal-progress-box');
+
+if(!goals || !goals.discharge || records.length < 2){
+  box.style.display = 'none';
+  return;
+}
+
+box.style.display = 'block';
+
+if(charts['goal-progress']){
+  charts['goal-progress'].destroy();
+}
+
+const d = goals.discharge;
+
+const labels = records.map(r=>r.date.slice(5));
+
+const plusData = records.map(r => Math.round((r.plusSh / d.plusSh) * 100));
+const kodexData = records.map(r => Math.round((r.kodexSh / d.kodexSh) * 100));
+const divData = records.map(r => {
+  const curDiv = (r.plusSh*156 + r.kodexSh*244)/10000;
+  return Math.round((curDiv / d.div) * 100);
+});
+
+charts['goal-progress'] = new Chart(
+  document.getElementById('goal-progress-chart').getContext('2d'),
+  {
+    type:'line',
+    data:{
+      labels,
+      datasets:[
+        {
+          label:'PLUS 달성률',
+          data:plusData,
+          borderColor:'#00e5ff',
+          backgroundColor:'rgba(0,229,255,.1)',
+          borderWidth:2,
+          pointRadius:3,
+          tension:0.4
+        },
+        {
+          label:'KODEX 달성률',
+          data:kodexData,
+          borderColor:'#a78bfa',
+          backgroundColor:'rgba(167,139,250,.1)',
+          borderWidth:2,
+          pointRadius:3,
+          tension:0.4
+        },
+        {
+          label:'배당 달성률',
+          data:divData,
+          borderColor:'#fbbf24',
+          backgroundColor:'rgba(251,191,36,.1)',
+          borderWidth:2,
+          pointRadius:3,
+          tension:0.4
+        }
+      ]
+    },
+    options:{
+      responsive:true,
+      plugins:{
+        legend:{
+          labels:{
+            color:'#e2e8f0',
+            font:{size:10}
+          }
+        },
+        tooltip:{
+          callbacks:{
+            label:(ctx)=>`${ctx.dataset.label}: ${ctx.parsed.y}%`
+          }
+        }
+      },
+      scales:{
+        x:{
+          grid:{color:'#182a40'},
+          ticks:{color:'#4a6080',font:{size:9}}
+        },
+        y:{
+          grid:{color:'#182a40'},
+          ticks:{
+            color:'#4a6080',
+            callback:(v)=>v+'%'
+          },
+          min:0,
+          max:120
+        }
+      }
+    }
+  }
+);
+}
 
 loadData();
 document.getElementById('inp-date').value=new Date().toISOString().slice(0,10);
