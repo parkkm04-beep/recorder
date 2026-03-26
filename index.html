@@ -104,8 +104,8 @@ canvas{width:100%!important;}
 .md-label{font-size:9px;color:#4a6080;letter-spacing:1px;margin-bottom:6px;font-family:'Space Mono',monospace;}
 .md-val{font-size:18px;font-weight:900;font-family:'Space Mono',monospace;}
 .md-delta{font-size:11px;margin-top:3px;}
-.md-delta.up{color:#fb923c;}.md-delta.dn{color:#fb7185;}.md-delta.neu{color:#4a6080;}
-.close-btn{width:100%;padding:9px;border-radius:8px;border:1px solid #182a40;background:transparent;color:#4a6080;font-size:11px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;}
+.md-delta.up{color: #fbbf24;}.md-delta.dn{color:#fb7185;}.md-delta.neu{color:#4a6080;}
+.close-btn{width:10ding:9px;border-radius:8px;border:1px solid #182a40;background:transparent;color:#4a6080;font-size:11px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;}
 
 .log-item{background:#0c1525;border:1px solid #182a40;border-radius:12px;padding:14px;margin-bottom:8px;position:relative;}
 .log-item.latest{border-color:rgba(0,229,255,.35);}
@@ -324,11 +324,17 @@ kodexSh:d.kodexSh||0, kodexP:d.kodexP||0, div:d.div||0, orders:d.orders||0 };
 upsertRecord(rec); persist();
 msg.push('기록 저장 ✅');
 }
+
 if (qsParsed.goal) {
-goals = qsParsed.goal;
-localStorage.setItem(GKEY, JSON.stringify(goals));
-msg.push('목표 업데이트 🎯');
+  goals = qsParsed.goal;
+
+
+  goals.updatedAt = new Date().toISOString().slice(0,10);
+
+  localStorage.setItem(GKEY, JSON.stringify(goals));
+  msg.push('목표 업데이트 🎯');
 }
+
 toast(msg.join(' · '));
 document.getElementById('qs-input').value='';
 document.getElementById('qs-preview').style.display='none';
@@ -448,7 +454,7 @@ milestonesHtml+=` <div style="background:#112035;border-radius:10px;padding:12px
 });
 }
 
-sec.innerHTML=` <div class="ds-header"> <div class="ds-title">🎖️ 전역 목표</div> <div class="ds-date">${d.date}</div> </div> ${milestonesHtml} <div style="background:#112035;border-radius:10px;padding:12px;border:1px solid rgba(0,229,255,.15);"> <div style="display:flex;justify-content:space-between;margin-bottom:10px;"> <span style="font-size:12px;font-weight:700;color:#00e5ff;">🏁 전역 최종 목표</span> <span style="font-size:10px;color:#4a6080;font-family:'Space Mono',monospace;">${Math.round((plusPct+kodexPct+divPct)/3)}% 진행</span> </div> <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;"> ${mkMini('PLUS','#00e5ff',latest.plusSh,d.plusSh,'주',plusPct,true)} ${mkMini('KODEX','#a78bfa',latest.kodexSh,d.kodexSh,'주',kodexPct,true)} ${mkMini('배당','#fb923c',curDiv.toFixed(1),d.div,'만',divPct,true)} </div> </div>`;
+sec.innerHTML=` <div class="ds-header"> <div class="ds-title">🎖️ 전역 목표</div> <div class="ds-date">${goals.updatedAt || d.date}</div> </div> ${milestonesHtml} <div style="background:#112035;border-radius:10px;padding:12px;border:1px solid rgba(0,229,255,.15);"> <div style="display:flex;justify-content:space-between;margin-bottom:10px;"> <span style="font-size:12px;font-weight:700;color:#00e5ff;">🏁 전역 최종 목표</span> <span style="font-size:10px;color:#4a6080;font-family:'Space Mono',monospace;">${Math.round((plusPct+kodexPct+divPct)/3)}% 진행</span> </div> <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;"> ${mkMini('PLUS','#00e5ff',latest.plusSh,d.plusSh,'주',plusPct,true)} ${mkMini('KODEX','#a78bfa',latest.kodexSh,d.kodexSh,'주',kodexPct,true)} ${mkMini('배당','#fb923c',curDiv.toFixed(1),d.div,'만',divPct,true)} </div> </div>`;
 }
 
 function mkMini(label,color,cur,goal,unit,pct,isFuture){
@@ -580,7 +586,7 @@ scales:{x:{grid:{color:'#182a40'},ticks:{color:'#4a6080',font:{size:10}}},y:{gri
 });
 
 const r2=document.createElement('div');r2.className='chart-box';
-r2.innerHTML='<div class="chart-title" style="color:#fb923c">📈 월 배당 증가액 (월별)</div><canvas id="mc-div" height="120"></canvas>';
+r2.innerHTML='<div class="chart-title" style="color:#e2e8f0">📈 월 배당 증가액 (월별)</div><canvas id="mc-div" height="120"></canvas>';
 wrap.appendChild(r2);
 charts['mc-div']=new Chart(document.getElementById('mc-div').getContext('2d'),{type:'bar',
 data:{labels:monthData.map(d=>d.label),datasets:[{label:'배당 증가',data:monthData.map(d=>+d.divGain.toFixed(2)),backgroundColor:'rgba(251,146,60,.7)',borderColor:'#fb923c',borderWidth:1,borderRadius:4}]},
