@@ -693,8 +693,10 @@ function addMonths(date, m){
 }
 
 // 🔥 자동 시점 생성
-const privateDate = addMonths(enlistDate, 5);   // 일병
-const corporalDate = addMonths(enlistDate, 10); // 상병
+
+const privateDate = endOfMonth(addMonths(enlistDate, 8));   // 🔥 4월 말
+const corporalDate = endOfMonth(addMonths(enlistDate, 14)); // 🔥 10월 말
+
 const dischargeDate = new Date("2027-04-17");
 
 // 목표 (비율로 나눔)
@@ -798,6 +800,11 @@ ${diff>=0?'✅ 충분':'⚠️ 부족'}
 });
 
 return html;
+}
+
+function endOfMonth(date){
+  const d = new Date(date);
+  return new Date(d.getFullYear(), d.getMonth()+1, 0);
 }
 
 </script>
