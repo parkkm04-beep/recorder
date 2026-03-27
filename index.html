@@ -7,26 +7,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 
-/* 헤더 오른쪽 영역 */
-.goal-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-
-/* 아이콘 */
-.goal-toggle{
-  font-size:11px;
-  color:#4a6080;
-}
-
-/* 디데이 */
-.goal-dday{
-  font-size:10px;
-  color:#4a6080;
-  font-family:'Space Mono',monospace;
-}
-
 .ok{
   color:#22c55e;
   font-weight:600;
@@ -247,6 +227,26 @@ textarea.paste-area{width:100%;background:#112035;border:1px solid #182a40;borde
 .goal-num-warn{
   color:#ef4444;
   font-weight:700;
+}
+
+/* 헤더 오른쪽 영역 */
+.goal-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+/* 아이콘 */
+.goal-toggle{
+  font-size:11px;
+  color:#4a6080;
+}
+
+/* 디데이 */
+.goal-dday{
+  font-size:10px;
+  color:#4a6080;
+  font-family:'Space Mono',monospace;
 }
 
 </style>
@@ -574,6 +574,14 @@ const dPct=Math.round(curDiv/ms.div*100);
 const avg=Math.round((pPct+kPct+dPct)/3);
 milestonesHtml+=` <div style="background:#112035;border-radius:10px;padding:12px;margin-bottom:10px;"> <div style="display:flex;justify-content:space-between;margin-bottom:8px;"> <span style="font-size:11px;font-weight:700;color:#e2e8f0;">${ms.label}</span> <span style="font-size:10px;font-family:'Space Mono',monospace;color:#4a6080;">${avg}% 진행</span> </div> <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;"> ${mkMini('PLUS','#00e5ff',latest.plusSh,ms.plusSh,'주',pPct,true)} ${mkMini('KODEX','#a78bfa',latest.kodexSh,ms.kodexSh,'주',kPct,true)} ${mkMini('배당','#fb923c',curDiv.toFixed(1),ms.div,'만',dPct,true)} </div> </div>`;
 });
+
+setTimeout(()=>{
+  const mainCard = document.querySelector('.main-goal-card');
+  if(mainCard){
+    mainCard.onclick = toggleGoalCards;
+  }
+},0);
+
 }
 
 sec.innerHTML=` <div class="ds-header"> <div class="ds-title">🎖️ 전역 목표</div> <div class="ds-date">
@@ -909,7 +917,7 @@ function makeCard(r, isMain=false){
     : `+${r.needPlus.toFixed(1)}`;
 
   return `
-<div class="goal-card ${status} ${isMain ? 'clickable' : ''}" ${isMain ? 'onclick="toggleGoalCards()"' : ''}>
+<div class="goal-card ${status} ${isMain ? 'clickable' : ''}" <div class="goal-card ${status} ${isMain ? 'clickable main-goal-card' : ''}">
   
   <div class="goal-head">
     <div class="goal-title">${r.name}</div>
