@@ -462,10 +462,10 @@ milestonesHtml+=` <div style="background:#112035;border-radius:10px;padding:12px
 });
 }
 
-sec.innerHTML=` <div class="ds-header"> <div id="goal-analysis" style="font-size:10px;color:#4a6080;font-family:'Space Mono',monospace;margin-bottom:10px;"></div> <div class="ds-title">🎖️ 전역 목표</div> <div class="ds-date">
+sec.innerHTML=` <div class="ds-header"> <div class="ds-title">🎖️ 전역 목표</div> <div class="ds-date">
 
   ${formatDateDiff(goals.updatedAt || d.date)}
-</div> </div> ${milestonesHtml} <div style="background:#112035;border-radius:10px;padding:12px;border:1px solid rgba(0,229,255,.15);"> <div style="display:flex;justify-content:space-between;margin-bottom:10px;"> <span style="font-size:12px;font-weight:700;color:#00e5ff;">🏁 전역 최종 목표</span> <span style="font-size:10px;color:#4a6080;font-family:'Space Mono',monospace;">${Math.round((plusPct+kodexPct+divPct)/3)}% 진행</span> </div> <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;"> ${mkMini('PLUS','#00e5ff',latest.plusSh,d.plusSh,'주',plusPct,true)} ${mkMini('KODEX','#a78bfa',latest.kodexSh,d.kodexSh,'주',kodexPct,true)} ${mkMini('배당','#fb923c',curDiv.toFixed(1),d.div,'만',divPct,true)} </div> </div>`;document.getElementById('goal-analysis').innerHTML = analyzeGoal();
+</div> </div> <div id="goal-analysis" style="font-size:10px;color:#4a6080;font-family:'Space Mono',monospace;margin-bottom:10px;"></div>  ${milestonesHtml} <div style="background:#112035;border-radius:10px;padding:12px;border:1px solid rgba(0,229,255,.15);"> <div style="display:flex;justify-content:space-between;margin-bottom:10px;"> <span style="font-size:12px;font-weight:700;color:#00e5ff;">🏁 전역 최종 목표</span> <span style="font-size:10px;color:#4a6080;font-family:'Space Mono',monospace;">${Math.round((plusPct+kodexPct+divPct)/3)}% 진행</span> </div> <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;"> ${mkMini('PLUS','#00e5ff',latest.plusSh,d.plusSh,'주',plusPct,true)} ${mkMini('KODEX','#a78bfa',latest.kodexSh,d.kodexSh,'주',kodexPct,true)} ${mkMini('배당','#fb923c',curDiv.toFixed(1),d.div,'만',divPct,true)} </div> </div>`;document.getElementById('goal-analysis').innerHTML = analyzeGoal();
 }
 
 function mkMini(label,color,cur,goal,unit,pct,isFuture){
