@@ -6,6 +6,17 @@
 <title>투자 체크 로그</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
+
+.ok{
+  color:#22c55e;
+  font-weight:600;
+}
+
+.bad{
+  color:#ef4444;
+  font-weight:600;
+}
+
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:#070d18;color:#e2e8f0;font-family:'Noto Sans KR',sans-serif;min-height:100vh;padding:0 0 80px;}
 body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 60% 50% at 10% 10%,rgba(0,229,255,.06) 0%,transparent 50%),radial-gradient(ellipse 50% 40% at 90% 90%,rgba(167,139,250,.05) 0%,transparent 50%);pointer-events:none;z-index:0;}
@@ -677,10 +688,10 @@ const d = goals.discharge;
 const first = records[0];
 const last = records[records.length-1];
 
-// 기간 (일수)
+// 기간
 const days = Math.max(1, (new Date(last.date) - new Date(first.date)) / (1000*60*60*24));
 
-// 현재 진행량
+// 현재 속도
 const plusSpeed = (last.plusSh - first.plusSh) / days;
 const kodexSpeed = (last.kodexSh - first.kodexSh) / days;
 
@@ -688,42 +699,78 @@ const lastDiv = (last.plusSh*156 + last.kodexSh*244)/10000;
 const firstDiv = (first.plusSh*156 + first.kodexSh*244)/10000;
 const divSpeed = (lastDiv - firstDiv) / days;
 
-// 남은 양
-const plusRemain = d.plusSh - last.plusSh;
-const kodexRemain = d.kodexSh - last.kodexSh;
-const divRemain = d.div - lastDiv;
+// 🔥 계산 함수
+function calc(target){
 
-// ETA 계산
-const etaPlus = plusSpeed > 0 ? plusRemain / plusSpeed : Infinity;
-const etaKodex = kodexSpeed > 0 ? kodexRemain / kodexSpeed : Infinity;
-const etaDiv = divSpeed > 0 ? divRemain / divSpeed : Infinity;
+  const today = new Date();
+  const goalDate = new Date(target.date);
 
-// 가장 오래 걸리는 기준
-const etaDays = Math.max(etaPlus, etaKodex, etaDiv);
+  const remainDays = Math.max(1, (goalDate - today) / (1000*60*60*24));
 
-// 날짜 계산
-const etaDate = new Date();
-etaDate.setDate(etaDate.getDate() + Math.ceil(etaDays));
+  const plusRemain = target.plusSh - last.plusSh;
+  const kodexRemain = target.kodexSh - last.kodexSh;
+  const divRemain = target.div - lastDiv;
 
-const etaStr = isFinite(etaDays)
-  ? etaDate.toISOString().slice(0,10)
-  : '계산 불가';
+  // ETA (현재 속도 기준)
+  const etaPlus = plusSpeed > 0 ? plusRemain / plusSpeed : Infinity;
+  const etaKodex = kodexSpeed > 0 ? kodexRemain / kodexSpeed : Infinity;
+  const etaDiv = divSpeed > 0 ? divRemain / divSpeed : Infinity;
 
-// 목표 날짜
-const goalDate = new Date(d.date);
+  const etaDays = Math.max(etaPlus, etaKodex, etaDiv);
 
-// 가능 여부
-const isAchievable = etaDate <= goalDate;
+  const etaDate = new Date();
+  etaDate.setDate(etaDate.getDate() + Math.ceil(etaDays));
+
+  const isOk = etaDate <= goalDate;
+
+  // 🔥 하루 필요량 (목표 기준)
+  const needPlus = plusRemain / remainDays;
+  const needKodex = kodexRemain / remainDays;
+
+  return {
+  ok:isOk,
+  eta: isFinite(etaDays) ? etaDate.toISOString().slice(0,10) : '불가',
+  needPlus: needPlus > 0 ? needPlus : 0,
+  needKodex: needKodex > 0 ? needKodex : 0,
+  curPlus: plusSpeed,
+  curKodex: kodexSpeed
+};
+}
+
+// 🔥 시점별 (없으면 전역 기준 fallback)
+const privateTarget = d.private || d;
+const corporalTarget = d.corporal || d;
+const dischargeTarget = d;
+
+// 결과
+const p = calc(privateTarget);
+const c = calc(corporalTarget);
+const f = calc(dischargeTarget);
 
 // 출력
-return `
-📊 예상 도달: ${etaStr}
-${isAchievable ? '🟢 목표 달성 가능' : '🔴 목표 달성 어려움'}
+function row(label, res){
+
+  const plusDiff = res.curPlus - res.needPlus;
+  const status = plusDiff >= 0 ? 'ok' : 'bad';
+
+  return `
+${label} → ${res.ok ? '🟢 가능' : '🔴 어려움'} (${res.eta})
+└ <span class="${status}">
+필요: +${res.needPlus.toFixed(1)}주 | 현재: +${res.curPlus.toFixed(1)}주
+${plusDiff >= 0 ? '✅ 충분' : '⚠️ 부족'}
+</span>
 `;
 }
 
-loadData();
-document.getElementById('inp-date').value=new Date().toISOString().slice(0,10);
+return `
+📊 시점별 달성 분석
+
+${row('일병', p)}
+${row('상병', c)}
+${row('전역', f)}
+`;
+}
+
 </script>
 </body>
 </html>
