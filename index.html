@@ -462,7 +462,9 @@ milestonesHtml+=` <div style="background:#112035;border-radius:10px;padding:12px
 });
 }
 
-sec.innerHTML=` <div class="ds-header"> <div class="ds-title">🎖️ 전역 목표</div> <div class="ds-date">${goals.updatedAt || d.date}</div> </div> ${milestonesHtml} <div style="background:#112035;border-radius:10px;padding:12px;border:1px solid rgba(0,229,255,.15);"> <div style="display:flex;justify-content:space-between;margin-bottom:10px;"> <span style="font-size:12px;font-weight:700;color:#00e5ff;">🏁 전역 최종 목표</span> <span style="font-size:10px;color:#4a6080;font-family:'Space Mono',monospace;">${Math.round((plusPct+kodexPct+divPct)/3)}% 진행</span> </div> <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;"> ${mkMini('PLUS','#00e5ff',latest.plusSh,d.plusSh,'주',plusPct,true)} ${mkMini('KODEX','#a78bfa',latest.kodexSh,d.kodexSh,'주',kodexPct,true)} ${mkMini('배당','#fb923c',curDiv.toFixed(1),d.div,'만',divPct,true)} </div> </div>`;
+sec.innerHTML=` <div class="ds-header"> <div class="ds-title">🎖️ 전역 목표</div> <div class="ds-date">
+  ${formatDateDiff(goals.updatedAt || d.date)}
+</div> </div> ${milestonesHtml} <div style="background:#112035;border-radius:10px;padding:12px;border:1px solid rgba(0,229,255,.15);"> <div style="display:flex;justify-content:space-between;margin-bottom:10px;"> <span style="font-size:12px;font-weight:700;color:#00e5ff;">🏁 전역 최종 목표</span> <span style="font-size:10px;color:#4a6080;font-family:'Space Mono',monospace;">${Math.round((plusPct+kodexPct+divPct)/3)}% 진행</span> </div> <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;"> ${mkMini('PLUS','#00e5ff',latest.plusSh,d.plusSh,'주',plusPct,true)} ${mkMini('KODEX','#a78bfa',latest.kodexSh,d.kodexSh,'주',kodexPct,true)} ${mkMini('배당','#fb923c',curDiv.toFixed(1),d.div,'만',divPct,true)} </div> </div>`;
 }
 
 function mkMini(label,color,cur,goal,unit,pct,isFuture){
@@ -652,6 +654,17 @@ function importFile(e){const f=e.target.files[0];if(!f)return;const r=new FileRe
 function importText(){const t=document.getElementById('paste-area').value.trim();if(!t){toast('텍스트를 붙여넣어 주세요',true);return;}try{doImport(JSON.parse(t));document.getElementById('paste-area').value='';}catch{toast('형식 오류',true);}}
 function doImport(arr){if(!Array.isArray(arr)){toast('올바른 형식이 아니에요',true);return;}const merged=[...records];for(const r of arr){const i=merged.findIndex(m=>m.date===r.date);if(i>=0)merged[i]=r;else merged.push(r);}merged.sort((a,b)=>a.date.localeCompare(b.date));records=merged;persist();renderAll();toast(arr.length+'개 기록 복원 완료!');}
 function toast(msg,isErr=false){const t=document.getElementById('toast');t.textContent=msg;t.style.background=isErr?'#fb7185':'#fb923c';t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2400);}
+
+function formatDateDiff(dateStr){
+  const today = new Date();
+  const target = new Date(dateStr);
+
+  const diff = Math.floor((today - target) / (1000 * 60 * 60 * 24));
+
+  if(diff === 0) return `${dateStr} 기준 (오늘)`;
+  if(diff > 0) return `${dateStr} 기준 (${diff}일 전)`;
+  return `${dateStr} 기준 (${Math.abs(diff)}일 후)`;
+}
 
 loadData();
 document.getElementById('inp-date').value=new Date().toISOString().slice(0,10);
