@@ -204,18 +204,16 @@ textarea.paste-area{width:100%;background:#112035;border:1px solid #182a40;borde
 .goal-done{color:#a78bfa;}
 .goal-fail{color:#9ca3af;}
 
-/* 펼침 영역 */
 .goal-hidden{
   max-height:0;
   overflow:hidden;
+  transition:all .4s ease;
   opacity:0;
-  transition:all .35s ease;
 }
 
 .goal-hidden.show{
   max-height:500px;
   opacity:1;
-  margin-top:6px;
 }
 
 /* 클릭 가능 */
@@ -235,6 +233,27 @@ textarea.paste-area{width:100%;background:#112035;border:1px solid #182a40;borde
 
 .goal-hidden.show{
   display:block;
+}
+
+/* 🔥 시점 카드 숨김/토글 */
+.goal-hidden{
+  display:none;
+}
+
+.goal-hidden.show{
+  display:block;
+  animation:fadeUp .3s ease;
+}
+
+/* 클릭 가능 표시 */
+.main-goal-card{
+  cursor:pointer;
+}
+
+/* 부족 강조 */
+.goal-num-warn{
+  color:#ef4444;
+  font-weight:700;
 }
 
 </style>
@@ -575,14 +594,13 @@ setTimeout(()=>{
 
   if(!wrap || !extra) return;
 
-  wrap.addEventListener('click',(e)=>{
+  wrap.onclick = (e)=>{
     const card = e.target.closest('.main-goal-card');
     if(!card) return;
 
     extra.classList.toggle('show');
-  });
-
-},0);
+  };
+},100);
 
 }
 
