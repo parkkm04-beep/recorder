@@ -328,6 +328,7 @@ msg.push('기록 저장 ✅');
 if (qsParsed.goal) {
   goals = qsParsed.goal;
 
+goals.updatedAt = new Date().toISOString().slice(0,10);
 
   goals.updatedAt = new Date().toISOString().slice(0,10);
 
@@ -342,8 +343,7 @@ document.getElementById('qs-goal-preview').style.display='none';
 document.getElementById('btn-qs').disabled=true;
 document.getElementById('btn-qs').textContent='⚡ 바로 저장';
 qsParsed=null;
-if(document.getElementById('tab-records').style.display!=='none') renderAll();
-}
+renderAll();}
 
 function switchTab(t) {
 document.getElementById('tab-input').style.display   = t==='input'  ?'block':'none';
@@ -420,7 +420,7 @@ if(pct>=80) return '#00e5ff';
 if(pct>=50) return '#a78bfa';
 return '#4a6080';
 }
-if(pct>=105) return '#fb923c';
+if(pct>=105) return '#fbbf24';
 if(pct>=95)  return '#00e5ff';
 if(pct>=85)  return '#fbbf24';
 return '#fb7185';
