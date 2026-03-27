@@ -462,7 +462,10 @@ milestonesHtml+=` <div style="background:#112035;border-radius:10px;padding:12px
 });
 }
 
-sec.innerHTML=` <div class="ds-header"> <div class="ds-title">🎖️ 전역 목표</div> <div class="ds-date">
+sec.innerHTML=` <div class="ds-header"> <div id="goal-analysis" style="font-size:10px;color:#4a6080;font-family:'Space Mono',monospace;margin-bottom:10px;"></div> <div class="ds-title">🎖️ 전역 목표</div> <div class="ds-date">
+
+document.getElementById('goal-analysis').innerHTML = analyzeGoal();
+
   ${formatDateDiff(goals.updatedAt || d.date)}
 </div> </div> ${milestonesHtml} <div style="background:#112035;border-radius:10px;padding:12px;border:1px solid rgba(0,229,255,.15);"> <div style="display:flex;justify-content:space-between;margin-bottom:10px;"> <span style="font-size:12px;font-weight:700;color:#00e5ff;">🏁 전역 최종 목표</span> <span style="font-size:10px;color:#4a6080;font-family:'Space Mono',monospace;">${Math.round((plusPct+kodexPct+divPct)/3)}% 진행</span> </div> <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;"> ${mkMini('PLUS','#00e5ff',latest.plusSh,d.plusSh,'주',plusPct,true)} ${mkMini('KODEX','#a78bfa',latest.kodexSh,d.kodexSh,'주',kodexPct,true)} ${mkMini('배당','#fb923c',curDiv.toFixed(1),d.div,'만',divPct,true)} </div> </div>`;
 }
@@ -664,6 +667,61 @@ function formatDateDiff(dateStr){
   if(diff === 0) return `${dateStr} 기준 (오늘)`;
   if(diff > 0) return `${dateStr} 기준 (${diff}일 전)`;
   return `${dateStr} 기준 (${Math.abs(diff)}일 후)`;
+}
+
+function analyzeGoal(){
+
+if(!goals || !goals.discharge || records.length < 2){
+  return '';
+}
+
+const d = goals.discharge;
+const first = records[0];
+const last = records[records.length-1];
+
+// 기간 (일수)
+const days = Math.max(1, (new Date(last.date) - new Date(first.date)) / (1000*60*60*24));
+
+// 현재 진행량
+const plusSpeed = (last.plusSh - first.plusSh) / days;
+const kodexSpeed = (last.kodexSh - first.kodexSh) / days;
+
+const lastDiv = (last.plusSh*156 + last.kodexSh*244)/10000;
+const firstDiv = (first.plusSh*156 + first.kodexSh*244)/10000;
+const divSpeed = (lastDiv - firstDiv) / days;
+
+// 남은 양
+const plusRemain = d.plusSh - last.plusSh;
+const kodexRemain = d.kodexSh - last.kodexSh;
+const divRemain = d.div - lastDiv;
+
+// ETA 계산
+const etaPlus = plusSpeed > 0 ? plusRemain / plusSpeed : Infinity;
+const etaKodex = kodexSpeed > 0 ? kodexRemain / kodexSpeed : Infinity;
+const etaDiv = divSpeed > 0 ? divRemain / divSpeed : Infinity;
+
+// 가장 오래 걸리는 기준
+const etaDays = Math.max(etaPlus, etaKodex, etaDiv);
+
+// 날짜 계산
+const etaDate = new Date();
+etaDate.setDate(etaDate.getDate() + Math.ceil(etaDays));
+
+const etaStr = isFinite(etaDays)
+  ? etaDate.toISOString().slice(0,10)
+  : '계산 불가';
+
+// 목표 날짜
+const goalDate = new Date(d.date);
+
+// 가능 여부
+const isAchievable = etaDate <= goalDate;
+
+// 출력
+return `
+📊 예상 도달: ${etaStr}
+${isAchievable ? '🟢 목표 달성 가능' : '🔴 목표 달성 어려움'}
+`;
 }
 
 loadData();
