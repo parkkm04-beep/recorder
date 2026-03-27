@@ -328,9 +328,17 @@ msg.push('기록 저장 ✅');
 if (qsParsed.goal) {
   goals = qsParsed.goal;
 
-goals.updatedAt = new Date().toISOString().slice(0,10);
+  const today = new Date().toISOString().slice(0,10);
 
-  goals.updatedAt = new Date().toISOString().slice(0,10);
+  // 🔥 전역 목표
+  goals.updatedAt = today;
+
+  // 🔥 월 목표도 같이 넣기
+  if(goals.months){
+    Object.keys(goals.months).forEach(m=>{
+      goals.months[m].updatedAt = today;
+    });
+  }
 
   localStorage.setItem(GKEY, JSON.stringify(goals));
   msg.push('목표 업데이트 🎯');
