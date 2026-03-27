@@ -562,15 +562,18 @@ sec.innerHTML=` <div class="ds-header"> <div class="ds-title">🎖️ 전역 목
 </div> </div> <div id="goal-analysis" style="font-size:10px;color:#4a6080;font-family:'Space Mono',monospace;margin-bottom:10px;"></div>  ${milestonesHtml} <div style="background:#112035;border-radius:10px;padding:12px;border:1px solid rgba(0,229,255,.15);"> <div style="display:flex;justify-content:space-between;margin-bottom:10px;"> <span style="font-size:12px;font-weight:700;color:#00e5ff;">🏁 전역 최종 목표</span> <span style="font-size:10px;color:#4a6080;font-family:'Space Mono',monospace;">${Math.round((plusPct+kodexPct+divPct)/3)}% 진행</span> </div> <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;"> ${mkMini('PLUS','#00e5ff',latest.plusSh,d.plusSh,'주',plusPct,true)} ${mkMini('KODEX','#a78bfa',latest.kodexSh,d.kodexSh,'주',kodexPct,true)} ${mkMini('배당','#fb923c',curDiv.toFixed(1),d.div,'만',divPct,true)} </div> </div>`;document.getElementById('goal-analysis').innerHTML = analyzeGoal();
 
 setTimeout(()=>{
-  const card = document.querySelector('.main-goal-card');
-  if(card){
-    card.addEventListener('click', ()=>{
-      const extra = document.getElementById('goal-extra');
-      if(extra){
-        extra.classList.toggle('show');
-      }
-    });
-  }
+  const wrap = document.getElementById('goal-cards');
+  const extra = document.getElementById('goal-extra');
+
+  if(!wrap || !extra) return;
+
+  wrap.addEventListener('click',(e)=>{
+    const card = e.target.closest('.main-goal-card');
+    if(!card) return;
+
+    extra.classList.toggle('show');
+  });
+
 },0);
 
 }
@@ -886,15 +889,17 @@ function makeCard(r, isMain=false){
 </div>`;
   }
 
+
   const diff = r.curPlus - r.needPlus;
   const status = diff >= 0 ? 'ok' : 'bad';
 
-  const need = diff < 0
-    ? `<span class="goal-num-warn">+${r.needPlus.toFixed(1)}</span>`
-    : `+${r.needPlus.toFixed(1)}`;
+const need = diff < 0
+  ? `<span class="goal-num-warn">+${r.needPlus.toFixed(1)}</span>`
+  : `+${r.needPlus.toFixed(1)}`;
 
   return `
-<div class="goal-card ${status} ${isMain ? 'clickable main-goal-card' : ''}">
+
+<div class="goal-card ${status} ${isMain ? 'main-goal-card clickable' : ''}">
   <div class="goal-title">${r.name} (${r.date})</div>
 
   <div class="goal-status ${r.ok ? 'goal-good' : 'goal-warn'}">
@@ -902,60 +907,24 @@ function makeCard(r, isMain=false){
   </div>
 
   <div class="goal-sub">
-    필요: ${need}주 / 현재: +${r.curPlus.toFixed(1)}주
+    필요: 필요: ${need}주 / 현재: +${r.curPlus.toFixed(1)}주
   </div>
 
   <div class="goal-sub ${diff>=0 ? 'goal-good' : 'goal-warn'}">
     ${diff>=0 ? '현재 속도 충분' : '속도 부족'}
   </div>
-</div>`;
+</div>
+`;
 }
 
-// 🔥 정렬
-const sorted = results.sort((a,b)=> new Date(a.date) - new Date(b.date));
-
-// 🔥 가장 가까운 목표
-const main = sorted.find(r=>!r.passed) || sorted[0];
-
-// 🔥 나머지
-const rest = sorted.filter(r=>r !== main);
-
 return `
-<div class="goal-cards">
+<div class="goal-cards" id="goal-cards">
   ${makeCard(main, true)}
 
   <div id="goal-extra" class="goal-hidden">
     ${rest.map(r=>makeCard(r)).join('')}
   </div>
 </div>`;
-
-  const diff = r.curPlus - r.needPlus;
-  const status = diff >= 0 ? 'ok' : 'bad';
-
-  return `
-<div class="goal-card ${status}">
-  <div class="goal-title">${r.name} (${r.date})</div>
-
-  <div class="goal-status ${r.ok ? 'goal-good' : 'goal-warn'}">
-    ${r.ok ? '🟢 달성 가능' : '🔴 달성 어려움'}
-  </div>
-
-  <div class="goal-sub">
-    필요: +${r.needPlus.toFixed(1)}주 / 현재: +${r.curPlus.toFixed(1)}주
-  </div>
-
-  <div class="goal-sub ${diff>=0 ? 'goal-good' : 'goal-warn'}">
-    ${diff>=0 ? '현재 속도 충분' : '속도 부족'}
-  </div>
-</div>
-`;
-}
-
-return `
-<div class="goal-cards">
-  ${results.map(makeCard).join('')}
-</div>
-`;
 }
 
 function endOfMonth(date){
