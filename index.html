@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -9,58 +8,31 @@
 <style>
 
 .ok{
-color:#22c55e;
-font-weight:600;
+  color:#22c55e;
+  font-weight:600;
 }
 
 .bad{
-color:#ef4444;
-font-weight:600;
+  color:#ef4444;
+  font-weight:600;
 }
 
 *{margin:0;padding:0;box-sizing:border-box;}
-
-/* 수정된 스타일 부분 */
-body {
-  background: #070d18;
-  color: #e2e8f0;
-  font-family: 'Noto Sans KR', sans-serif; /* 따옴표 수정 */
-  min-height: 100vh;
-  padding: 0 0 80px;
-}
-body::before {
-  content: ''; /* 따옴표 수정 */
-  position: fixed;
-  inset: 0;
-  background: radial-gradient(ellipse 60% 50% at 10% 10%, rgba(0,229,255,.06) 0%, transparent 50%), 
-              radial-gradient(ellipse 50% 40% at 90% 90%, rgba(167,139,250,.05) 0%, transparent 50%);
-  pointer-events: none;
-  z-index: 0;
-}
-.hdr-pill span {
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  color: #00e5ff;
-  font-family: 'Space Mono', monospace; /* 따옴표 수정 */
-  text-transform: uppercase;
-}
-.tab {
-  flex: 1;
-  padding: 9px;
-  border-radius: 9px;
-  border: none;
-  background: transparent;
-  color: #4a6080;
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-  font-family: 'Noto Sans KR', sans-serif; /* 따옴표 수정 */
-}
-
+body{background:#070d18;color:#e2e8f0;font-family:'Noto Sans KR',sans-serif;min-height:100vh;padding:0 0 80px;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 60% 50% at 10% 10%,rgba(0,229,255,.06) 0%,transparent 50%),radial-gradient(ellipse 50% 40% at 90% 90%,rgba(167,139,250,.05) 0%,transparent 50%);pointer-events:none;z-index:0;}
+.wrap{max-width:480px;margin:0 auto;position:relative;z-index:1;padding:20px 16px;}
+.hdr{text-align:center;margin-bottom:24px;}
+.hdr-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(0,229,255,.08);border:1px solid rgba(0,229,255,.2);border-radius:20px;padding:5px 14px;margin-bottom:12px;}
+.hdr-pill .dot{width:6px;height:6px;border-radius:50%;background:#00e5ff;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.hdr-pill span{font-size:9px;font-weight:700;letter-spacing:2px;color:#00e5ff;font-family:'Space Mono',monospace;text-transform:uppercase;}
+.hdr h1{font-size:22px;font-weight:900;line-height:1.3;}
+.hdr h1 em{color:#00e5ff;font-style:normal;}
+.tabs{display:flex;background:#0c1525;border:1px solid #182a40;border-radius:12px;padding:4px;gap:4px;margin-bottom:20px;}
+.tab{flex:1;padding:9px;border-radius:9px;border:none;background:transparent;color:#4a6080;font-size:12px;font-weight:700;cursor:pointer;font-family:'Noto Sans KR',sans-serif;}
 .tab.active{background:#112035;color:#00e5ff;}
-.sec{font-size:9px;font-weight:700;letter-spacing:3px;color:#4a6080;text-transform:uppercase;font-family:‘Space Mono’,monospace;display:flex;align-items:center;gap:8px;margin-bottom:12px;}
-.sec::after{content:’’;flex:1;height:1px;background:#182a40;}
+.sec{font-size:9px;font-weight:700;letter-spacing:3px;color:#4a6080;text-transform:uppercase;font-family:'Space Mono',monospace;display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.sec::after{content:'';flex:1;height:1px;background:#182a40;}
 .guide-box{background:rgba(0,229,255,.06);border:1px solid rgba(0,229,255,.2);border-radius:12px;padding:14px;margin-bottom:18px;}
 .guide-step{display:flex;gap:10px;align-items:flex-start;margin-bottom:8px;}
 .guide-step:last-child{margin-bottom:0;}
@@ -69,92 +41,92 @@ body::before {
 .guide-txt b{color:#00e5ff;}
 .form-card{background:#0c1525;border:1px solid #182a40;border-radius:14px;padding:16px;margin-bottom:16px;}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
-.form-item label{display:block;font-size:9px;color:#4a6080;font-family:‘Space Mono’,monospace;margin-bottom:5px;letter-spacing:1px;text-transform:uppercase;}
-.form-item input{width:100%;background:#112035;border:1px solid #182a40;border-radius:8px;padding:10px 12px;color:#e2e8f0;font-size:15px;font-family:‘Space Mono’,monospace;outline:none;-webkit-appearance:none;}
+.form-item label{display:block;font-size:9px;color:#4a6080;font-family:'Space Mono',monospace;margin-bottom:5px;letter-spacing:1px;text-transform:uppercase;}
+.form-item input{width:100%;background:#112035;border:1px solid #182a40;border-radius:8px;padding:10px 12px;color:#e2e8f0;font-size:15px;font-family:'Space Mono',monospace;outline:none;-webkit-appearance:none;}
 .form-item input:focus{border-color:#00e5ff;}
 .form-item.span2{grid-column:1/-1;}
 .preview-card{background:#112035;border:1px solid #182a40;border-radius:10px;padding:12px;margin-bottom:14px;display:none;}
 .preview-card.show{display:block;}
 .preview-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
 .pv-item .pv-l{font-size:9px;color:#4a6080;}
-.pv-item .pv-v{font-size:14px;font-weight:700;font-family:‘Space Mono’,monospace;}
-.btn-primary{width:100%;padding:13px;border-radius:10px;border:none;cursor:pointer;font-size:13px;font-weight:700;font-family:‘Noto Sans KR’,sans-serif;background:linear-gradient(135deg,#0369a1,#00e5ff);color:#000;margin-bottom:8px;}
-.btn-secondary{width:100%;padding:11px;border-radius:10px;border:1px solid #182a40;cursor:pointer;font-size:12px;font-weight:700;font-family:‘Noto Sans KR’,sans-serif;background:transparent;color:#4a6080;}
+.pv-item .pv-v{font-size:14px;font-weight:700;font-family:'Space Mono',monospace;}
+.btn-primary{width:100%;padding:13px;border-radius:10px;border:none;cursor:pointer;font-size:13px;font-weight:700;font-family:'Noto Sans KR',sans-serif;background:linear-gradient(135deg,#0369a1,#00e5ff);color:#000;margin-bottom:8px;}
+.btn-secondary{width:100%;padding:11px;border-radius:10px;border:1px solid #182a40;cursor:pointer;font-size:12px;font-weight:700;font-family:'Noto Sans KR',sans-serif;background:transparent;color:#4a6080;}
 .quick-save-card{background:linear-gradient(135deg,#0a1f10,#0c1a28);border:1px solid rgba(52,211,153,.3);border-radius:14px;padding:16px;margin-bottom:16px;}
-.qs-label{font-size:10px;color:#34d399;font-family:‘Space Mono’,monospace;margin-bottom:8px;}
-.qs-textarea{width:100%;background:rgba(0,0,0,.3);border:1px solid rgba(52,211,153,.2);border-radius:8px;padding:10px 12px;color:#e2e8f0;font-size:11px;font-family:‘Space Mono’,monospace;height:60px;resize:none;outline:none;line-height:1.5;}
+.qs-label{font-size:10px;color:#34d399;font-family:'Space Mono',monospace;margin-bottom:8px;}
+.qs-textarea{width:100%;background:rgba(0,0,0,.3);border:1px solid rgba(52,211,153,.2);border-radius:8px;padding:10px 12px;color:#e2e8f0;font-size:11px;font-family:'Space Mono',monospace;height:60px;resize:none;outline:none;line-height:1.5;}
 .qs-preview{background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.2);border-radius:8px;padding:10px 12px;margin:8px 0;display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
 .qs-preview .qp-l{font-size:9px;color:#4a6080;}
-.qs-preview .qp-v{font-size:13px;font-weight:700;font-family:‘Space Mono’,monospace;}
-.btn-qs{width:100%;padding:12px;border-radius:10px;border:none;cursor:pointer;font-size:13px;font-weight:700;font-family:‘Noto Sans KR’,sans-serif;margin-top:6px;}
+.qs-preview .qp-v{font-size:13px;font-weight:700;font-family:'Space Mono',monospace;}
+.btn-qs{width:100%;padding:12px;border-radius:10px;border:none;cursor:pointer;font-size:13px;font-weight:700;font-family:'Noto Sans KR',sans-serif;margin-top:6px;}
 .btn-qs:not(:disabled){background:linear-gradient(135deg,#065f46,#34d399);color:#000;}
 .btn-qs:disabled{background:#112035;color:#4a6080;cursor:not-allowed;}
 .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:20px;}
 .stat-c{background:#0c1525;border:1px solid #182a40;border-radius:10px;padding:10px;text-align:center;}
-.stat-v{font-size:14px;font-weight:700;font-family:‘Space Mono’,monospace;}
+.stat-v{font-size:14px;font-weight:700;font-family:'Space Mono',monospace;}
 .stat-l{font-size:8px;color:#4a6080;margin-top:2px;}
 .month-scroll{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none;margin-bottom:16px;}
 .month-scroll::-webkit-scrollbar{display:none;}
-.month-btn{flex-shrink:0;padding:6px 14px;border-radius:20px;border:1px solid #182a40;background:transparent;color:#4a6080;font-size:11px;font-weight:700;cursor:pointer;font-family:‘Space Mono’,monospace;}
+.month-btn{flex-shrink:0;padding:6px 14px;border-radius:20px;border:1px solid #182a40;background:transparent;color:#4a6080;font-size:11px;font-weight:700;cursor:pointer;font-family:'Space Mono',monospace;}
 .month-btn.active{background:rgba(0,229,255,.15);border-color:#00e5ff;color:#00e5ff;}
 .month-btn.all-btn{border-color:#a78bfa;color:#a78bfa;}
 .month-btn.all-btn.active{background:rgba(167,139,250,.2);}
 
 .discharge-section{background:#0c1525;border:1px solid rgba(0,229,255,.2);border-radius:14px;padding:16px;margin-bottom:16px;}
 .ds-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
-.ds-title{font-size:13px;font-weight:700;color:#00e5ff;font-family:‘Space Mono’,monospace;}
-.ds-date{font-size:10px;color:#4a6080;font-family:‘Space Mono’,monospace;}
+.ds-title{font-size:13px;font-weight:700;color:#00e5ff;font-family:'Space Mono',monospace;}
+.ds-date{font-size:10px;color:#4a6080;font-family:'Space Mono',monospace;}
 .milestone-row{margin-bottom:14px;}
-.milestone-label{font-size:10px;color:#4a6080;font-family:‘Space Mono’,monospace;margin-bottom:6px;display:flex;justify-content:space-between;}
+.milestone-label{font-size:10px;color:#4a6080;font-family:'Space Mono',monospace;margin-bottom:6px;display:flex;justify-content:space-between;}
 .milestone-label span{color:#e2e8f0;}
 .progress-bar-wrap{background:#182a40;border-radius:6px;height:8px;overflow:hidden;margin-bottom:4px;}
 .progress-bar{height:100%;border-radius:6px;transition:width .6s ease;}
-.progress-label{font-size:9px;color:#4a6080;text-align:right;font-family:‘Space Mono’,monospace;}
+.progress-label{font-size:9px;color:#4a6080;text-align:right;font-family:'Space Mono',monospace;}
 .milestone-nums{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;}
 .mn-item{background:#112035;border-radius:8px;padding:10px;}
-.mn-l{font-size:9px;color:#4a6080;font-family:‘Space Mono’,monospace;margin-bottom:4px;}
-.mn-cur{font-size:16px;font-weight:900;font-family:‘Space Mono’,monospace;}
+.mn-l{font-size:9px;color:#4a6080;font-family:'Space Mono',monospace;margin-bottom:4px;}
+.mn-cur{font-size:16px;font-weight:900;font-family:'Space Mono',monospace;}
 .mn-goal{font-size:10px;color:#4a6080;margin-top:2px;}
-.mn-pct{font-size:11px;font-weight:700;margin-top:2px;font-family:‘Space Mono’,monospace;}
+.mn-pct{font-size:11px;font-weight:700;margin-top:2px;font-family:'Space Mono',monospace;}
 
 .month-goal-card{background:#0c1525;border:1px solid rgba(52,211,153,.2);border-radius:14px;padding:16px;margin-bottom:16px;display:none;}
 .month-goal-card.show{display:block;animation:fadeUp .3s ease;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .mg-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
-.mg-title{font-size:13px;font-weight:700;color:#34d399;font-family:‘Space Mono’,monospace;}
+.mg-title{font-size:13px;font-weight:700;color:#34d399;font-family:'Space Mono',monospace;}
 .mg-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
 .mg-item{background:#112035;border-radius:8px;padding:10px;}
-.mg-l{font-size:9px;color:#4a6080;font-family:‘Space Mono’,monospace;margin-bottom:4px;}
-.mg-cur{font-size:15px;font-weight:900;font-family:‘Space Mono’,monospace;}
+.mg-l{font-size:9px;color:#4a6080;font-family:'Space Mono',monospace;margin-bottom:4px;}
+.mg-cur{font-size:15px;font-weight:900;font-family:'Space Mono',monospace;}
 .mg-goal{font-size:9px;color:#4a6080;margin-top:2px;}
-.mg-pct{font-size:11px;font-weight:700;margin-top:3px;font-family:‘Space Mono’,monospace;}
+.mg-pct{font-size:11px;font-weight:700;margin-top:3px;font-family:'Space Mono',monospace;}
 .mg-bar-wrap{background:#182a40;border-radius:4px;height:5px;overflow:hidden;margin-top:4px;}
 .mg-bar{height:100%;border-radius:4px;transition:width .6s ease;}
 
 .chart-box{background:#0c1525;border:1px solid #182a40;border-radius:14px;padding:14px;margin-bottom:10px;}
-.chart-title{font-size:11px;font-weight:700;font-family:‘Space Mono’,monospace;margin-bottom:10px;letter-spacing:1px;}
+.chart-title{font-size:11px;font-weight:700;font-family:'Space Mono',monospace;margin-bottom:10px;letter-spacing:1px;}
 canvas{width:100%!important;}
 
 .month-detail{background:#0c1525;border:1px solid rgba(0,229,255,.2);border-radius:14px;padding:16px;margin-bottom:16px;display:none;}
 .month-detail.show{display:block;animation:fadeUp .3s ease;}
-.md-title{font-size:13px;font-weight:700;color:#00e5ff;font-family:‘Space Mono’,monospace;margin-bottom:14px;}
+.md-title{font-size:13px;font-weight:700;color:#00e5ff;font-family:'Space Mono',monospace;margin-bottom:14px;}
 .md-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
 .md-item{background:#112035;border-radius:10px;padding:12px;}
-.md-label{font-size:9px;color:#4a6080;letter-spacing:1px;margin-bottom:6px;font-family:‘Space Mono’,monospace;}
-.md-val{font-size:18px;font-weight:900;font-family:‘Space Mono’,monospace;}
+.md-label{font-size:9px;color:#4a6080;letter-spacing:1px;margin-bottom:6px;font-family:'Space Mono',monospace;}
+.md-val{font-size:18px;font-weight:900;font-family:'Space Mono',monospace;}
 .md-delta{font-size:11px;margin-top:3px;}
 .md-delta.up{color: #fbbf24;}.md-delta.dn{color:#fb7185;}.md-delta.neu{color:#4a6080;}
-.close-btn{width:10ding:9px;border-radius:8px;border:1px solid #182a40;background:transparent;color:#4a6080;font-size:11px;cursor:pointer;font-family:‘Noto Sans KR’,sans-serif;}
+.close-btn{width:10ding:9px;border-radius:8px;border:1px solid #182a40;background:transparent;color:#4a6080;font-size:11px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;}
 
 .log-item{background:#0c1525;border:1px solid #182a40;border-radius:12px;padding:14px;margin-bottom:8px;position:relative;}
 .log-item.latest{border-color:rgba(0,229,255,.35);}
 .log-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
-.log-date{font-size:11px;font-family:‘Space Mono’,monospace;color:#00e5ff;}
+.log-date{font-size:11px;font-family:'Space Mono',monospace;color:#00e5ff;}
 .log-badge{font-size:8px;padding:2px 8px;border-radius:4px;background:rgba(0,229,255,.12);color:#00e5ff;font-weight:700;}
 .log-nums{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
 .ln-l{font-size:9px;color:#4a6080;}
-.ln-v{font-size:13px;font-weight:700;font-family:‘Space Mono’,monospace;}
-.log-detail{font-size:10px;color:#4a6080;margin-top:6px;font-family:‘Space Mono’,monospace;}
+.ln-v{font-size:13px;font-weight:700;font-family:'Space Mono',monospace;}
+.log-detail{font-size:10px;color:#4a6080;margin-top:6px;font-family:'Space Mono',monospace;}
 .log-delta{display:flex;gap:8px;flex-wrap:wrap;margin-top:7px;padding-top:7px;border-top:1px solid #182a40;}
 .ld{font-size:10px;}
 .ld-plus-up{color:#00e5ff;}.ld-plus-dn{color:#0ea5e9;}.ld-plus-neu{color:#4a6080;}
@@ -163,44 +135,44 @@ canvas{width:100%!important;}
 .ld-tot-up{color:#fbbf24;}.ld-tot-dn{color:#fb7185;}.ld-tot-neu{color:#4a6080;}
 .log-del{position:absolute;top:10px;right:12px;background:transparent;border:none;color:#4a6080;cursor:pointer;font-size:13px;}
 .backup-panel{background:#0c1525;border:1px solid rgba(251,191,36,.2);border-radius:12px;padding:14px;margin-bottom:16px;}
-.backup-title{font-size:9px;color:#fbbf24;font-weight:700;font-family:‘Space Mono’,monospace;margin-bottom:10px;letter-spacing:2px;}
+.backup-title{font-size:9px;color:#fbbf24;font-weight:700;font-family:'Space Mono',monospace;margin-bottom:10px;letter-spacing:2px;}
 .backup-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
-.btn-exp{background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.3);color:#fbbf24;font-size:11px;font-weight:700;padding:9px;border-radius:8px;cursor:pointer;font-family:‘Noto Sans KR’,sans-serif;}
-.btn-imp-lbl{display:block;background:#112035;border:1px solid #182a40;color:#4a6080;font-size:11px;font-weight:700;padding:9px;border-radius:8px;cursor:pointer;text-align:center;font-family:‘Noto Sans KR’,sans-serif;}
-textarea.paste-area{width:100%;background:#112035;border:1px solid #182a40;border-radius:8px;padding:10px;color:#e2e8f0;font-size:10px;font-family:‘Space Mono’,monospace;height:56px;resize:none;outline:none;margin-bottom:6px;}
-.btn-restore{width:100%;background:transparent;border:1px solid rgba(251,191,36,.3);color:#fbbf24;font-size:11px;font-weight:700;padding:8px;border-radius:8px;cursor:pointer;font-family:‘Noto Sans KR’,sans-serif;}
-.btn-clr{width:100%;background:transparent;border:1px solid rgba(251,100,100,.2);color:#fb7185;font-size:11px;padding:9px;border-radius:8px;cursor:pointer;margin-top:8px;font-family:‘Noto Sans KR’,sans-serif;}
+.btn-exp{background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.3);color:#fbbf24;font-size:11px;font-weight:700;padding:9px;border-radius:8px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;}
+.btn-imp-lbl{display:block;background:#112035;border:1px solid #182a40;color:#4a6080;font-size:11px;font-weight:700;padding:9px;border-radius:8px;cursor:pointer;text-align:center;font-family:'Noto Sans KR',sans-serif;}
+textarea.paste-area{width:100%;background:#112035;border:1px solid #182a40;border-radius:8px;padding:10px;color:#e2e8f0;font-size:10px;font-family:'Space Mono',monospace;height:56px;resize:none;outline:none;margin-bottom:6px;}
+.btn-restore{width:100%;background:transparent;border:1px solid rgba(251,191,36,.3);color:#fbbf24;font-size:11px;font-weight:700;padding:8px;border-radius:8px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;}
+.btn-clr{width:100%;background:transparent;border:1px solid rgba(251,100,100,.2);color:#fb7185;font-size:11px;padding:9px;border-radius:8px;cursor:pointer;margin-top:8px;font-family:'Noto Sans KR',sans-serif;}
 .empty-state{text-align:center;padding:40px 20px;color:#4a6080;font-size:12px;line-height:2;}
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(70px);font-size:12px;font-weight:700;padding:10px 22px;border-radius:20px;opacity:0;transition:.3s;z-index:999;color:#000;white-space:nowrap;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-.no-goal{font-size:11px;color:#4a6080;text-align:center;padding:12px;font-family:‘Space Mono’,monospace;}
+.no-goal{font-size:11px;color:#4a6080;text-align:center;padding:12px;font-family:'Space Mono',monospace;}
 
 .goal-cards{
-display:flex;
-flex-direction:column;
-gap:8px;
-margin:8px 0 12px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  margin:8px 0 12px;
 }
 
 .goal-card{
-background:#112035;
-border-radius:10px;
-padding:12px;
-border:1px solid rgba(0,229,255,.15);
-font-size:11px;
-font-family:‘Space Mono’,monospace;
-position:relative;
+  background:#112035;
+  border-radius:10px;
+  padding:12px;
+  border:1px solid rgba(0,229,255,.15);
+  font-size:11px;
+  font-family:'Space Mono',monospace;
+  position:relative;
 }
 
 /* 좌측 강조 라인 */
 .goal-card::before{
-content:’’;
-position:absolute;
-left:0;
-top:0;
-bottom:0;
-width:3px;
-border-radius:10px 0 0 10px;
+  content:'';
+  position:absolute;
+  left:0;
+  top:0;
+  bottom:0;
+  width:3px;
+  border-radius:10px 0 0 10px;
 }
 
 /* 상태별 컬러 */
@@ -210,20 +182,20 @@ border-radius:10px 0 0 10px;
 .goal-card.fail::before{background:#6b7280;}
 
 .goal-title{
-font-size:12px;
-font-weight:700;
-margin-bottom:4px;
-color:#e6f1ff;
+  font-size:12px;
+  font-weight:700;
+  margin-bottom:4px;
+  color:#e6f1ff;
 }
 
 .goal-status{
-font-size:11px;
-margin-bottom:4px;
+  font-size:11px;
+  margin-bottom:4px;
 }
 
 .goal-sub{
-font-size:10px;
-color:#4a6080;
+  font-size:10px;
+  color:#4a6080;
 }
 
 /* 강조 텍스트 */
@@ -234,33 +206,11 @@ color:#4a6080;
 
 /* 🔥 목표 슬라이드(아코디언) 효과 CSS */
 .goal-accordion { display: flex; flex-direction: column; gap: 8px; }
+.goal-trigger { cursor: pointer; transition: transform 0.2s ease; }
+.goal-trigger:active { transform: scale(0.99); }
+.toggle-text { text-align: center; font-size: 11px; color: #94a3b8; margin-top: 4px; font-weight: 700; font-family: 'Space Mono', monospace; }
 .goal-hidden-list { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-in-out; display: flex; flex-direction: column; gap: 8px; }
-.goal-hidden-list.open { max-height: 2000px; margin-top: 8px; }
-
-/* 카드 우하단 펼치기 버튼 */
-.expand-btn {
-display: inline-flex; align-items: center; gap: 4px;
-margin-top: 8px; float: right;
-font-size: 10px; font-weight: 700; font-family: ‘Space Mono’, monospace;
-color: #4a6080; background: rgba(255,255,255,.05);
-border: 1px solid #182a40; border-radius: 6px;
-padding: 3px 9px; cursor: pointer; transition: color .2s, border-color .2s;
-user-select: none;
-}
-.expand-btn:hover { color: #00e5ff; border-color: rgba(0,229,255,.3); }
-.expand-btn .arr { font-size: 9px; transition: transform .3s; }
-.expand-btn.open .arr { transform: rotate(180deg); }
-
-/* 마일스톤 카드 wrapper */
-.milestone-card {
-background:#112035; border-radius:10px; padding:12px; margin-bottom:10px;
-border:1px solid rgba(0,229,255,.08);
-}
-.milestone-card-hdr {
-display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;
-}
-.milestone-card-title { font-size:11px; font-weight:700; color:#e2e8f0; }
-.milestone-card-pct { font-size:10px; font-family:‘Space Mono’,monospace; color:#4a6080; }
+.goal-hidden-list.open { max-height: 1000px; margin-top: 8px; }
 
 </style>
 
@@ -392,108 +342,125 @@ let charts = {};
 let qsParsed = null;
 let selectedMonth = 'all';
 
-// 1. 초기 날짜 설정
-document.getElementById('inp-date').value = new Date().toISOString().slice(0, 10);
+document.getElementById('inp-date').value = new Date().toISOString().slice(0,10);
 
-// 2. 빠른 저장 입력 처리 함수
 function onQSInput() {
-  const raw = document.getElementById('qs-input').value.trim();
-  const btn = document.getElementById('btn-qs');
-  const preview = document.getElementById('qs-preview');
-  const goalPrev = document.getElementById('qs-goal-preview');
-  
-  qsParsed = null; 
-  btn.disabled = true;
-  preview.style.display = 'none'; 
-  goalPrev.style.display = 'none';
+const raw = document.getElementById('qs-input').value.trim();
+const btn = document.getElementById('btn-qs');
+const preview = document.getElementById('qs-preview');
+const goalPrev = document.getElementById('qs-goal-preview');
+qsParsed = null; btn.disabled = true;
+preview.style.display = 'none'; goalPrev.style.display = 'none';
 
-  const result = {};
+const result = {};
 
-  // SAVE:: 코드 분석
-  const saveMatch = raw.match(/SAVE::({[^\n]+})/);
-  if (saveMatch) {
-    try {
-      const d = JSON.parse(saveMatch[1]);
-      if (d.date && d.plusSh) {
-        result.save = d;
-        // 배당금 계산 로직 (수식 유지)
-        const md = (d.plusSh || 0) * 156 + (d.kodexSh || 0) * 244;
-        document.getElementById('qp-date').textContent = d.date;
-        document.getElementById('qp-plus').textContent = (d.plusSh || 0) + '주';
-        document.getElementById('qp-kodex').textContent = (d.kodexSh || 0) + '주';
-        document.getElementById('qp-div').textContent = (md / 10000).toFixed(2) + '만';
-        preview.style.display = 'grid';
-      }
-    } catch (e) { console.error("Save parse error", e); }
-  }
-
-  // GOAL:: 코드 분석
-  const goalMatch = raw.match(/GOAL::({[^\n]+})/);
-  if (goalMatch) {
-    try {
-      const d = JSON.parse(goalMatch[1]);
-      if (d.discharge) {
-        result.goal = d;
-        goalPrev.style.display = 'block';
-        goalPrev.innerHTML = `🎯 목표 확인 · 전역: PLUS ${d.discharge.plusSh}주 / 배당 ${d.discharge.div}만 · 이번달: PLUS ${d.monthGoal?.plusSh || '-'}주`;
-      }
-    } catch (e) { console.error("Goal parse error", e); }
-  }
-
-  // 버튼 상태 업데이트
-  if (result.save || result.goal) {
-    qsParsed = result;
-    btn.disabled = false;
-    if (result.save && result.goal) {
-      btn.textContent = '⚡ 기록 + 목표 동시 저장';
-    } else if (result.save) {
-      btn.textContent = '⚡ 기록 저장';
-    } else {
-      btn.textContent = '🎯 목표 업데이트';
-    }
-  }
+const saveMatch = raw.match(/SAVE::({[^\n]+})/);
+if (saveMatch) {
+try {
+const d = JSON.parse(saveMatch[1]);
+if (d.date && d.plusSh) {
+result.save = d;
+const md = (d.plusSh||0)*156 + (d.kodexSh||0)*244;
+document.getElementById('qp-date').textContent = d.date;
+document.getElementById('qp-plus').textContent = (d.plusSh||0)+'주';
+document.getElementById('qp-kodex').textContent = (d.kodexSh||0)+'주';
+document.getElementById('qp-div').textContent = (md/10000).toFixed(2)+'만';
+preview.style.display = 'grid';
+}
+} catch(e) {}
 }
 
-// 3. 탭 전환 함수 (이 부분이 수정되어야 '기록 보기' 탭이 작동합니다)
+const goalMatch = raw.match(/GOAL::({[^\n]+})/);
+if (goalMatch) {
+try {
+const d = JSON.parse(goalMatch[1]);
+if (d.discharge) {
+result.goal = d;
+goalPrev.style.display = 'block';
+goalPrev.innerHTML = `🎯 목표 확인 · 전역: PLUS ${d.discharge.plusSh}주 / 배당 ${d.discharge.div}만 · 이번달: PLUS ${d.monthGoal?.plusSh||'-'}주`;
+}
+} catch(e) {}
+}
+
+if (result.save || result.goal) {
+qsParsed = result;
+btn.disabled = false;
+if (result.save && result.goal) btn.textContent = '⚡ 기록 + 목표 동시 저장';
+else if (result.save) btn.textContent = '⚡ 기록 저장';
+else btn.textContent = '🎯 목표 업데이트';
+}
+}
+
+function quickSave() {
+if (!qsParsed) return;
+let msg = [];
+if (qsParsed.save) {
+const d = qsParsed.save;
+const rec = { date:d.date, total:d.total||0, plusSh:d.plusSh||0, plusP:d.plusP||0,
+kodexSh:d.kodexSh||0, kodexP:d.kodexP||0, div:d.div||0, orders:d.orders||0 };
+upsertRecord(rec); persist();
+msg.push('기록 저장 ✅');
+}
+
+if (qsParsed.goal) {
+  goals = qsParsed.goal;
+
+  const today = new Date().toISOString().slice(0,10);
+
+  // 🔥 전역 목표
+  goals.updatedAt = today;
+
+  // 🔥 월 목표도 같이 넣기
+  if(goals.months){
+    Object.keys(goals.months).forEach(m=>{
+      goals.months[m].updatedAt = today;
+    });
+  }
+
+  localStorage.setItem(GKEY, JSON.stringify(goals));
+  msg.push('목표 업데이트 🎯');
+}
+
+toast(msg.join(' · '));
+document.getElementById('qs-input').value='';
+document.getElementById('qs-preview').style.display='none';
+document.getElementById('qs-goal-preview').style.display='none';
+document.getElementById('btn-qs').disabled=true;
+document.getElementById('btn-qs').textContent='⚡ 바로 저장';
+qsParsed=null;
+renderAll();}
+
 function switchTab(t) {
-  document.getElementById('tab-input').style.display = t === 'input' ? 'block' : 'none';
-  document.getElementById('tab-records').style.display = t === 'records' ? 'block' : 'none';
-  
-  document.querySelectorAll('.tab').forEach((b, i) => {
-    const tabTypes = ['input', 'records'];
-    b.classList.toggle('active', tabTypes[i] === t);
-  });
-
-  if (t === 'records') {
-    if (typeof renderAll === 'function') renderAll();
-  }
+document.getElementById('tab-input').style.display   = t==='input'  ?'block':'none';
+document.getElementById('tab-records').style.display = t==='records'?'block':'none';
+document.querySelectorAll('.tab').forEach((b,i)=>b.classList.toggle('active',['input','records'][i]===t));
+if(t==='records') renderAll();
 }
-
 
 function updatePreview() {
-const ps=+document.getElementById(‘inp-plus-sh’).value||0;
-const ks=+document.getElementById(‘inp-kodex-sh’).value||0;
-const tot=+document.getElementById(‘inp-total’).value||0;
+const ps=+document.getElementById('inp-plus-sh').value||0;
+const ks=+document.getElementById('inp-kodex-sh').value||0;
+const tot=+document.getElementById('inp-total').value||0;
 if(ps||ks){
-document.getElementById(‘preview-card’).classList.add(‘show’);
-document.getElementById(‘pv-plus’).textContent=ps?ps+‘주’:’-’;
-document.getElementById(‘pv-kodex’).textContent=ks?ks+‘주’:’-’;
-document.getElementById(‘pv-div’).textContent=((ps*156+ks*244)/10000).toFixed(2)+‘만’;
-document.getElementById(‘pv-total’).textContent=tot?(tot/10000).toFixed(0)+‘만’:’-’;
+document.getElementById('preview-card').classList.add('show');
+document.getElementById('pv-plus').textContent=ps?ps+'주':'-';
+document.getElementById('pv-kodex').textContent=ks?ks+'주':'-';
+document.getElementById('pv-div').textContent=((ps*156+ks*244)/10000).toFixed(2)+'만';
+document.getElementById('pv-total').textContent=tot?(tot/10000).toFixed(0)+'만':'-';
 }
 }
 
 function saveRecord() {
-const rec={date:document.getElementById(‘inp-date’).value,
-total:+document.getElementById(‘inp-total’).value||0,
-plusSh:+document.getElementById(‘inp-plus-sh’).value||0,
-plusP:+document.getElementById(‘inp-plus-p’).value||0,
-kodexSh:+document.getElementById(‘inp-kodex-sh’).value||0,
-kodexP:+document.getElementById(‘inp-kodex-p’).value||0,
-div:+document.getElementById(‘inp-div’).value||0,
-orders:+document.getElementById(‘inp-orders’).value||0};
-if(!rec.date||!rec.plusSh){toast(‘날짜와 PLUS 수량은 필수예요!’,true);return;}
-upsertRecord(rec); persist(); toast(‘저장 완료!’); clearForm();
+const rec={date:document.getElementById('inp-date').value,
+total:+document.getElementById('inp-total').value||0,
+plusSh:+document.getElementById('inp-plus-sh').value||0,
+plusP:+document.getElementById('inp-plus-p').value||0,
+kodexSh:+document.getElementById('inp-kodex-sh').value||0,
+kodexP:+document.getElementById('inp-kodex-p').value||0,
+div:+document.getElementById('inp-div').value||0,
+orders:+document.getElementById('inp-orders').value||0};
+if(!rec.date||!rec.plusSh){toast('날짜와 PLUS 수량은 필수예요!',true);return;}
+upsertRecord(rec); persist(); toast('저장 완료!'); clearForm();
 }
 
 function upsertRecord(rec){
@@ -503,9 +470,9 @@ records.sort((a,b)=>a.date.localeCompare(b.date));
 }
 
 function clearForm(){
-[‘inp-total’,‘inp-plus-sh’,‘inp-plus-p’,‘inp-kodex-sh’,‘inp-kodex-p’,‘inp-div’,‘inp-orders’].forEach(id=>document.getElementById(id).value=’’);
-document.getElementById(‘inp-date’).value=new Date().toISOString().slice(0,10);
-document.getElementById(‘preview-card’).classList.remove(‘show’);
+['inp-total','inp-plus-sh','inp-plus-p','inp-kodex-sh','inp-kodex-p','inp-div','inp-orders'].forEach(id=>document.getElementById(id).value='');
+document.getElementById('inp-date').value=new Date().toISOString().slice(0,10);
+document.getElementById('preview-card').classList.remove('show');
 }
 
 function persist(){try{localStorage.setItem(SKEY,JSON.stringify(records));}catch(e){}}
@@ -515,18 +482,18 @@ try{const r=localStorage.getItem(SKEY);if(r)records=JSON.parse(r);}catch(e){reco
 try{const g=localStorage.getItem(GKEY);if(g)goals=JSON.parse(g);}catch(e){goals=null;}
 if(records.length===0){
 records=[
-{date:‘2026-03-09’,total:4442572,plusSh:200,plusP:8660,kodexSh:36,kodexP:16515,div:28835,orders:9},
-{date:‘2026-03-10’,total:4619025,plusSh:201,plusP:8705,kodexSh:36,kodexP:17500,div:28835,orders:12},
-{date:‘2026-03-11’,total:4636344,plusSh:202,plusP:8810,kodexSh:37,kodexP:17735,div:28835,orders:13},
-{date:‘2026-03-12’,total:4648291,plusSh:203,plusP:8895,kodexSh:37,kodexP:17315,div:28835,orders:13},
-{date:‘2026-03-13’,total:4654861,plusSh:204,plusP:8835,kodexSh:38,kodexP:17025,div:28835,orders:14},
-{date:‘2026-03-16’,total:4682449,plusSh:205,plusP:8790,kodexSh:39,kodexP:17270,div:28835,orders:17},
-{date:‘2026-03-18’,total:4741814,plusSh:207,plusP:8835,kodexSh:40,kodexP:18440,div:39295,orders:20},
-{date:‘2026-03-19’,total:4836170,plusSh:213,plusP:8890,kodexSh:40,kodexP:18025,div:39295,orders:22},
-{date:‘2026-03-20’,total:4927173,plusSh:214,plusP:9080,kodexSh:41,kodexP:18035,div:39295,orders:24},
-{date:‘2026-03-21’,total:4883596,plusSh:214,plusP:9080,kodexSh:41,kodexP:18035,div:39295,orders:24},
-{date:‘2026-03-22’,total:4883596,plusSh:214,plusP:9080,kodexSh:41,kodexP:18035,div:39295,orders:24},
-{date:‘2026-03-23’,total:5011794,plusSh:248,plusP:8640,kodexSh:42,kodexP:16865,div:39295,orders:31},
+{date:'2026-03-09',total:4442572,plusSh:200,plusP:8660,kodexSh:36,kodexP:16515,div:28835,orders:9},
+{date:'2026-03-10',total:4619025,plusSh:201,plusP:8705,kodexSh:36,kodexP:17500,div:28835,orders:12},
+{date:'2026-03-11',total:4636344,plusSh:202,plusP:8810,kodexSh:37,kodexP:17735,div:28835,orders:13},
+{date:'2026-03-12',total:4648291,plusSh:203,plusP:8895,kodexSh:37,kodexP:17315,div:28835,orders:13},
+{date:'2026-03-13',total:4654861,plusSh:204,plusP:8835,kodexSh:38,kodexP:17025,div:28835,orders:14},
+{date:'2026-03-16',total:4682449,plusSh:205,plusP:8790,kodexSh:39,kodexP:17270,div:28835,orders:17},
+{date:'2026-03-18',total:4741814,plusSh:207,plusP:8835,kodexSh:40,kodexP:18440,div:39295,orders:20},
+{date:'2026-03-19',total:4836170,plusSh:213,plusP:8890,kodexSh:40,kodexP:18025,div:39295,orders:22},
+{date:'2026-03-20',total:4927173,plusSh:214,plusP:9080,kodexSh:41,kodexP:18035,div:39295,orders:24},
+{date:'2026-03-21',total:4883596,plusSh:214,plusP:9080,kodexSh:41,kodexP:18035,div:39295,orders:24},
+{date:'2026-03-22',total:4883596,plusSh:214,plusP:9080,kodexSh:41,kodexP:18035,div:39295,orders:24},
+{date:'2026-03-23',total:5011794,plusSh:248,plusP:8640,kodexSh:42,kodexP:16865,div:39295,orders:31},
 ];
 persist();
 }
@@ -534,117 +501,48 @@ persist();
 
 function pctColor(pct, isFuture){
 if(isFuture){
-if(pct>=80) return ‘#00e5ff’;
-if(pct>=50) return ‘#a78bfa’;
-return ‘#4a6080’;
+if(pct>=80) return '#00e5ff';
+if(pct>=50) return '#a78bfa';
+return '#4a6080';
 }
-if(pct>=105) return ‘#fbbf24’;
-if(pct>=95)  return ‘#00e5ff’;
-if(pct>=85)  return ‘#fbbf24’;
-return ‘#fb7185’;
+if(pct>=105) return '#fbbf24';
+if(pct>=95)  return '#00e5ff';
+if(pct>=85)  return '#fbbf24';
+return '#fb7185';
 }
 function pctLabel(pct, isFuture){
-if(isFuture) return ‘’;
-if(pct>=105) return ‘초과 달성 🚀’;
-if(pct>=95)  return ‘정상 궤도 ✅’;
-if(pct>=85)  return ‘소폭 미달 ⚠️’;
-return ‘계획 수정 필요 ❗’;
+if(isFuture) return '';
+if(pct>=105) return '초과 달성 🚀';
+if(pct>=95)  return '정상 궤도 ✅';
+if(pct>=85)  return '소폭 미달 ⚠️';
+return '계획 수정 필요 ❗';
 }
 
 function renderDischarge(){
-const sec = document.getElementById(‘discharge-section’);
+const sec = document.getElementById('discharge-section');
 const latest = records.length ? records[records.length-1] : null;
-if(!goals || !latest){ sec.innerHTML=’<div class="no-goal">체크 후 🎯 GOAL:: 코드를 붙여넣으면 달성도가 표시돼요</div>’; return; }
+if(!goals || !latest){ sec.innerHTML='<div class="no-goal">체크 후 🎯 GOAL:: 코드를 붙여넣으면 달성도가 표시돼요</div>'; return; }
 const d = goals.discharge;
-if(!d){ sec.innerHTML=’<div class="no-goal">🎯 GOAL:: 코드를 붙여넣으면 달성도가 표시돼요</div>’; return; }
-
 const curDiv = (latest.plusSh*156+latest.kodexSh*244)/10000;
-
-// ── 헬퍼 ──────────────────────────────
-function msCard(label, plusGoal, kodexGoal, divGoal, borderColor){
-const pPct = Math.round(latest.plusSh / plusGoal * 100);
-const kPct = Math.round(latest.kodexSh / kodexGoal * 100);
-const dPct = Math.round(curDiv / divGoal * 100);
-const avg  = Math.round((pPct+kPct+dPct)/3);
-return `
-
-<div class="milestone-card" style="border-color:${borderColor||'rgba(0,229,255,.08)'};">
-  <div class="milestone-card-hdr">
-    <span class="milestone-card-title">${label}</span>
-    <span class="milestone-card-pct">${avg}% 진행</span>
-  </div>
-  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
-    ${mkMini('PLUS','#00e5ff',latest.plusSh,plusGoal,'주',pPct,true)}
-    ${mkMini('KODEX','#a78bfa',latest.kodexSh,kodexGoal,'주',kPct,true)}
-    ${mkMini('배당','#fb923c',curDiv.toFixed(1),divGoal,'만',dPct,true)}
-  </div>
-</div>`;
-}
-
-// ── 카드 목록 구성 ─────────────────────
-// 1순위: GOAL::milestones 배열 사용
-// 2순위: GOAL::milestones 없으면 discharge 비율로 자동 생성
-let allCards = [];
-
-if(goals.milestones && goals.milestones.length){
-goals.milestones.forEach(ms=>{
-allCards.push(msCard(ms.label, ms.plusSh, ms.kodexSh, ms.div, ‘rgba(0,229,255,.08)’));
-});
-} else {
-// 자동 생성: 일병(40%), 상병(70%)
-allCards.push(msCard(‘일병 종료’, Math.round(d.plusSh*0.4), Math.round(d.kodexSh*0.4), +(d.div*0.4).toFixed(1), ‘rgba(0,229,255,.08)’));
-allCards.push(msCard(‘상병 종료’, Math.round(d.plusSh*0.7), Math.round(d.kodexSh*0.7), +(d.div*0.7).toFixed(1), ‘rgba(167,139,250,.12)’));
-}
-
-// 전역 최종 목표 카드
 const plusPct  = Math.round(latest.plusSh/d.plusSh*100);
 const kodexPct = Math.round(latest.kodexSh/d.kodexSh*100);
 const divPct   = Math.round(curDiv/d.div*100);
-allCards.push(`
 
-<div class="milestone-card" style="border-color:rgba(0,229,255,.25);">
-  <div class="milestone-card-hdr">
-    <span class="milestone-card-title" style="color:#00e5ff;">🏁 전역 최종 목표</span>
-    <span class="milestone-card-pct">${Math.round((plusPct+kodexPct+divPct)/3)}% 진행</span>
-  </div>
-  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
-    ${mkMini('PLUS','#00e5ff',latest.plusSh,d.plusSh,'주',plusPct,true)}
-    ${mkMini('KODEX','#a78bfa',latest.kodexSh,d.kodexSh,'주',kodexPct,true)}
-    ${mkMini('배당','#fb923c',curDiv.toFixed(1),d.div,'만',divPct,true)}
-  </div>
-</div>`);
+let milestonesHtml = '';
+if(goals.milestones){
+goals.milestones.forEach(ms=>{
+const pPct=Math.round(latest.plusSh/ms.plusSh*100);
+const kPct=Math.round(latest.kodexSh/ms.kodexSh*100);
+const dPct=Math.round(curDiv/ms.div*100);
+const avg=Math.round((pPct+kPct+dPct)/3);
+milestonesHtml+=` <div style="background:#112035;border-radius:10px;padding:12px;margin-bottom:10px;"> <div style="display:flex;justify-content:space-between;margin-bottom:8px;"> <span style="font-size:11px;font-weight:700;color:#e2e8f0;">${ms.label}</span> <span style="font-size:10px;font-family:'Space Mono',monospace;color:#4a6080;">${avg}% 진행</span> </div> <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;"> ${mkMini('PLUS','#00e5ff',latest.plusSh,ms.plusSh,'주',pPct,true)} ${mkMini('KODEX','#a78bfa',latest.kodexSh,ms.kodexSh,'주',kPct,true)} ${mkMini('배당','#fb923c',curDiv.toFixed(1),ms.div,'만',dPct,true)} </div> </div>`;
+});
+}
 
-// ── 가장 가까운 시점(첫 번째) 위에, 나머지 접힘 ──
-const topCard     = allCards[0];
-const hiddenCards = allCards.slice(1).join(’’);
-const hasHidden   = allCards.length > 1;
+sec.innerHTML=` <div class="ds-header"> <div class="ds-title">🎖️ 전역 목표</div> <div class="ds-date">
 
-const milestonesHtml = `
-
-<div>
-  ${topCard}
-  ${hasHidden ? `
-  <div style="display:flex;justify-content:flex-end;margin-top:6px;">
-    <button class="expand-btn" id="ms-expand-btn" onclick="toggleMilestones()">
-      <span>다른 시점 보기</span><span class="arr">▼</span>
-    </button>
-  </div>
-  <div id="ms-hidden-list" class="goal-hidden-list">
-    ${hiddenCards}
-  </div>` : ''}
-</div>`;
-
-sec.innerHTML=`
-
-<div class="ds-header">
-  <div class="ds-title">🎖️ 전역 목표</div>
-  <div class="ds-date">${formatDateDiff(goals.updatedAt || '2026-01-01')}</div>
-</div>
-<div id="goal-analysis" style="margin-bottom:10px;"></div>
-${milestonesHtml}`;
-
-// analyzeGoal은 별도 함수 — 안전하게 try/catch
-try { document.getElementById(‘goal-analysis’).innerHTML = analyzeGoal(); } catch(e){ console.warn(‘analyzeGoal error’, e); }
+  ${formatDateDiff(goals.updatedAt || d.date)}
+</div> </div> <div id="goal-analysis" style="font-size:10px;color:#4a6080;font-family:'Space Mono',monospace;margin-bottom:10px;"></div>  ${milestonesHtml} <div style="background:#112035;border-radius:10px;padding:12px;border:1px solid rgba(0,229,255,.15);"> <div style="display:flex;justify-content:space-between;margin-bottom:10px;"> <span style="font-size:12px;font-weight:700;color:#00e5ff;">🏁 전역 최종 목표</span> <span style="font-size:10px;color:#4a6080;font-family:'Space Mono',monospace;">${Math.round((plusPct+kodexPct+divPct)/3)}% 진행</span> </div> <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;"> ${mkMini('PLUS','#00e5ff',latest.plusSh,d.plusSh,'주',plusPct,true)} ${mkMini('KODEX','#a78bfa',latest.kodexSh,d.kodexSh,'주',kodexPct,true)} ${mkMini('배당','#fb923c',curDiv.toFixed(1),d.div,'만',divPct,true)} </div> </div>`;document.getElementById('goal-analysis').innerHTML = analyzeGoal();
 }
 
 function mkMini(label,color,cur,goal,unit,pct,isFuture){
@@ -652,7 +550,6 @@ const c=pctColor(pct,isFuture);
 const lbl=pctLabel(pct,isFuture);
 const w=Math.min(pct,100);
 return `<div style="background:#0c1525;border-radius:8px;padding:8px;">
-
 <div style="font-size:8px;color:#4a6080;font-family:'Space Mono',monospace;margin-bottom:4px;">${label}</div>
 <div style="font-size:14px;font-weight:900;font-family:'Space Mono',monospace;color:${color};">${cur}${unit}</div>
 <div style="font-size:9px;color:#4a6080;margin:2px 0;">목표 ${goal}${unit}</div>
@@ -664,14 +561,14 @@ return `<div style="background:#0c1525;border-radius:8px;padding:8px;">
 }
 
 function renderMonthGoal(ym){
-const card = document.getElementById(‘month-goal-card’);
+const card = document.getElementById('month-goal-card');
 const monthRecs = records.filter(r=>r.date.startsWith(ym));
-if(!monthRecs.length){ card.innerHTML=’<div class="no-goal">이 달 기록이 없어요.</div>’; return; }
+if(!monthRecs.length){ card.innerHTML='<div class="no-goal">이 달 기록이 없어요.</div>'; return; }
 const latest = monthRecs[monthRecs.length-1];
 const curDiv = (latest.plusSh*156+latest.kodexSh*244)/10000;
 
 if(!goals || !goals.monthGoal || !goals.monthGoal.ym){
-card.innerHTML=’<div class="no-goal">🎯 GOAL:: 코드를 붙여넣으면 이 달 목표 달성도가 표시돼요</div>’;
+card.innerHTML='<div class="no-goal">🎯 GOAL:: 코드를 붙여넣으면 이 달 목표 달성도가 표시돼요</div>';
 return;
 }
 const mg = goals.monthGoal;
@@ -686,7 +583,6 @@ function mkMonthItem(label,color,cur,goal,unit,pct){
 const c=pctColor(pct,false); const w=Math.min(pct,100);
 const lbl=pctLabel(pct,false);
 return `<div class="mg-item">
-
 <div class="mg-l">${label}</div>
 <div class="mg-cur" style="color:${color}">${cur}${unit}</div>
 <div class="mg-goal">목표 ${goal}${unit}</div>
@@ -695,60 +591,60 @@ return `<div class="mg-item">
 </div>`;
 }
 
-function getMonths(){return […new Set(records.map(r=>r.date.slice(0,7)))].sort();}
+function getMonths(){return [...new Set(records.map(r=>r.date.slice(0,7)))].sort();}
 
 function renderMonthSelector(){
-const scroll=document.getElementById(‘month-scroll’);
-scroll.innerHTML=’’;
-const allBtn=document.createElement(‘button’);
-allBtn.className=‘month-btn all-btn’+(selectedMonth===‘all’?’ active’:’’);
-allBtn.textContent=‘전체’;
-allBtn.onclick=()=>{selectedMonth=‘all’;renderMonthSelector();showSection(‘all’);};
+const scroll=document.getElementById('month-scroll');
+scroll.innerHTML='';
+const allBtn=document.createElement('button');
+allBtn.className='month-btn all-btn'+(selectedMonth==='all'?' active':'');
+allBtn.textContent='전체';
+allBtn.onclick=()=>{selectedMonth='all';renderMonthSelector();showSection('all');};
 scroll.appendChild(allBtn);
 getMonths().forEach(ym=>{
-const btn=document.createElement(‘button’);
-btn.className=‘month-btn’+(selectedMonth===ym?’ active’:’’);
-btn.textContent=ym.slice(5)+‘월’;
-btn.onclick=()=>{selectedMonth=ym;renderMonthSelector();showSection(‘month’);renderMonthSection(ym);};
+const btn=document.createElement('button');
+btn.className='month-btn'+(selectedMonth===ym?' active':'');
+btn.textContent=ym.slice(5)+'월';
+btn.onclick=()=>{selectedMonth=ym;renderMonthSelector();showSection('month');renderMonthSection(ym);};
 scroll.appendChild(btn);
 });
 }
 
 function showSection(which){
-document.getElementById(‘section-all’).style.display=which===‘all’?‘block’:‘none’;
-document.getElementById(‘section-month’).style.display=which===‘month’?‘block’:‘none’;
+document.getElementById('section-all').style.display=which==='all'?'block':'none';
+document.getElementById('section-month').style.display=which==='month'?'block':'none';
 }
 
 function renderMonthSection(ym){
-document.getElementById(‘month-section-title’).textContent=ym.slice(5)+‘월’;
+document.getElementById('month-section-title').textContent=ym.slice(5)+'월';
 renderMonthGoal(ym);
 renderMonthInnerChart(ym);
-renderLogList(document.getElementById(‘log-list-month’),document.getElementById(‘empty-month’),ym);
+renderLogList(document.getElementById('log-list-month'),document.getElementById('empty-month'),ym);
 }
 
 function renderMonthInnerChart(ym){
 const recs=records.filter(r=>r.date.startsWith(ym));
-const box=document.getElementById(‘month-chart-box’);
-if(recs.length<2){box.style.display=‘none’;return;}
-box.style.display=‘block’;
-if(charts[‘month-inner’]){charts[‘month-inner’].destroy();}
+const box=document.getElementById('month-chart-box');
+if(recs.length<2){box.style.display='none';return;}
+box.style.display='block';
+if(charts['month-inner']){charts['month-inner'].destroy();}
 const labels=recs.map(r=>r.date.slice(5));
-charts[‘month-inner’]=new Chart(document.getElementById(‘month-inner-chart’).getContext(‘2d’),{
-type:‘line’,
+charts['month-inner']=new Chart(document.getElementById('month-inner-chart').getContext('2d'),{
+type:'line',
 data:{labels,datasets:[
-{label:‘PLUS’,data:recs.map(r=>r.plusSh),borderColor:’#00e5ff’,backgroundColor:‘rgba(0,229,255,.1)’,borderWidth:2,pointRadius:3,fill:false,tension:0.4},
-{label:‘KODEX’,data:recs.map(r=>r.kodexSh),borderColor:’#a78bfa’,backgroundColor:‘rgba(167,139,250,.1)’,borderWidth:2,pointRadius:3,fill:false,tension:0.4,yAxisID:‘y2’}
+{label:'PLUS',data:recs.map(r=>r.plusSh),borderColor:'#00e5ff',backgroundColor:'rgba(0,229,255,.1)',borderWidth:2,pointRadius:3,fill:false,tension:0.4},
+{label:'KODEX',data:recs.map(r=>r.kodexSh),borderColor:'#a78bfa',backgroundColor:'rgba(167,139,250,.1)',borderWidth:2,pointRadius:3,fill:false,tension:0.4,yAxisID:'y2'}
 ]},
-options:{responsive:true,plugins:{legend:{display:true,labels:{color:’#e2e8f0’,font:{size:10},boxWidth:12}},tooltip:{backgroundColor:’#0c1525’,titleColor:’#e2e8f0’,bodyColor:’#e2e8f0’}},
-scales:{x:{grid:{color:’#182a40’},ticks:{color:’#4a6080’,font:{size:9}}},y:{grid:{color:’#182a40’},ticks:{color:’#00e5ff’,font:{size:9}},position:‘left’},y2:{grid:{display:false},ticks:{color:’#a78bfa’,font:{size:9}},position:‘right’}}}
+options:{responsive:true,plugins:{legend:{display:true,labels:{color:'#e2e8f0',font:{size:10},boxWidth:12}},tooltip:{backgroundColor:'#0c1525',titleColor:'#e2e8f0',bodyColor:'#e2e8f0'}},
+scales:{x:{grid:{color:'#182a40'},ticks:{color:'#4a6080',font:{size:9}}},y:{grid:{color:'#182a40'},ticks:{color:'#00e5ff',font:{size:9}},position:'left'},y2:{grid:{display:false},ticks:{color:'#a78bfa',font:{size:9}},position:'right'}}}
 });
 }
 
 function renderMonthlyCharts(){
-const wrap=document.getElementById(‘monthly-charts’);
-[‘mc-shares’,‘mc-div’].forEach(k=>{try{if(charts[k])charts[k].destroy();}catch(e){}});
+const wrap=document.getElementById('monthly-charts');
+['mc-shares','mc-div'].forEach(k=>{try{if(charts[k])charts[k].destroy();}catch(e){}});
 const months=getMonths();
-if(!months.length){wrap.innerHTML=’’;return;}
+if(!months.length){wrap.innerHTML='';return;}
 
 const monthData=months.map(ym=>{
 const recs=records.filter(r=>r.date.startsWith(ym));
@@ -757,114 +653,109 @@ const last=recs[recs.length-1];
 const allBefore=records.filter(r=>r.date<recs[0].date);
 const prev=allBefore.length?allBefore[allBefore.length-1]:null;
 return {
-label:ym.slice(5)+‘월’,
+label:ym.slice(5)+'월',
 plusGain:prev?last.plusSh-prev.plusSh:last.plusSh-recs[0].plusSh,
 kodexGain:prev?last.kodexSh-prev.kodexSh:last.kodexSh-recs[0].kodexSh,
 divGain:prev?(last.plusSh*156+last.kodexSh*244-(prev.plusSh*156+prev.kodexSh*244))/10000 : (last.plusSh*156+last.kodexSh*244-(recs[0].plusSh*156+recs[0].kodexSh*244))/10000
 };
 }).filter(Boolean);
 
-wrap.innerHTML=’’;
-const r1=document.createElement(‘div’);r1.className=‘chart-box’;
-r1.innerHTML=’<div class="chart-title" style="color:#e2e8f0">📦 종목별 수량 증가 (월별)</div><canvas id="mc-shares" height="140"></canvas>’;
+wrap.innerHTML='';
+const r1=document.createElement('div');r1.className='chart-box';
+r1.innerHTML='<div class="chart-title" style="color:#e2e8f0">📦 종목별 수량 증가 (월별)</div><canvas id="mc-shares" height="140"></canvas>';
 wrap.appendChild(r1);
-charts[‘mc-shares’]=new Chart(document.getElementById(‘mc-shares’).getContext(‘2d’),{type:‘bar’,
+charts['mc-shares']=new Chart(document.getElementById('mc-shares').getContext('2d'),{type:'bar',
 data:{labels:monthData.map(d=>d.label),datasets:[
-{label:‘PLUS’,data:monthData.map(d=>d.plusGain),backgroundColor:‘rgba(0,229,255,.7)’,borderColor:’#00e5ff’,borderWidth:1,borderRadius:4},
-{label:‘KODEX’,data:monthData.map(d=>d.kodexGain),backgroundColor:‘rgba(167,139,250,.7)’,borderColor:’#a78bfa’,borderWidth:1,borderRadius:4}
+{label:'PLUS',data:monthData.map(d=>d.plusGain),backgroundColor:'rgba(0,229,255,.7)',borderColor:'#00e5ff',borderWidth:1,borderRadius:4},
+{label:'KODEX',data:monthData.map(d=>d.kodexGain),backgroundColor:'rgba(167,139,250,.7)',borderColor:'#a78bfa',borderWidth:1,borderRadius:4}
 ]},
-options:{responsive:true,plugins:{legend:{display:true,labels:{color:’#e2e8f0’,font:{size:10},boxWidth:12}},tooltip:{backgroundColor:’#0c1525’,titleColor:’#e2e8f0’,bodyColor:’#e2e8f0’,callbacks:{label:c=>` ${c.dataset.label} +${c.parsed.y}주`}}},
-scales:{x:{grid:{color:’#182a40’},ticks:{color:’#4a6080’,font:{size:10}}},y:{grid:{color:’#182a40’},ticks:{color:’#4a6080’,font:{size:9}}}}}
+options:{responsive:true,plugins:{legend:{display:true,labels:{color:'#e2e8f0',font:{size:10},boxWidth:12}},tooltip:{backgroundColor:'#0c1525',titleColor:'#e2e8f0',bodyColor:'#e2e8f0',callbacks:{label:c=>` ${c.dataset.label} +${c.parsed.y}주`}}},
+scales:{x:{grid:{color:'#182a40'},ticks:{color:'#4a6080',font:{size:10}}},y:{grid:{color:'#182a40'},ticks:{color:'#4a6080',font:{size:9}}}}}
 });
 
-const r2=document.createElement(‘div’);r2.className=‘chart-box’;
-r2.innerHTML=’<div class="chart-title" style="color:#e2e8f0">📈 월 배당 증가액 (월별)</div><canvas id="mc-div" height="120"></canvas>’;
+const r2=document.createElement('div');r2.className='chart-box';
+r2.innerHTML='<div class="chart-title" style="color:#e2e8f0">📈 월 배당 증가액 (월별)</div><canvas id="mc-div" height="120"></canvas>';
 wrap.appendChild(r2);
-charts[‘mc-div’]=new Chart(document.getElementById(‘mc-div’).getContext(‘2d’),{type:‘bar’,
-data:{labels:monthData.map(d=>d.label),datasets:[{label:‘배당 증가’,data:monthData.map(d=>+d.divGain.toFixed(2)),backgroundColor:‘rgba(251,146,60,.7)’,borderColor:’#fb923c’,borderWidth:1,borderRadius:4}]},
-options:{responsive:true,plugins:{legend:{display:false},tooltip:{backgroundColor:’#0c1525’,borderColor:’#fb923c’,borderWidth:1,titleColor:’#e2e8f0’,bodyColor:’#fb923c’,callbacks:{label:c=>` +${c.parsed.y.toFixed(2)}만원`}}},
-scales:{x:{grid:{color:’#182a40’},ticks:{color:’#4a6080’,font:{size:10}}},y:{grid:{color:’#182a40’},ticks:{color:’#4a6080’,font:{size:9}}}}}
+charts['mc-div']=new Chart(document.getElementById('mc-div').getContext('2d'),{type:'bar',
+data:{labels:monthData.map(d=>d.label),datasets:[{label:'배당 증가',data:monthData.map(d=>+d.divGain.toFixed(2)),backgroundColor:'rgba(251,146,60,.7)',borderColor:'#fb923c',borderWidth:1,borderRadius:4}]},
+options:{responsive:true,plugins:{legend:{display:false},tooltip:{backgroundColor:'#0c1525',borderColor:'#fb923c',borderWidth:1,titleColor:'#e2e8f0',bodyColor:'#fb923c',callbacks:{label:c=>` +${c.parsed.y.toFixed(2)}만원`}}},
+scales:{x:{grid:{color:'#182a40'},ticks:{color:'#4a6080',font:{size:10}}},y:{grid:{color:'#182a40'},ticks:{color:'#4a6080',font:{size:9}}}}}
 });
 }
 
 function renderLogList(listEl,emptyEl,filterYm){
-let filtered=filterYm?records.filter(r=>r.date.startsWith(filterYm)):[…records];
-if(!filtered.length){listEl.innerHTML=’’;emptyEl.style.display=‘block’;return;}
-emptyEl.style.display=‘none’;
-const sorted=[…filtered].reverse();
+let filtered=filterYm?records.filter(r=>r.date.startsWith(filterYm)):[...records];
+if(!filtered.length){listEl.innerHTML='';emptyEl.style.display='block';return;}
+emptyEl.style.display='none';
+const sorted=[...filtered].reverse();
 listEl.innerHTML=sorted.map(r=>{
 const globalIdx=records.indexOf(r);
 const prev=globalIdx>0?records[globalIdx-1]:null;
 const md=r.plusSh*156+r.kodexSh*244;
 const isLatest=globalIdx===records.length-1;
-let delta=’’;
+let delta='';
 if(prev){
 const dp=r.plusSh-prev.plusSh,dk=r.kodexSh-prev.kodexSh;
 const dd=md-(prev.plusSh*156+prev.kodexSh*244),dt=r.total-prev.total;
 delta=`<div class="log-delta"> <span class="ld ${dp>0?'ld-plus-up':dp<0?'ld-plus-dn':'ld-plus-neu'}">PLUS ${dp>=0?'+':''}${dp}주</span> <span class="ld ${dk>0?'ld-kodex-up':dk<0?'ld-kodex-dn':'ld-kodex-neu'}">KODEX ${dk>=0?'+':''}${dk}주</span> <span class="ld ${dd>0?'ld-div-up':dd<0?'ld-div-dn':'ld-div-neu'}">배당 ${dd>=0?'+':''}${(dd/10000).toFixed(2)}만</span> <span class="ld ${dt>0?'ld-tot-up':dt<0?'ld-tot-dn':'ld-tot-neu'}">자산 ${dt>=0?'+':''}${(dt/10000).toFixed(0)}만</span> </div>`;
 }
 return `<div class="log-item ${isLatest?'latest':''}"> <button class="log-del" onclick="delRec('${r.date}')">✕</button> <div class="log-top"><span class="log-date">${r.date}</span>${isLatest?'<span class="log-badge">LATEST</span>':''}</div> <div class="log-nums"> <div><div class="ln-l">PLUS</div><div class="ln-v" style="color:#00e5ff">${r.plusSh}주</div></div> <div><div class="ln-l">KODEX</div><div class="ln-v" style="color:#a78bfa">${r.kodexSh}주</div></div> <div><div class="ln-l">월배당</div><div class="ln-v" style="color:#fb923c">${(md/10000).toFixed(2)}만</div></div> <div><div class="ln-l">총자산</div><div class="ln-v" style="color:#fbbf24">${r.total?(r.total/10000).toFixed(0):'-'}만</div></div> </div> <div class="log-detail">@${r.plusP?r.plusP.toLocaleString():'-'} · @${r.kodexP?r.kodexP.toLocaleString():'-'} · 주문 ${r.orders}건</div> ${delta} </div>`;
-}).join(’’);
+}).join('');
 }
 
 function renderAll(){
 const n=records.length;
-document.getElementById(‘s-cnt’).textContent=n+‘회’;
+document.getElementById('s-cnt').textContent=n+'회';
 if(n>=2){
 const f=records[0],l=records[n-1];
-document.getElementById(‘s-plus’).textContent=’+’+(l.plusSh-f.plusSh)+‘주’;
-document.getElementById(‘s-kodex’).textContent=’+’+(l.kodexSh-f.kodexSh)+‘주’;
+document.getElementById('s-plus').textContent='+'+(l.plusSh-f.plusSh)+'주';
+document.getElementById('s-kodex').textContent='+'+(l.kodexSh-f.kodexSh)+'주';
 const dd=(l.plusSh*156+l.kodexSh*244)-(f.plusSh*156+f.kodexSh*244);
-document.getElementById(‘s-div’).textContent=’+’+(dd/10000).toFixed(2)+‘만’;
+document.getElementById('s-div').textContent='+'+(dd/10000).toFixed(2)+'만';
 }
 renderMonthSelector();
-if(selectedMonth===‘all’){
-showSection(‘all’);
+if(selectedMonth==='all'){
+showSection('all');
 renderDischarge();
 renderMonthlyCharts();
-renderLogList(document.getElementById(‘log-list-all’),document.getElementById(‘empty-all’),null);
+renderLogList(document.getElementById('log-list-all'),document.getElementById('empty-all'),null);
 } else {
-showSection(‘month’);
+showSection('month');
 renderMonthSection(selectedMonth);
 }
 }
 
 function delRec(date){records=records.filter(r=>r.date!==date);persist();renderAll();}
-function clearAll(){if(!confirm(‘전체 삭제할까요?’))return;records=[];persist();renderAll();}
-function exportData(){const json=JSON.stringify(records,null,2);navigator.clipboard.writeText(json).then(()=>toast(‘클립보드에 복사됐어요!’)).catch(()=>{document.getElementById(‘paste-area’).value=json;toast(‘아래 텍스트를 복사하세요’);});}
-function importFile(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{doImport(JSON.parse(ev.target.result));}catch{toast(‘형식 오류’,true);}};r.readAsText(f);}
-function importText(){const t=document.getElementById(‘paste-area’).value.trim();if(!t){toast(‘텍스트를 붙여넣어 주세요’,true);return;}try{doImport(JSON.parse(t));document.getElementById(‘paste-area’).value=’’;}catch{toast(‘형식 오류’,true);}}
-function doImport(arr){if(!Array.isArray(arr)){toast(‘올바른 형식이 아니에요’,true);return;}const merged=[…records];for(const r of arr){const i=merged.findIndex(m=>m.date===r.date);if(i>=0)merged[i]=r;else merged.push(r);}merged.sort((a,b)=>a.date.localeCompare(b.date));records=merged;persist();renderAll();toast(arr.length+‘개 기록 복원 완료!’);}
-function toast(msg,isErr=false){const t=document.getElementById(‘toast’);t.textContent=msg;t.style.background=isErr?’#fb7185’:’#fb923c’;t.classList.add(‘show’);setTimeout(()=>t.classList.remove(‘show’),2400);}
+function clearAll(){if(!confirm('전체 삭제할까요?'))return;records=[];persist();renderAll();}
+function exportData(){const json=JSON.stringify(records,null,2);navigator.clipboard.writeText(json).then(()=>toast('클립보드에 복사됐어요!')).catch(()=>{document.getElementById('paste-area').value=json;toast('아래 텍스트를 복사하세요');});}
+function importFile(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{doImport(JSON.parse(ev.target.result));}catch{toast('형식 오류',true);}};r.readAsText(f);}
+function importText(){const t=document.getElementById('paste-area').value.trim();if(!t){toast('텍스트를 붙여넣어 주세요',true);return;}try{doImport(JSON.parse(t));document.getElementById('paste-area').value='';}catch{toast('형식 오류',true);}}
+function doImport(arr){if(!Array.isArray(arr)){toast('올바른 형식이 아니에요',true);return;}const merged=[...records];for(const r of arr){const i=merged.findIndex(m=>m.date===r.date);if(i>=0)merged[i]=r;else merged.push(r);}merged.sort((a,b)=>a.date.localeCompare(b.date));records=merged;persist();renderAll();toast(arr.length+'개 기록 복원 완료!');}
+function toast(msg,isErr=false){const t=document.getElementById('toast');t.textContent=msg;t.style.background=isErr?'#fb7185':'#fb923c';t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2400);}
 
 function formatDateDiff(dateStr){
-const today = new Date();
-const target = new Date(dateStr);
+  const today = new Date();
+  const target = new Date(dateStr);
 
-const diff = Math.floor((today - target) / (1000 * 60 * 60 * 24));
+  const diff = Math.floor((today - target) / (1000 * 60 * 60 * 24));
 
-if(diff === 0) return `${dateStr} 기준 (오늘)`;
-if(diff > 0) return `${dateStr} 기준 (${diff}일 전)`;
-return `${dateStr} 기준 (${Math.abs(diff)}일 후)`;
-}
-
-function endOfMonth(date){
-const d = new Date(date);
-return new Date(d.getFullYear(), d.getMonth()+1, 0);
+  if(diff === 0) return `${dateStr} 기준 (오늘)`;
+  if(diff > 0) return `${dateStr} 기준 (${diff}일 전)`;
+  return `${dateStr} 기준 (${Math.abs(diff)}일 후)`;
 }
 
 function analyzeGoal(){
 
 if(!goals || !goals.discharge || records.length < 2){
-return ‘’;
+  return '';
 }
 
-const enlistDate = new Date(“2025-08-17”);
+const enlistDate = new Date("2025-08-17");
 
 function addMonths(date, m){
-const d = new Date(date);
-d.setMonth(d.getMonth() + m);
-return d;
+  const d = new Date(date);
+  d.setMonth(d.getMonth() + m);
+  return d;
 }
 
 // 🔥 자동 시점 생성
@@ -872,33 +763,33 @@ return d;
 const privateDate = endOfMonth(addMonths(enlistDate, 8));   // 🔥 4월 말
 const corporalDate = endOfMonth(addMonths(enlistDate, 14)); // 🔥 10월 말
 
-const dischargeDate = new Date(“2027-04-17”);
+const dischargeDate = new Date("2027-04-17");
 
 // 목표 (비율로 나눔)
 const d = goals.discharge;
 
 const targets = [
-{
-name:‘일병’,
-date: privateDate,
-plusSh: d.plusSh * 0.4,
-kodexSh: d.kodexSh * 0.4,
-div: d.div * 0.4
-},
-{
-name:‘상병’,
-date: corporalDate,
-plusSh: d.plusSh * 0.7,
-kodexSh: d.kodexSh * 0.7,
-div: d.div * 0.7
-},
-{
-name:‘전역’,
-date: dischargeDate,
-plusSh: d.plusSh,
-kodexSh: d.kodexSh,
-div: d.div
-}
+  {
+    name:'일병',
+    date: privateDate,
+    plusSh: d.plusSh * 0.4,
+    kodexSh: d.kodexSh * 0.4,
+    div: d.div * 0.4
+  },
+  {
+    name:'상병',
+    date: corporalDate,
+    plusSh: d.plusSh * 0.7,
+    kodexSh: d.kodexSh * 0.7,
+    div: d.div * 0.7
+  },
+  {
+    name:'전역',
+    date: dischargeDate,
+    plusSh: d.plusSh,
+    kodexSh: d.kodexSh,
+    div: d.div
+  }
 ];
 
 const first = records[0];
@@ -917,37 +808,37 @@ const today = new Date();
 
 function calc(t){
 
-const goalDate = t.date;
+  const goalDate = t.date;
 
-const remainDays = (goalDate - today) / (1000*60*60*24);
+  const remainDays = (goalDate - today) / (1000*60*60*24);
 
-const plusRemain = t.plusSh - last.plusSh;
-const kodexRemain = t.kodexSh - last.kodexSh;
+  const plusRemain = t.plusSh - last.plusSh;
+  const kodexRemain = t.kodexSh - last.kodexSh;
 
-const needPlus = plusRemain / remainDays;
-const needKodex = kodexRemain / remainDays;
+  const needPlus = plusRemain / remainDays;
+  const needKodex = kodexRemain / remainDays;
 
-const etaPlus = plusSpeed > 0 ? plusRemain / plusSpeed : Infinity;
-const etaKodex = kodexSpeed > 0 ? kodexRemain / kodexSpeed : Infinity;
-const etaDiv = divSpeed > 0 ? (t.div - lastDiv) / divSpeed : Infinity;
+  const etaPlus = plusSpeed > 0 ? plusRemain / plusSpeed : Infinity;
+  const etaKodex = kodexSpeed > 0 ? kodexRemain / kodexSpeed : Infinity;
+  const etaDiv = divSpeed > 0 ? (t.div - lastDiv) / divSpeed : Infinity;
 
-const etaDays = Math.max(etaPlus, etaKodex, etaDiv);
+  const etaDays = Math.max(etaPlus, etaKodex, etaDiv);
 
-const etaDate = new Date();
-etaDate.setDate(etaDate.getDate() + Math.ceil(etaDays));
+  const etaDate = new Date();
+  etaDate.setDate(etaDate.getDate() + Math.ceil(etaDays));
 
-const isOk = etaDate <= goalDate;
+  const isOk = etaDate <= goalDate;
 
-const passed = goalDate < today;
+  const passed = goalDate < today;
 
-return {
-name:t.name,
-date:goalDate.toISOString().slice(0,10),
-ok:isOk,
-passed,
-needPlus,
-curPlus:plusSpeed
-};
+  return {
+    name:t.name,
+    date:goalDate.toISOString().slice(0,10),
+    ok:isOk,
+    passed,
+    needPlus,
+    curPlus:plusSpeed
+  };
 }
 
 // 🔥 계산
@@ -955,9 +846,8 @@ const results = targets.map(calc);
 
 function makeCard(r){
 
-if(r.passed){
-return `
-
+  if(r.passed){
+    return `
 <div class="goal-card ${r.ok ? 'done' : 'fail'}">
   <div class="goal-title">${r.name} (${r.date})</div>
   <div class="goal-status ${r.ok ? 'goal-done' : 'goal-fail'}">
@@ -967,11 +857,10 @@ return `
 `;
   }
 
-const diff = r.curPlus - r.needPlus;
-const status = diff >= 0 ? ‘ok’ : ‘bad’;
+  const diff = r.curPlus - r.needPlus;
+  const status = diff >= 0 ? 'ok' : 'bad';
 
-return `
-
+  return `
 <div class="goal-card ${status}">
   <div class="goal-title">${r.name} (${r.date})</div>
 
@@ -993,23 +882,20 @@ return `
 // 🔥 슬라이드 형태로 카드 분리하기
 const htmlCards = results.map(makeCard);
 
-if (htmlCards.length === 0) return ‘’;
+if (htmlCards.length === 0) return '';
 
-// 아직 지나지 않은 ‘가장 가까운 시점’ 찾기
+// 아직 지나지 않은 '가장 가까운 시점' 찾기
 let topIdx = results.findIndex(r => !r.passed);
 if (topIdx === -1) topIdx = results.length - 1; // 다 지났으면 마지막 전역 카드
 
 const topCard = htmlCards[topIdx];
-const restCards = htmlCards.filter((_, i) => i !== topIdx).join(’’);
+const restCards = htmlCards.filter((_, i) => i !== topIdx).join('');
 
 return `
-
 <div class="goal-accordion">
-  ${topCard}
-  <div style="overflow:hidden;">
-    <button class="expand-btn" id="goal-expand-btn" onclick="toggleGoals()">
-      <span>다른 시점 보기</span><span class="arr">▼</span>
-    </button>
+  <div class="goal-trigger" onclick="toggleGoals()">
+    ${topCard}
+    <div class="toggle-text" id="toggleText">▼ 다른 시점 목표 확인하기 ▼</div>
   </div>
   <div id="hiddenGoals" class="goal-hidden-list">
     ${restCards}
@@ -1018,36 +904,27 @@ return `
 `;
 }
 
-// 🔥 목표 카드 슬라이드 열기/닫기
+
+function endOfMonth(date){
+  const d = new Date(date);
+  return new Date(d.getFullYear(), d.getMonth()+1, 0);
+}
+
+// 🔥 목표 카드 슬라이드 열기/닫기 스위치 함수
 function toggleGoals() {
-const list = document.getElementById(‘hiddenGoals’);
-const btn = document.getElementById(‘goal-expand-btn’);
-if(!list) return;
-if (list.classList.contains(‘open’)) {
-list.classList.remove(‘open’);
-if(btn){ btn.classList.remove(‘open’); btn.querySelector(‘span:first-child’).textContent=‘다른 시점 보기’; }
-} else {
-list.classList.add(‘open’);
-if(btn){ btn.classList.add(‘open’); btn.querySelector(‘span:first-child’).textContent=‘접기’; }
-}
+  const list = document.getElementById('hiddenGoals');
+  const text = document.getElementById('toggleText');
+
+  if (list.classList.contains('open')) {
+    list.classList.remove('open');
+    text.innerText = '▼ 다른 시점 목표 확인하기 ▼';
+  } else {
+    list.classList.add('open');
+    text.innerText = '▲ 닫기 ▲';
+  }
 }
 
-function toggleMilestones() {
-const list = document.getElementById(‘ms-hidden-list’);
-const btn = document.getElementById(‘ms-expand-btn’);
-if(!list) return;
-if (list.classList.contains(‘open’)) {
-list.classList.remove(‘open’);
-if(btn){ btn.classList.remove(‘open’); btn.querySelector(‘span:first-child’).textContent=‘다른 시점 보기’; }
-} else {
-list.classList.add(‘open’);
-if(btn){ btn.classList.add(‘open’); btn.querySelector(‘span:first-child’).textContent=‘접기’; }
-}
-}
 
-loadData();
-renderAll();
 </script>
-
 </body>
 </html>
