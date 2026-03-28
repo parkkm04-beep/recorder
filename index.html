@@ -204,6 +204,14 @@ textarea.paste-area{width:100%;background:#112035;border:1px solid #182a40;borde
 .goal-done{color:#a78bfa;}
 .goal-fail{color:#9ca3af;}
 
+/* 🔥 목표 슬라이드(아코디언) 효과 CSS */
+.goal-accordion { display: flex; flex-direction: column; gap: 8px; }
+.goal-trigger { cursor: pointer; transition: transform 0.2s ease; }
+.goal-trigger:active { transform: scale(0.99); }
+.toggle-text { text-align: center; font-size: 11px; color: #94a3b8; margin-top: 4px; font-weight: 700; font-family: 'Space Mono', monospace; }
+.goal-hidden-list { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-in-out; display: flex; flex-direction: column; gap: 8px; }
+.goal-hidden-list.open { max-height: 1000px; margin-top: 8px; }
+
 </style>
 
 </head>
@@ -871,17 +879,51 @@ function makeCard(r){
 `;
 }
 
+// 🔥 슬라이드 형태로 카드 분리하기
+const htmlCards = results.map(makeCard);
+
+if (htmlCards.length === 0) return '';
+
+// 아직 지나지 않은 '가장 가까운 시점' 찾기
+let topIdx = results.findIndex(r => !r.passed);
+if (topIdx === -1) topIdx = results.length - 1; // 다 지났으면 마지막 전역 카드
+
+const topCard = htmlCards[topIdx];
+const restCards = htmlCards.filter((_, i) => i !== topIdx).join('');
+
 return `
-<div class="goal-cards">
-  ${results.map(makeCard).join('')}
+<div class="goal-accordion">
+  <div class="goal-trigger" onclick="toggleGoals()">
+    ${topCard}
+    <div class="toggle-text" id="toggleText">▼ 다른 시점 목표 확인하기 ▼</div>
+  </div>
+  <div id="hiddenGoals" class="goal-hidden-list">
+    ${restCards}
+  </div>
 </div>
 `;
 }
+
 
 function endOfMonth(date){
   const d = new Date(date);
   return new Date(d.getFullYear(), d.getMonth()+1, 0);
 }
+
+// 🔥 목표 카드 슬라이드 열기/닫기 스위치 함수
+function toggleGoals() {
+  const list = document.getElementById('hiddenGoals');
+  const text = document.getElementById('toggleText');
+
+  if (list.classList.contains('open')) {
+    list.classList.remove('open');
+    text.innerText = '▼ 다른 시점 목표 확인하기 ▼';
+  } else {
+    list.classList.add('open');
+    text.innerText = '▲ 닫기 ▲';
+  }
+}
+
 
 </script>
 </body>
