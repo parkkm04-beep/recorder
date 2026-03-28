@@ -19,18 +19,45 @@ font-weight:600;
 }
 
 *{margin:0;padding:0;box-sizing:border-box;}
-body{background:#070d18;color:#e2e8f0;font-family:‘Noto Sans KR’,sans-serif;min-height:100vh;padding:0 0 80px;}
-body::before{content:’’;position:fixed;inset:0;background:radial-gradient(ellipse 60% 50% at 10% 10%,rgba(0,229,255,.06) 0%,transparent 50%),radial-gradient(ellipse 50% 40% at 90% 90%,rgba(167,139,250,.05) 0%,transparent 50%);pointer-events:none;z-index:0;}
-.wrap{max-width:480px;margin:0 auto;position:relative;z-index:1;padding:20px 16px;}
-.hdr{text-align:center;margin-bottom:24px;}
-.hdr-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(0,229,255,.08);border:1px solid rgba(0,229,255,.2);border-radius:20px;padding:5px 14px;margin-bottom:12px;}
-.hdr-pill .dot{width:6px;height:6px;border-radius:50%;background:#00e5ff;animation:pulse 2s infinite;}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.hdr-pill span{font-size:9px;font-weight:700;letter-spacing:2px;color:#00e5ff;font-family:‘Space Mono’,monospace;text-transform:uppercase;}
-.hdr h1{font-size:22px;font-weight:900;line-height:1.3;}
-.hdr h1 em{color:#00e5ff;font-style:normal;}
-.tabs{display:flex;background:#0c1525;border:1px solid #182a40;border-radius:12px;padding:4px;gap:4px;margin-bottom:20px;}
-.tab{flex:1;padding:9px;border-radius:9px;border:none;background:transparent;color:#4a6080;font-size:12px;font-weight:700;cursor:pointer;font-family:‘Noto Sans KR’,sans-serif;}
+
+/* 수정된 스타일 부분 */
+body {
+  background: #070d18;
+  color: #e2e8f0;
+  font-family: 'Noto Sans KR', sans-serif; /* 따옴표 수정 */
+  min-height: 100vh;
+  padding: 0 0 80px;
+}
+body::before {
+  content: ''; /* 따옴표 수정 */
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 50% at 10% 10%, rgba(0,229,255,.06) 0%, transparent 50%), 
+              radial-gradient(ellipse 50% 40% at 90% 90%, rgba(167,139,250,.05) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+.hdr-pill span {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #00e5ff;
+  font-family: 'Space Mono', monospace; /* 따옴표 수정 */
+  text-transform: uppercase;
+}
+.tab {
+  flex: 1;
+  padding: 9px;
+  border-radius: 9px;
+  border: none;
+  background: transparent;
+  color: #4a6080;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'Noto Sans KR', sans-serif; /* 따옴표 수정 */
+}
+
 .tab.active{background:#112035;color:#00e5ff;}
 .sec{font-size:9px;font-weight:700;letter-spacing:3px;color:#4a6080;text-transform:uppercase;font-family:‘Space Mono’,monospace;display:flex;align-items:center;gap:8px;margin-bottom:12px;}
 .sec::after{content:’’;flex:1;height:1px;background:#182a40;}
@@ -365,100 +392,83 @@ let charts = {};
 let qsParsed = null;
 let selectedMonth = 'all';
 
-document.getElementById(‘inp-date’).value = new Date().toISOString().slice(0,10);
+// 1. 초기 날짜 설정
+document.getElementById('inp-date').value = new Date().toISOString().slice(0, 10);
 
+// 2. 빠른 저장 입력 처리 함수
 function onQSInput() {
-const raw = document.getElementById(‘qs-input’).value.trim();
-const btn = document.getElementById(‘btn-qs’);
-const preview = document.getElementById(‘qs-preview’);
-const goalPrev = document.getElementById(‘qs-goal-preview’);
-qsParsed = null; btn.disabled = true;
-preview.style.display = ‘none’; goalPrev.style.display = ‘none’;
+  const raw = document.getElementById('qs-input').value.trim();
+  const btn = document.getElementById('btn-qs');
+  const preview = document.getElementById('qs-preview');
+  const goalPrev = document.getElementById('qs-goal-preview');
+  
+  qsParsed = null; 
+  btn.disabled = true;
+  preview.style.display = 'none'; 
+  goalPrev.style.display = 'none';
 
-const result = {};
+  const result = {};
 
-const saveMatch = raw.match(/SAVE::({[^\n]+})/);
-if (saveMatch) {
-try {
-const d = JSON.parse(saveMatch[1]);
-if (d.date && d.plusSh) {
-result.save = d;
-const md = (d.plusSh||0)*156 + (d.kodexSh||0)*244;
-document.getElementById(‘qp-date’).textContent = d.date;
-document.getElementById(‘qp-plus’).textContent = (d.plusSh||0)+‘주’;
-document.getElementById(‘qp-kodex’).textContent = (d.kodexSh||0)+‘주’;
-document.getElementById(‘qp-div’).textContent = (md/10000).toFixed(2)+‘만’;
-preview.style.display = ‘grid’;
-}
-} catch(e) {}
-}
+  // SAVE:: 코드 분석
+  const saveMatch = raw.match(/SAVE::({[^\n]+})/);
+  if (saveMatch) {
+    try {
+      const d = JSON.parse(saveMatch[1]);
+      if (d.date && d.plusSh) {
+        result.save = d;
+        // 배당금 계산 로직 (수식 유지)
+        const md = (d.plusSh || 0) * 156 + (d.kodexSh || 0) * 244;
+        document.getElementById('qp-date').textContent = d.date;
+        document.getElementById('qp-plus').textContent = (d.plusSh || 0) + '주';
+        document.getElementById('qp-kodex').textContent = (d.kodexSh || 0) + '주';
+        document.getElementById('qp-div').textContent = (md / 10000).toFixed(2) + '만';
+        preview.style.display = 'grid';
+      }
+    } catch (e) { console.error("Save parse error", e); }
+  }
 
-const goalMatch = raw.match(/GOAL::({[^\n]+})/);
-if (goalMatch) {
-try {
-const d = JSON.parse(goalMatch[1]);
-if (d.discharge) {
-result.goal = d;
-goalPrev.style.display = ‘block’;
-goalPrev.innerHTML = `🎯 목표 확인 · 전역: PLUS ${d.discharge.plusSh}주 / 배당 ${d.discharge.div}만 · 이번달: PLUS ${d.monthGoal?.plusSh||'-'}주`;
-}
-} catch(e) {}
-}
+  // GOAL:: 코드 분석
+  const goalMatch = raw.match(/GOAL::({[^\n]+})/);
+  if (goalMatch) {
+    try {
+      const d = JSON.parse(goalMatch[1]);
+      if (d.discharge) {
+        result.goal = d;
+        goalPrev.style.display = 'block';
+        goalPrev.innerHTML = `🎯 목표 확인 · 전역: PLUS ${d.discharge.plusSh}주 / 배당 ${d.discharge.div}만 · 이번달: PLUS ${d.monthGoal?.plusSh || '-'}주`;
+      }
+    } catch (e) { console.error("Goal parse error", e); }
+  }
 
-if (result.save || result.goal) {
-qsParsed = result;
-btn.disabled = false;
-if (result.save && result.goal) btn.textContent = ‘⚡ 기록 + 목표 동시 저장’;
-else if (result.save) btn.textContent = ‘⚡ 기록 저장’;
-else btn.textContent = ‘🎯 목표 업데이트’;
-}
-}
-
-function quickSave() {
-if (!qsParsed) return;
-let msg = [];
-if (qsParsed.save) {
-const d = qsParsed.save;
-const rec = { date:d.date, total:d.total||0, plusSh:d.plusSh||0, plusP:d.plusP||0,
-kodexSh:d.kodexSh||0, kodexP:d.kodexP||0, div:d.div||0, orders:d.orders||0 };
-upsertRecord(rec); persist();
-msg.push(‘기록 저장 ✅’);
-}
-
-if (qsParsed.goal) {
-goals = qsParsed.goal;
-
-const today = new Date().toISOString().slice(0,10);
-
-// 🔥 전역 목표
-goals.updatedAt = today;
-
-// 🔥 월 목표도 같이 넣기
-if(goals.months){
-Object.keys(goals.months).forEach(m=>{
-goals.months[m].updatedAt = today;
-});
+  // 버튼 상태 업데이트
+  if (result.save || result.goal) {
+    qsParsed = result;
+    btn.disabled = false;
+    if (result.save && result.goal) {
+      btn.textContent = '⚡ 기록 + 목표 동시 저장';
+    } else if (result.save) {
+      btn.textContent = '⚡ 기록 저장';
+    } else {
+      btn.textContent = '🎯 목표 업데이트';
+    }
+  }
 }
 
-localStorage.setItem(GKEY, JSON.stringify(goals));
-msg.push(‘목표 업데이트 🎯’);
-}
-
-toast(msg.join(’ · ‘));
-document.getElementById(‘qs-input’).value=’’;
-document.getElementById(‘qs-preview’).style.display=‘none’;
-document.getElementById(‘qs-goal-preview’).style.display=‘none’;
-document.getElementById(‘btn-qs’).disabled=true;
-document.getElementById(‘btn-qs’).textContent=‘⚡ 바로 저장’;
-qsParsed=null;
-renderAll();}
-
+// 3. 탭 전환 함수 (이 부분이 수정되어야 '기록 보기' 탭이 작동합니다)
 function switchTab(t) {
-document.getElementById(‘tab-input’).style.display   = t===‘input’  ?‘block’:‘none’;
-document.getElementById(‘tab-records’).style.display = t===‘records’?‘block’:‘none’;
-document.querySelectorAll(’.tab’).forEach((b,i)=>b.classList.toggle(‘active’,[‘input’,‘records’][i]===t));
-if(t===‘records’) renderAll();
+  document.getElementById('tab-input').style.display = t === 'input' ? 'block' : 'none';
+  document.getElementById('tab-records').style.display = t === 'records' ? 'block' : 'none';
+  
+  document.querySelectorAll('.tab').forEach((b, i) => {
+    const tabTypes = ['input', 'records'];
+    b.classList.toggle('active', tabTypes[i] === t);
+  });
+
+  if (t === 'records') {
+    if (typeof renderAll === 'function') renderAll();
+  }
 }
+
 
 function updatePreview() {
 const ps=+document.getElementById(‘inp-plus-sh’).value||0;
