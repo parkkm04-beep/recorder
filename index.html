@@ -101,127 +101,213 @@ button{
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-const KEY = "invest-v7";
-let data = [];
-let chart = null;
+const SKEY = 'invest-logs-v7';
+const GKEY = 'invest-goals-v2';
 
+let records = [];
+let goals = null;
+
+// ----------------------
 // 초기화
+// ----------------------
+init();
+
 function init(){
-  const saved = localStorage.getItem(KEY);
-  if(saved) data = JSON.parse(saved);
-
-  document.getElementById('date').value =
-    new Date().toISOString().slice(0,10);
-
-  render();
+  loadData();
+  renderAll();
 }
 
-// 저장
-function persist(){
-  localStorage.setItem(KEY, JSON.stringify(data));
-}
-
-// 추가/수정
-function upsert(rec){
-  const i = data.findIndex(d=>d.date===rec.date);
-  if(i>=0) data[i]=rec;
-  else data.push(rec);
-
-  data.sort((a,b)=>a.date.localeCompare(b.date));
-}
-
-// 빠른 저장
-function quickSave(){
-  const raw = document.getElementById('qs').value;
-
-  const match = raw.match(/SAVE::({[\s\S]*?})/);
-  if(!match) return alert("형식 오류");
+// ----------------------
+// 데이터 로드
+// ----------------------
+function loadData(){
+  try{
+    const r = localStorage.getItem(SKEY);
+    if(r) records = JSON.parse(r);
+  }catch{ records=[] }
 
   try{
-    const d = JSON.parse(match[1]);
-    upsert({
-      date:d.date,
-      plusSh:d.plusSh||0,
-      kodexSh:d.kodexSh||0,
-      total:d.total||0
-    });
-    persist();
-    render();
-    alert("저장 완료");
-  }catch{
-    alert("JSON 오류");
-  }
+    const g = localStorage.getItem(GKEY);
+    if(g) goals = JSON.parse(g);
+  }catch{ goals=null }
 }
 
-// 수동 저장
-function save(){
+// ----------------------
+// 저장
+// ----------------------
+function persist(){
+  localStorage.setItem(SKEY, JSON.stringify(records));
+}
+
+function persistGoal(){
+  localStorage.setItem(GKEY, JSON.stringify(goals));
+}
+
+// ----------------------
+// 기록 저장
+// ----------------------
+function saveRecord(){
   const rec = {
-    date:document.getElementById('date').value,
-    plusSh:+document.getElementById('plus').value||0,
-    kodexSh:+document.getElementById('kodex').value||0,
-    total:+document.getElementById('total').value||0
+    date: document.getElementById('inp-date').value,
+    plusSh: +inp('inp-plus-sh'),
+    kodexSh: +inp('inp-kodex-sh'),
+    total: +inp('inp-total')
   };
 
   if(!rec.date || !rec.plusSh){
-    alert("필수값 부족");
+    alert('필수값 부족');
     return;
   }
 
-  upsert(rec);
+  upsertRecord(rec);
   persist();
-  render();
+  renderAll();
 }
 
-// 통계 + 차트 + 로그
-function render(){
+function upsertRecord(rec){
+  const i = records.findIndex(r=>r.date===rec.date);
+  if(i>=0) records[i]=rec;
+  else records.push(rec);
 
-  document.getElementById('cnt').textContent = data.length;
+  records.sort((a,b)=>a.date.localeCompare(b.date));
+}
 
-  if(data.length>=2){
-    const f=data[0],l=data[data.length-1];
-    document.getElementById('s-plus').textContent = "+"+(l.plusSh-f.plusSh);
-    document.getElementById('s-kodex').textContent = "+"+(l.kodexSh-f.kodexSh);
+// ----------------------
+// 목표 저장
+// ----------------------
+function saveGoal(goalData){
+
+  goals = {
+    discharge: goalData.discharge,
+    monthGoal: goalData.monthGoal,
+    createdAt: today()
+  };
+
+  persistGoal();
+  renderAll();
+}
+
+// ----------------------
+// 목표 계산
+// ----------------------
+function analyzeGoal(){
+
+  if(!goals || records.length < 2) return '';
+
+  const first = records[0];
+  const last  = records[records.length-1];
+
+  const days = daysDiff(first.date, last.date);
+
+  const plusSpeed = (last.plusSh - first.plusSh) / days;
+
+  const target = goals.discharge;
+
+  const remain = target.plusSh - last.plusSh;
+  const remainDays = daysDiff(today(), "2027-04-17");
+
+  const needSpeed = remain / remainDays;
+
+  const ok = plusSpeed >= needSpeed;
+
+  return `
+  <div style="margin-bottom:10px;font-size:11px;">
+    현재 속도: +${plusSpeed.toFixed(2)}주/일<br>
+    필요 속도: +${needSpeed.toFixed(2)}주/일<br>
+    <b style="color:${ok?'#22c55e':'#ef4444'}">
+      ${ok?'목표 달성 가능':'속도 부족'}
+    </b>
+  </div>
+  `;
+}
+
+// ----------------------
+// 전역 목표 UI
+// ----------------------
+function renderDischarge(){
+
+  const el = document.getElementById('discharge-section');
+
+  if(!goals){
+    el.innerHTML = '목표 없음';
+    return;
   }
 
-  renderChart();
-  renderLogs();
-}
+  const last = records[records.length-1];
+  if(!last){
+    el.innerHTML = '데이터 없음';
+    return;
+  }
 
-// 차트
-function renderChart(){
+  const g = goals.discharge;
 
-  if(chart) chart.destroy();
+  const pct = Math.round(last.plusSh / g.plusSh * 100);
 
-  chart = new Chart(document.getElementById('chart'),{
-    type:'line',
-    data:{
-      labels:data.map(d=>d.date),
-      datasets:[
-        {
-          label:'PLUS',
-          data:data.map(d=>d.plusSh)
-        },
-        {
-          label:'KODEX',
-          data:data.map(d=>d.kodexSh)
-        }
-      ]
-    }
-  });
-}
-
-// 로그
-function renderLogs(){
-  const el = document.getElementById('logs');
-
-  el.innerHTML = data.map(d=>`
-    <div class="log">
-      ${d.date} | PLUS ${d.plusSh} | KODEX ${d.kodexSh}
+  el.innerHTML = `
+    <div>
+      <h3>🎖️ 전역 목표</h3>
+      <div>현재: ${last.plusSh} / ${g.plusSh}주 (${pct}%)</div>
+      ${analyzeGoal()}
     </div>
-  `).reverse().join('');
+  `;
 }
 
-init();
+// ----------------------
+// 월 목표
+// ----------------------
+function renderMonthGoal(){
+
+  const el = document.getElementById('month-goal-card');
+
+  if(!goals || !goals.monthGoal){
+    el.innerHTML = '월 목표 없음';
+    return;
+  }
+
+  const ym = today().slice(0,7);
+
+  const recs = records.filter(r=>r.date.startsWith(ym));
+  if(!recs.length){
+    el.innerHTML = '이번 달 기록 없음';
+    return;
+  }
+
+  const last = recs[recs.length-1];
+  const g = goals.monthGoal;
+
+  const pct = Math.round(last.plusSh / g.plusSh * 100);
+
+  el.innerHTML = `
+    <div>
+      <h3>📅 이번 달 목표</h3>
+      <div>${last.plusSh} / ${g.plusSh} (${pct}%)</div>
+    </div>
+  `;
+}
+
+// ----------------------
+// 렌더
+// ----------------------
+function renderAll(){
+  renderDischarge();
+  renderMonthGoal();
+}
+
+// ----------------------
+// 유틸
+// ----------------------
+function inp(id){
+  return document.getElementById(id).value || 0;
+}
+
+function today(){
+  return new Date().toISOString().slice(0,10);
+}
+
+function daysDiff(a,b){
+  return Math.max(1,(new Date(b)-new Date(a))/(1000*60*60*24));
+}
+
 </script>
 
 </body>
