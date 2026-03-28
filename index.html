@@ -146,6 +146,64 @@ textarea.paste-area{width:100%;background:#112035;border:1px solid #182a40;borde
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(70px);font-size:12px;font-weight:700;padding:10px 22px;border-radius:20px;opacity:0;transition:.3s;z-index:999;color:#000;white-space:nowrap;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 .no-goal{font-size:11px;color:#4a6080;text-align:center;padding:12px;font-family:'Space Mono',monospace;}
+
+.goal-cards{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  margin:8px 0 12px;
+}
+
+.goal-card{
+  background:#112035;
+  border-radius:10px;
+  padding:12px;
+  border:1px solid rgba(0,229,255,.15);
+  font-size:11px;
+  font-family:'Space Mono',monospace;
+  position:relative;
+}
+
+/* 좌측 강조 라인 */
+.goal-card::before{
+  content:'';
+  position:absolute;
+  left:0;
+  top:0;
+  bottom:0;
+  width:3px;
+  border-radius:10px 0 0 10px;
+}
+
+/* 상태별 컬러 */
+.goal-card.ok::before{background:#00e5ff;}
+.goal-card.bad::before{background:#ef4444;}
+.goal-card.done::before{background:#a78bfa;}
+.goal-card.fail::before{background:#6b7280;}
+
+.goal-title{
+  font-size:12px;
+  font-weight:700;
+  margin-bottom:4px;
+  color:#e6f1ff;
+}
+
+.goal-status{
+  font-size:11px;
+  margin-bottom:4px;
+}
+
+.goal-sub{
+  font-size:10px;
+  color:#4a6080;
+}
+
+/* 강조 텍스트 */
+.goal-good{color:#00e5ff;}
+.goal-warn{color:#ef4444;}
+.goal-done{color:#a78bfa;}
+.goal-fail{color:#9ca3af;}
+
 </style>
 
 </head>
@@ -684,14 +742,53 @@ if(!goals || !goals.discharge || records.length < 2){
   return '';
 }
 
+const enlistDate = new Date("2025-08-17");
+
+function addMonths(date, m){
+  const d = new Date(date);
+  d.setMonth(d.getMonth() + m);
+  return d;
+}
+
+// 🔥 자동 시점 생성
+
+const privateDate = endOfMonth(addMonths(enlistDate, 8));   // 🔥 4월 말
+const corporalDate = endOfMonth(addMonths(enlistDate, 14)); // 🔥 10월 말
+
+const dischargeDate = new Date("2027-04-17");
+
+// 목표 (비율로 나눔)
 const d = goals.discharge;
+
+const targets = [
+  {
+    name:'일병',
+    date: privateDate,
+    plusSh: d.plusSh * 0.4,
+    kodexSh: d.kodexSh * 0.4,
+    div: d.div * 0.4
+  },
+  {
+    name:'상병',
+    date: corporalDate,
+    plusSh: d.plusSh * 0.7,
+    kodexSh: d.kodexSh * 0.7,
+    div: d.div * 0.7
+  },
+  {
+    name:'전역',
+    date: dischargeDate,
+    plusSh: d.plusSh,
+    kodexSh: d.kodexSh,
+    div: d.div
+  }
+];
+
 const first = records[0];
 const last = records[records.length-1];
 
-// 기간
 const days = Math.max(1, (new Date(last.date) - new Date(first.date)) / (1000*60*60*24));
 
-// 현재 속도
 const plusSpeed = (last.plusSh - first.plusSh) / days;
 const kodexSpeed = (last.kodexSh - first.kodexSh) / days;
 
@@ -699,22 +796,23 @@ const lastDiv = (last.plusSh*156 + last.kodexSh*244)/10000;
 const firstDiv = (first.plusSh*156 + first.kodexSh*244)/10000;
 const divSpeed = (lastDiv - firstDiv) / days;
 
-// 🔥 계산 함수
-function calc(target){
+const today = new Date();
 
-  const today = new Date();
-  const goalDate = new Date(target.date);
+function calc(t){
 
-  const remainDays = Math.max(1, (goalDate - today) / (1000*60*60*24));
+  const goalDate = t.date;
 
-  const plusRemain = target.plusSh - last.plusSh;
-  const kodexRemain = target.kodexSh - last.kodexSh;
-  const divRemain = target.div - lastDiv;
+  const remainDays = (goalDate - today) / (1000*60*60*24);
 
-  // ETA (현재 속도 기준)
+  const plusRemain = t.plusSh - last.plusSh;
+  const kodexRemain = t.kodexSh - last.kodexSh;
+
+  const needPlus = plusRemain / remainDays;
+  const needKodex = kodexRemain / remainDays;
+
   const etaPlus = plusSpeed > 0 ? plusRemain / plusSpeed : Infinity;
   const etaKodex = kodexSpeed > 0 ? kodexRemain / kodexSpeed : Infinity;
-  const etaDiv = divSpeed > 0 ? divRemain / divSpeed : Infinity;
+  const etaDiv = divSpeed > 0 ? (t.div - lastDiv) / divSpeed : Infinity;
 
   const etaDays = Math.max(etaPlus, etaKodex, etaDiv);
 
@@ -723,52 +821,66 @@ function calc(target){
 
   const isOk = etaDate <= goalDate;
 
-  // 🔥 하루 필요량 (목표 기준)
-  const needPlus = plusRemain / remainDays;
-  const needKodex = kodexRemain / remainDays;
+  const passed = goalDate < today;
 
   return {
-  ok:isOk,
-  eta: isFinite(etaDays) ? etaDate.toISOString().slice(0,10) : '불가',
-  needPlus: needPlus > 0 ? needPlus : 0,
-  needKodex: needKodex > 0 ? needKodex : 0,
-  curPlus: plusSpeed,
-  curKodex: kodexSpeed
-};
+    name:t.name,
+    date:goalDate.toISOString().slice(0,10),
+    ok:isOk,
+    passed,
+    needPlus,
+    curPlus:plusSpeed
+  };
 }
 
-// 🔥 시점별 (없으면 전역 기준 fallback)
-const privateTarget = d.private || d;
-const corporalTarget = d.corporal || d;
-const dischargeTarget = d;
+// 🔥 계산
+const results = targets.map(calc);
 
-// 결과
-const p = calc(privateTarget);
-const c = calc(corporalTarget);
-const f = calc(dischargeTarget);
+function makeCard(r){
 
-// 출력
-function row(label, res){
+  if(r.passed){
+    return `
+<div class="goal-card ${r.ok ? 'done' : 'fail'}">
+  <div class="goal-title">${r.name} (${r.date})</div>
+  <div class="goal-status ${r.ok ? 'goal-done' : 'goal-fail'}">
+    ${r.ok ? '✅ 목표 달성' : '❌ 목표 미달'}
+  </div>
+</div>
+`;
+  }
 
-  const plusDiff = res.curPlus - res.needPlus;
-  const status = plusDiff >= 0 ? 'ok' : 'bad';
+  const diff = r.curPlus - r.needPlus;
+  const status = diff >= 0 ? 'ok' : 'bad';
 
   return `
-${label} → ${res.ok ? '🟢 가능' : '🔴 어려움'} (${res.eta})
-└ <span class="${status}">
-필요: +${res.needPlus.toFixed(1)}주 | 현재: +${res.curPlus.toFixed(1)}주
-${plusDiff >= 0 ? '✅ 충분' : '⚠️ 부족'}
-</span>
+<div class="goal-card ${status}">
+  <div class="goal-title">${r.name} (${r.date})</div>
+
+  <div class="goal-status ${r.ok ? 'goal-good' : 'goal-warn'}">
+    ${r.ok ? '🟢 달성 가능' : '🔴 달성 어려움'}
+  </div>
+
+  <div class="goal-sub">
+    필요: +${r.needPlus.toFixed(1)}주 / 현재: +${r.curPlus.toFixed(1)}주
+  </div>
+
+  <div class="goal-sub ${diff>=0 ? 'goal-good' : 'goal-warn'}">
+    ${diff>=0 ? '현재 속도 충분' : '속도 부족'}
+  </div>
+</div>
 `;
 }
 
 return `
-📊 시점별 달성 분석
-
-${row('일병', p)}
-${row('상병', c)}
-${row('전역', f)}
+<div class="goal-cards">
+  ${results.map(makeCard).join('')}
+</div>
 `;
+}
+
+function endOfMonth(date){
+  const d = new Date(date);
+  return new Date(d.getFullYear(), d.getMonth()+1, 0);
 }
 
 </script>
