@@ -371,8 +371,30 @@ textarea.paste-area{width:100%;background:#112035;border:1px solid #182a40;borde
 <script>
 const SKEY = 'invest-logs-v6';
 const GKEY = 'invest-goals-v1';
-let records = [];
-let goals = null;
+
+// 🔥 [수정] 데이터 고정: 수정할 때마다 날아가지 않도록 기본값을 설정합니다.
+let history = [
+  {"date": "2026-03-09","total": 4442572,"plusSh": 200,"plusP": 8660,"kodexSh": 36,"kodexP": 16515,"div": 28835,"orders": 9},
+  {"date": "2026-03-10","total": 4619025,"plusSh": 201,"plusP": 8705,"kodexSh": 36,"kodexP": 17500,"div": 28835,"orders": 12},
+  {"date": "2026-03-11","total": 4636344,"plusSh": 202,"plusP": 8810,"kodexSh": 37,"kodexP": 17735,"div": 28835,"orders": 13},
+  {"date": "2026-03-12","total": 4648291,"plusSh": 203,"plusP": 8895,"kodexSh": 37,"kodexP": 17315,"div": 28835,"orders": 13},
+  {"date": "2026-03-13","total": 4654861,"plusSh": 204,"plusP": 8835,"kodexSh": 38,"kodexP": 17025,"div": 28835,"orders": 14},
+  {"date": "2026-03-16","total": 4682449,"plusSh": 205,"plusP": 8790,"kodexSh": 39,"kodexP": 17270,"div": 28835,"orders": 17},
+  {"date": "2026-03-18","total": 4741814,"plusSh": 207,"plusP": 8835,"kodexSh": 40,"kodexP": 18440,"div": 39295,"orders": 20},
+  {"date": "2026-03-19","total": 4836170,"plusSh": 213,"plusP": 8890,"kodexSh": 40,"kodexP": 18025,"div": 39295,"orders": 22},
+  {"date": "2026-03-20","total": 4927173,"plusSh": 214,"plusP": 9080,"kodexSh": 41,"kodexP": 18035,"div": 39295,"orders": 24},
+  {"date": "2026-03-21","total": 4883596,"plusSh": 214,"plusP": 9080,"kodexSh": 41,"kodexP": 18035,"div": 39295,"orders": 24},
+  {"date": "2026-03-22","total": 4883596,"plusSh": 214,"plusP": 9080,"kodexSh": 41,"kodexP": 18035,"div": 39295,"orders": 24},
+  {"date": "2026-03-23","total": 5011794,"plusSh": 248,"plusP": 8640,"kodexSh": 42,"kodexP": 16865,"div": 39295,"orders": 31},
+  {"date": "2026-03-25","total": 5147955,"plusSh": 250,"plusP": 8930,"kodexSh": 43,"kodexP": 17525,"div": 39295,"orders": 34},
+  {"date": "2026-03-26","total": 5078491,"plusSh": 251,"plusP": 8870,"kodexSh": 43,"kodexP": 17000,"div": 39295,"orders": 35},
+  {"date": "2026-03-27","total": 5084864,"plusSh": 252,"plusP": 8932,"kodexSh": 44,"kodexP": 16835,"div": 39295,"orders": 37}
+];
+
+let savedData = {"date":"2026-03-27","total":5084864,"plusSh":252,"plusP":8932,"kodexSh":44,"kodexP":16835,"div":39295,"orders":37};
+
+let goalData = {"discharge":{"date":"2027-04-17","plusSh":1110,"kodexSh":304,"div":24.7},"milestones":[{"date":"2026-04","plusSh":287,"kodexSh":53,"div":5.8,"label":"일병 종료"},{"date":"2026-10","plusSh":605,"kodexSh":179,"div":13.8,"label":"상병 종료"}],"monthGoal":{"ym":"2026-03","plusSh":203,"kodexSh":42,"div":4.2}};
+
 let charts = {};
 let qsParsed = null;
 let selectedMonth = 'all';
