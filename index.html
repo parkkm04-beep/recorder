@@ -205,31 +205,12 @@ textarea.paste-area{width:100%;background:#112035;border:1px solid #182a40;borde
 .goal-fail{color:#9ca3af;}
 
 /* 🔥 목표 슬라이드(아코디언) 효과 CSS */
-
-.goal-toggle-btn{
-  position:absolute;
-  right:10px;
-  bottom:8px;
-  font-size:10px;
-  color:#94a3b8;
-  cursor:pointer;
-  font-weight:700;
-}
-
-.goal-toggle-btn:hover{
-  color:#00e5ff;
-}
-
-.goal-detail{
-  max-height:0;
-  overflow:hidden;
-  transition:max-height 0.35s ease;
-  margin-top:6px;
-}
-
-.goal-detail.open{
-  max-height:120px;
-}
+.goal-accordion { display: flex; flex-direction: column; gap: 8px; }
+.goal-trigger { cursor: pointer; transition: transform 0.2s ease; }
+.goal-trigger:active { transform: scale(0.99); }
+.toggle-text { text-align: center; font-size: 11px; color: #94a3b8; margin-top: 4px; font-weight: 700; font-family: 'Space Mono', monospace; }
+.goal-hidden-list { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-in-out; display: flex; flex-direction: column; gap: 8px; }
+.goal-hidden-list.open { max-height: 1000px; margin-top: 8px; }
 
 </style>
 
@@ -353,11 +334,6 @@ textarea.paste-area{width:100%;background:#112035;border:1px solid #182a40;borde
 <div class="toast" id="toast"></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script>
-
-window.onerror = function(msg, url, line){
-  alert(msg + " / line: " + line);
-};
-
 const SKEY = 'invest-logs-v6';
 const GKEY = 'invest-goals-v1';
 let records = [];
@@ -868,47 +844,66 @@ function calc(t){
 // 🔥 계산
 const results = targets.map(calc);
 
-function makeCard(r, idx){
+function makeCard(r){
 
-  const baseClass = r.passed
-    ? (r.ok ? 'done' : 'fail')
-    : (r.curPlus - r.needPlus >= 0 ? 'ok' : 'bad');
-
-  const statusText = r.passed
-    ? (r.ok ? '✅ 목표 달성' : '❌ 목표 미달')
-    : (r.ok ? '🟢 달성 가능' : '🔴 달성 어려움');
-
-  return `
-<div class="goal-card ${baseClass}">
+  if(r.passed){
+    return `
+<div class="goal-card ${r.ok ? 'done' : 'fail'}">
   <div class="goal-title">${r.name} (${r.date})</div>
-
-  <div class="goal-status ${r.ok ? 'goal-good' : 'goal-warn'}">
-    ${statusText}
-  </div>
-
-  <div class="goal-toggle-btn" onclick="toggleGoalDetail(${idx})">
-    펼치기 ▼
-  </div>
-
-  <div id="goal-detail-${idx}" class="goal-detail">
-
-    <div class="goal-sub">
-      필요: +${r.needPlus.toFixed(1)}주 / 현재: +${r.curPlus.toFixed(1)}주
-    </div>
-
-    <div class="goal-sub ${(r.curPlus - r.needPlus)>=0 ? 'goal-good' : 'goal-warn'}">
-      ${(r.curPlus - r.needPlus)>=0 ? '현재 속도 충분' : '속도 부족'}
-    </div>
-
+  <div class="goal-status ${r.ok ? 'goal-done' : 'goal-fail'}">
+    ${r.ok ? '✅ 목표 달성' : '❌ 목표 미달'}
   </div>
 </div>
 `;
+  }
+
+  const diff = r.curPlus - r.needPlus;
+  const status = diff >= 0 ? 'ok' : 'bad';
+
+  return `
+<div class="goal-card ${status}">
+  <div class="goal-title">${r.name} (${r.date})</div>
+
+  <div class="goal-status ${r.ok ? 'goal-good' : 'goal-warn'}">
+    ${r.ok ? '🟢 달성 가능' : '🔴 달성 어려움'}
+  </div>
+
+  <div class="goal-sub">
+    필요: +${r.needPlus.toFixed(1)}주 / 현재: +${r.curPlus.toFixed(1)}주
+  </div>
+
+  <div class="goal-sub ${diff>=0 ? 'goal-good' : 'goal-warn'}">
+    ${diff>=0 ? '현재 속도 충분' : '속도 부족'}
+  </div>
+</div>
+`;
+}
 
 // 🔥 슬라이드 형태로 카드 분리하기
+const htmlCards = results.map(makeCard);
 
-const htmlCards = results.map((r,i)=>makeCard(r,i)).join('');
-return `<div class="goal-cards">${htmlCards}</div>`;
+if (htmlCards.length === 0) return '';
+
+// 아직 지나지 않은 '가장 가까운 시점' 찾기
+let topIdx = results.findIndex(r => !r.passed);
+if (topIdx === -1) topIdx = results.length - 1; // 다 지났으면 마지막 전역 카드
+
+const topCard = htmlCards[topIdx];
+const restCards = htmlCards.filter((_, i) => i !== topIdx).join('');
+
+return `
+<div class="goal-accordion">
+  <div class="goal-trigger" onclick="toggleGoals()">
+    ${topCard}
+    <div class="toggle-text" id="toggleText">▼ 다른 시점 목표 확인하기 ▼</div>
+  </div>
+  <div id="hiddenGoals" class="goal-hidden-list">
+    ${restCards}
+  </div>
+</div>
+`;
 }
+
 
 function endOfMonth(date){
   const d = new Date(date);
@@ -929,20 +924,6 @@ function toggleGoals() {
   }
 }
 
-function toggleGoalDetail(idx){
-  const el = document.getElementById(`goal-detail-${idx}`);
-  const btn = document.querySelector(`[onclick="toggleGoalDetail(${idx})"]`);
-
-  if(!el || !btn) return;
-
-  if(el.classList.contains('open')){
-    el.classList.remove('open');
-    btn.textContent = '펼치기 ▼';
-  }else{
-    el.classList.add('open');
-    btn.textContent = '닫기 ▲';
-  }
-}
 
 </script>
 </body>
