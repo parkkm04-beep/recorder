@@ -116,18 +116,7 @@ canvas{width:100%!important;}
 .md-val{font-size:18px;font-weight:900;font-family:'Space Mono',monospace;}
 .md-delta{font-size:11px;margin-top:3px;}
 .md-delta.up{color: #fbbf24;}.md-delta.dn{color:#fb7185;}.md-delta.neu{color:#4a6080;}
-
-.close-btn{
-  width:100%;
-  padding:9px;
-  border-radius:8px;
-  border:1px solid #182a40;
-  background:transparent;
-  color:#4a6080;
-  font-size:11px;
-  cursor:pointer;
-  font-family:'Noto Sans KR',sans-serif;
-}
+.close-btn{width:10ding:9px;border-radius:8px;border:1px solid #182a40;background:transparent;color:#4a6080;font-size:11px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;}
 
 .log-item{background:#0c1525;border:1px solid #182a40;border-radius:12px;padding:14px;margin-bottom:8px;position:relative;}
 .log-item.latest{border-color:rgba(0,229,255,.35);}
@@ -184,20 +173,6 @@ textarea.paste-area{width:100%;background:#112035;border:1px solid #182a40;borde
   bottom:0;
   width:3px;
   border-radius:10px 0 0 10px;
-}
-
-.goal-trigger {
-  position: relative;
-}
-
-.toggle-text {
-  position: absolute;
-  right: 12px;
-  bottom: 10px;
-  font-size: 10px;
-  color: #94a3b8;
-  font-weight: 700;
-  font-family: 'Space Mono', monospace;
 }
 
 /* 상태별 컬러 */
@@ -904,39 +879,30 @@ function makeCard(r){
 `;
 }
 
-// 🔥 카드 생성
+// 🔥 슬라이드 형태로 카드 분리하기
 const htmlCards = results.map(makeCard);
 
 if (htmlCards.length === 0) return '';
 
-// 가장 가까운 목표 (대표 카드)
+// 아직 지나지 않은 '가장 가까운 시점' 찾기
 let topIdx = results.findIndex(r => !r.passed);
-if (topIdx === -1) topIdx = results.length - 1;
+if (topIdx === -1) topIdx = results.length - 1; // 다 지났으면 마지막 전역 카드
 
 const topCard = htmlCards[topIdx];
-
-// 🔥 나머지 카드 (일병~전역 전부 포함)
-const restCards = htmlCards
-  .map((c, i) => i === topIdx ? null : c)
-  .filter(Boolean)
-  .join('');
+const restCards = htmlCards.filter((_, i) => i !== topIdx).join('');
 
 return `
 <div class="goal-accordion">
-
-  <!-- 🔥 대표 카드 (클릭 트리거) -->
   <div class="goal-trigger" onclick="toggleGoals()">
     ${topCard}
-    <div class="toggle-text" id="toggleText">▼</div>
+    <div class="toggle-text" id="toggleText">▼ 다른 시점 목표 확인하기 ▼</div>
   </div>
-
-  <!-- 🔥 나머지 전체 카드 -->
   <div id="hiddenGoals" class="goal-hidden-list">
     ${restCards}
   </div>
-
 </div>
 `;
+}
 
 
 function endOfMonth(date){
@@ -945,17 +911,16 @@ function endOfMonth(date){
 }
 
 // 🔥 목표 카드 슬라이드 열기/닫기 스위치 함수
-
 function toggleGoals() {
   const list = document.getElementById('hiddenGoals');
   const text = document.getElementById('toggleText');
 
   if (list.classList.contains('open')) {
     list.classList.remove('open');
-    text.innerText = '▼';
+    text.innerText = '▼ 다른 시점 목표 확인하기 ▼';
   } else {
     list.classList.add('open');
-    text.innerText = '▲';
+    text.innerText = '▲ 닫기 ▲';
   }
 }
 
