@@ -898,35 +898,12 @@ function makeCard(r, idx){
   </div>
 </div>
 `;
-}
-
-  const diff = r.curPlus - r.needPlus;
-  const status = diff >= 0 ? 'ok' : 'bad';
-
-  return `
-<div class="goal-card ${status}">
-  <div class="goal-title">${r.name} (${r.date})</div>
-
-  <div class="goal-status ${r.ok ? 'goal-good' : 'goal-warn'}">
-    ${r.ok ? '🟢 달성 가능' : '🔴 달성 어려움'}
-  </div>
-
-  <div class="goal-sub">
-    필요: +${r.needPlus.toFixed(1)}주 / 현재: +${r.curPlus.toFixed(1)}주
-  </div>
-
-  <div class="goal-sub ${diff>=0 ? 'goal-good' : 'goal-warn'}">
-    ${diff>=0 ? '현재 속도 충분' : '속도 부족'}
-  </div>
-</div>
-`;
-}
 
 // 🔥 슬라이드 형태로 카드 분리하기
 
 const htmlCards = results.map((r,i)=>makeCard(r,i)).join('');
 return `<div class="goal-cards">${htmlCards}</div>`;
-
+}
 
 function endOfMonth(date){
   const d = new Date(date);
@@ -949,7 +926,9 @@ function toggleGoals() {
 
 function toggleGoalDetail(idx){
   const el = document.getElementById(`goal-detail-${idx}`);
-  const btn = el.previousElementSibling;
+  const btn = document.querySelector(`[onclick="toggleGoalDetail(${idx})"]`);
+
+  if(!el || !btn) return;
 
   if(el.classList.contains('open')){
     el.classList.remove('open');
