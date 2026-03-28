@@ -7,26 +7,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 
-/* 헤더 오른쪽 영역 */
-.goal-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-
-/* 아이콘 */
-.goal-toggle{
-  font-size:11px;
-  color:#4a6080;
-}
-
-/* 디데이 */
-.goal-dday{
-  font-size:10px;
-  color:#4a6080;
-  font-family:'Space Mono',monospace;
-}
-
 .ok{
   color:#22c55e;
   font-weight:600;
@@ -223,31 +203,6 @@ textarea.paste-area{width:100%;background:#112035;border:1px solid #182a40;borde
 .goal-warn{color:#ef4444;}
 .goal-done{color:#a78bfa;}
 .goal-fail{color:#9ca3af;}
-
-/* 펼침 애니메이션 */
-.goal-hidden{
-  max-height:0;
-  overflow:hidden;
-  opacity:0;
-  transition:all .35s ease;
-}
-
-.goal-hidden.show{
-  max-height:500px;
-  opacity:1;
-  margin-top:6px;
-}
-
-/* 클릭 가능 느낌 */
-.goal-card.clickable{
-  cursor:pointer;
-}
-
-/* 부족 숫자 강조 */
-.goal-num-warn{
-  color:#ef4444;
-  font-weight:700;
-}
 
 </style>
 
@@ -881,22 +836,15 @@ function calc(t){
 // 🔥 계산
 const results = targets.map(calc);
 
-function makeCard(r, isMain=false){
+function makeCard(r){
 
   if(r.passed){
     return `
 <div class="goal-card ${r.ok ? 'done' : 'fail'}">
-  
-  <div class="goal-head">
-    <div class="goal-title">${r.name}</div>
-  </div>
-
-  <div class="goal-dday">${r.date} · ${getDday(r.date)}</div>
-
+  <div class="goal-title">${r.name} (${r.date})</div>
   <div class="goal-status ${r.ok ? 'goal-done' : 'goal-fail'}">
     ${r.ok ? '✅ 목표 달성' : '❌ 목표 미달'}
   </div>
-
 </div>
 `;
   }
@@ -904,82 +852,35 @@ function makeCard(r, isMain=false){
   const diff = r.curPlus - r.needPlus;
   const status = diff >= 0 ? 'ok' : 'bad';
 
-  const need = diff < 0
-    ? `<span class="goal-num-warn">+${r.needPlus.toFixed(1)}</span>`
-    : `+${r.needPlus.toFixed(1)}`;
-
   return `
-<div class="goal-card ${status} ${isMain ? 'clickable' : ''}" ${isMain ? 'onclick="toggleGoalCards()"' : ''}>
-  
-  <div class="goal-head">
-    <div class="goal-title">${r.name}</div>
-    ${isMain ? `<div class="goal-toggle" id="goal-toggle-icon">▼</div>` : ''}
-  </div>
-
-  <div class="goal-dday">${r.date} · ${getDday(r.date)}</div>
+<div class="goal-card ${status}">
+  <div class="goal-title">${r.name} (${r.date})</div>
 
   <div class="goal-status ${r.ok ? 'goal-good' : 'goal-warn'}">
     ${r.ok ? '🟢 달성 가능' : '🔴 달성 어려움'}
   </div>
 
   <div class="goal-sub">
-    필요: ${need}주 / 현재: +${r.curPlus.toFixed(1)}주
+    필요: +${r.needPlus.toFixed(1)}주 / 현재: +${r.curPlus.toFixed(1)}주
   </div>
 
   <div class="goal-sub ${diff>=0 ? 'goal-good' : 'goal-warn'}">
     ${diff>=0 ? '현재 속도 충분' : '속도 부족'}
   </div>
-
 </div>
 `;
 }
 
-// 🔥 정렬 (가까운 시점 먼저)
-const sorted = results.sort((a,b)=> new Date(a.date) - new Date(b.date));
-
-// 🔥 가장 가까운 미래 하나
-const main = sorted.find(r=>!r.passed) || sorted[0];
-
-// 🔥 나머지
-const rest = sorted.filter(r=>r !== main);
-
 return `
 <div class="goal-cards">
-  ${makeCard(main, true)}
-
-  <div id="goal-extra" class="goal-hidden">
-    ${rest.map(r=>makeCard(r)).join('')}
-  </div>
+  ${results.map(makeCard).join('')}
 </div>
 `;
+}
 
 function endOfMonth(date){
   const d = new Date(date);
   return new Date(d.getFullYear(), d.getMonth()+1, 0);
-}
-
-function toggleGoalCards(){
-  const el = document.getElementById('goal-extra');
-  const icon = document.getElementById('goal-toggle-icon');
-
-  if(!el) return;
-
-  const isOpen = el.classList.toggle('show');
-
-  if(icon){
-    icon.textContent = isOpen ? '▲' : '▼';
-  }
-}
-
-function getDday(dateStr){
-  const today = new Date();
-  const target = new Date(dateStr);
-
-  const diff = Math.ceil((target - today) / (1000*60*60*24));
-
-  if(diff > 0) return `D-${diff}`;
-  if(diff === 0) return `D-DAY`;
-  return `D+${Math.abs(diff)}`;
 }
 
 </script>
