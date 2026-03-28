@@ -353,6 +353,11 @@ textarea.paste-area{width:100%;background:#112035;border:1px solid #182a40;borde
 <div class="toast" id="toast"></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script>
+
+window.onerror = function(msg, url, line){
+  alert(msg + " / line: " + line);
+};
+
 const SKEY = 'invest-logs-v6';
 const GKEY = 'invest-goals-v1';
 let records = [];
