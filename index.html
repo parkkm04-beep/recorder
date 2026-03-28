@@ -212,41 +212,6 @@ textarea.paste-area{width:100%;background:#112035;border:1px solid #182a40;borde
 .goal-hidden-list { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-in-out; display: flex; flex-direction: column; gap: 8px; }
 .goal-hidden-list.open { max-height: 1000px; margin-top: 8px; }
 
-/* 펼치기 버튼 및 슬라이드 컨테이너 추가 */
-.goal-container { position: relative; }
-
-.expand-btn {
-  position: absolute;
-  right: 12px;
-  bottom: 10px;
-  background: rgba(0, 229, 255, 0.1);
-  border: 1px solid rgba(0, 229, 255, 0.3);
-  padding: 3px 10px;
-  border-radius: 6px;
-  font-size: 10px;
-  font-weight: 700;
-  color: #00e5ff;
-  cursor: pointer;
-  z-index: 5;
-  font-family: 'Space Mono', monospace;
-}
-
-.expand-btn:hover { background: rgba(0, 229, 255, 0.2); }
-
-.goal-hidden-wrapper {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.4s ease-out;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: 8px;
-}
-
-.goal-hidden-wrapper.open {
-  max-height: 1000px;
-}
-
 </style>
 
 </head>
@@ -371,30 +336,8 @@ textarea.paste-area{width:100%;background:#112035;border:1px solid #182a40;borde
 <script>
 const SKEY = 'invest-logs-v6';
 const GKEY = 'invest-goals-v1';
-
-// 🔥 [수정] 데이터 고정: 수정할 때마다 날아가지 않도록 기본값을 설정합니다.
-let history = [
-  {"date": "2026-03-09","total": 4442572,"plusSh": 200,"plusP": 8660,"kodexSh": 36,"kodexP": 16515,"div": 28835,"orders": 9},
-  {"date": "2026-03-10","total": 4619025,"plusSh": 201,"plusP": 8705,"kodexSh": 36,"kodexP": 17500,"div": 28835,"orders": 12},
-  {"date": "2026-03-11","total": 4636344,"plusSh": 202,"plusP": 8810,"kodexSh": 37,"kodexP": 17735,"div": 28835,"orders": 13},
-  {"date": "2026-03-12","total": 4648291,"plusSh": 203,"plusP": 8895,"kodexSh": 37,"kodexP": 17315,"div": 28835,"orders": 13},
-  {"date": "2026-03-13","total": 4654861,"plusSh": 204,"plusP": 8835,"kodexSh": 38,"kodexP": 17025,"div": 28835,"orders": 14},
-  {"date": "2026-03-16","total": 4682449,"plusSh": 205,"plusP": 8790,"kodexSh": 39,"kodexP": 17270,"div": 28835,"orders": 17},
-  {"date": "2026-03-18","total": 4741814,"plusSh": 207,"plusP": 8835,"kodexSh": 40,"kodexP": 18440,"div": 39295,"orders": 20},
-  {"date": "2026-03-19","total": 4836170,"plusSh": 213,"plusP": 8890,"kodexSh": 40,"kodexP": 18025,"div": 39295,"orders": 22},
-  {"date": "2026-03-20","total": 4927173,"plusSh": 214,"plusP": 9080,"kodexSh": 41,"kodexP": 18035,"div": 39295,"orders": 24},
-  {"date": "2026-03-21","total": 4883596,"plusSh": 214,"plusP": 9080,"kodexSh": 41,"kodexP": 18035,"div": 39295,"orders": 24},
-  {"date": "2026-03-22","total": 4883596,"plusSh": 214,"plusP": 9080,"kodexSh": 41,"kodexP": 18035,"div": 39295,"orders": 24},
-  {"date": "2026-03-23","total": 5011794,"plusSh": 248,"plusP": 8640,"kodexSh": 42,"kodexP": 16865,"div": 39295,"orders": 31},
-  {"date": "2026-03-25","total": 5147955,"plusSh": 250,"plusP": 8930,"kodexSh": 43,"kodexP": 17525,"div": 39295,"orders": 34},
-  {"date": "2026-03-26","total": 5078491,"plusSh": 251,"plusP": 8870,"kodexSh": 43,"kodexP": 17000,"div": 39295,"orders": 35},
-  {"date": "2026-03-27","total": 5084864,"plusSh": 252,"plusP": 8932,"kodexSh": 44,"kodexP": 16835,"div": 39295,"orders": 37}
-];
-
-let savedData = {"date":"2026-03-27","total":5084864,"plusSh":252,"plusP":8932,"kodexSh":44,"kodexP":16835,"div":39295,"orders":37};
-
-let goalData = {"discharge":{"date":"2027-04-17","plusSh":1110,"kodexSh":304,"div":24.7},"milestones":[{"date":"2026-04","plusSh":287,"kodexSh":53,"div":5.8,"label":"일병 종료"},{"date":"2026-10","plusSh":605,"kodexSh":179,"div":13.8,"label":"상병 종료"}],"monthGoal":{"ym":"2026-03","plusSh":203,"kodexSh":42,"div":4.2}};
-
+let records = [];
+let goals = null;
 let charts = {};
 let qsParsed = null;
 let selectedMonth = 'all';
@@ -936,30 +879,30 @@ function makeCard(r){
 `;
 }
 
-// analyzeGoal 함수 내의 카드 렌더링 부분을 찾아서 교체하세요
+// 🔥 슬라이드 형태로 카드 분리하기
 const htmlCards = results.map(makeCard);
 
-if (htmlCards.length === 0) return '<div class="no-goal">목표 데이터가 없습니다.</div>';
+if (htmlCards.length === 0) return '';
 
-// 1. 첫 번째 카드와 나머지 카드 분리
-const firstCard = htmlCards[0];
-const restCards = htmlCards.slice(1).join('');
+// 아직 지나지 않은 '가장 가까운 시점' 찾기
+let topIdx = results.findIndex(r => !r.passed);
+if (topIdx === -1) topIdx = results.length - 1; // 다 지났으면 마지막 전역 카드
 
-// 2. 첫 번째 카드에 "펼치기" 버튼 삽입 (카드 닫히는 div 태그 앞에 넣기)
-const firstCardWithBtn = firstCard.replace(
-  '</div>\n</div>', 
-  `<div class="expand-btn" onclick="toggleGoalList(event)">펼치기 ▼</div></div></div>`
-);
+const topCard = htmlCards[topIdx];
+const restCards = htmlCards.filter((_, i) => i !== topIdx).join('');
 
 return `
-<div class="goal-container">
-  ${firstCardWithBtn}
-  
-  <div id="goal-slide-area" class="goal-hidden-wrapper">
+<div class="goal-accordion">
+  <div class="goal-trigger" onclick="toggleGoals()">
+    ${topCard}
+    <div class="toggle-text" id="toggleText">▼ 다른 시점 목표 확인하기 ▼</div>
+  </div>
+  <div id="hiddenGoals" class="goal-hidden-list">
     ${restCards}
   </div>
 </div>
 `;
+}
 
 
 function endOfMonth(date){
@@ -967,20 +910,19 @@ function endOfMonth(date){
   return new Date(d.getFullYear(), d.getMonth()+1, 0);
 }
 
-function toggleGoalList(e) {
-  e.stopPropagation(); // 카드 자체 클릭 이벤트 방지
-  const slideArea = document.getElementById('goal-slide-area');
-  const btn = e.target;
-  
-  if (slideArea.classList.contains('open')) {
-    slideArea.classList.remove('open');
-    btn.innerHTML = '펼치기 ▼';
+// 🔥 목표 카드 슬라이드 열기/닫기 스위치 함수
+function toggleGoals() {
+  const list = document.getElementById('hiddenGoals');
+  const text = document.getElementById('toggleText');
+
+  if (list.classList.contains('open')) {
+    list.classList.remove('open');
+    text.innerText = '▼ 다른 시점 목표 확인하기 ▼';
   } else {
-    slideArea.classList.add('open');
-    btn.innerHTML = '접기 ▲';
+    list.classList.add('open');
+    text.innerText = '▲ 닫기 ▲';
   }
 }
-
 
 
 </script>
