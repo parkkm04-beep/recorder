@@ -1,4 +1,4 @@
-<!DOCTYPE html> 수정본
+<!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -7,15 +7,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 
-.ok{
-  color:#22c55e;
-  font-weight:600;
-}
-
-.bad{
-  color:#ef4444;
-  font-weight:600;
-}
+.ok{color:#22c55e;font-weight:600;}
+.bad{color:#ef4444;font-weight:600;}
 
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:#070d18;color:#e2e8f0;font-family:'Noto Sans KR',sans-serif;min-height:100vh;padding:0 0 80px;}
@@ -115,8 +108,8 @@ canvas{width:100%!important;}
 .md-label{font-size:9px;color:#4a6080;letter-spacing:1px;margin-bottom:6px;font-family:'Space Mono',monospace;}
 .md-val{font-size:18px;font-weight:900;font-family:'Space Mono',monospace;}
 .md-delta{font-size:11px;margin-top:3px;}
-.md-delta.up{color: #fbbf24;}.md-delta.dn{color:#fb7185;}.md-delta.neu{color:#4a6080;}
-.close-btn{width:10ding:9px;border-radius:8px;border:1px solid #182a40;background:transparent;color:#4a6080;font-size:11px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;}
+.md-delta.up{color:#fbbf24;}.md-delta.dn{color:#fb7185;}.md-delta.neu{color:#4a6080;}
+.close-btn{width:100%;padding:9px;border-radius:8px;border:1px solid #182a40;background:transparent;color:#4a6080;font-size:11px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;}
 
 .log-item{background:#0c1525;border:1px solid #182a40;border-radius:12px;padding:14px;margin-bottom:8px;position:relative;}
 .log-item.latest{border-color:rgba(0,229,255,.35);}
@@ -147,142 +140,35 @@ textarea.paste-area{width:100%;background:#112035;border:1px solid #182a40;borde
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 .no-goal{font-size:11px;color:#4a6080;text-align:center;padding:12px;font-family:'Space Mono',monospace;}
 
-.goal-cards{
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-  margin:8px 0 12px;
-}
-
-.goal-card{
-  background:#112035;
-  border-radius:10px;
-  padding:12px;
-  border:1px solid rgba(0,229,255,.15);
-  font-size:11px;
-  font-family:'Space Mono',monospace;
-  position:relative;
-}
-
-/* 좌측 강조 라인 */
-.goal-card::before{
-  content:'';
-  position:absolute;
-  left:0;
-  top:0;
-  bottom:0;
-  width:3px;
-  border-radius:10px 0 0 10px;
-}
-
-/* 상태별 컬러 */
+.goal-cards{display:flex;flex-direction:column;gap:8px;margin:8px 0 12px;}
+.goal-card{background:#112035;border-radius:10px;padding:12px;border:1px solid rgba(0,229,255,.15);font-size:11px;font-family:'Space Mono',monospace;position:relative;}
+.goal-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:10px 0 0 10px;}
 .goal-card.ok::before{background:#00e5ff;}
 .goal-card.bad::before{background:#ef4444;}
 .goal-card.done::before{background:#a78bfa;}
 .goal-card.fail::before{background:#6b7280;}
-
-.goal-title{
-  font-size:12px;
-  font-weight:700;
-  margin-bottom:4px;
-  color:#e6f1ff;
-}
-
-.goal-status{
-  font-size:11px;
-  margin-bottom:4px;
-}
-
-.goal-sub{
-  font-size:10px;
-  color:#4a6080;
-}
-
-/* 강조 텍스트 */
+.goal-title{font-size:12px;font-weight:700;margin-bottom:4px;color:#e6f1ff;}
+.goal-status{font-size:11px;margin-bottom:4px;}
+.goal-sub{font-size:10px;color:#4a6080;}
 .goal-good{color:#00e5ff;}
 .goal-warn{color:#ef4444;}
 .goal-done{color:#a78bfa;}
 .goal-fail{color:#9ca3af;}
 
-/* 🔥 목표 슬라이드(아코디언) 효과 CSS */
-.goal-accordion { display: flex; flex-direction: column; gap: 8px; }
-.goal-hidden-list { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-in-out; display: flex; flex-direction: column; gap: 8px; }
+.goal-accordion{display:flex;flex-direction:column;gap:8px;}
+.goal-hidden-list{max-height:0;overflow:hidden;transition:max-height 0.4s ease-in-out;display:flex;flex-direction:column;gap:8px;}
+.goal-hidden-list.open{max-height:2000px;margin-top:8px;}
 
-.goal-hidden-list.open { 
-  max-height: 2000px; 
-  margin-top: 8px; 
-}
+.expand-btn{display:inline-flex;align-items:center;gap:4px;margin-top:8px;float:right;font-size:10px;font-weight:700;font-family:'Space Mono',monospace;color:#4a6080;background:rgba(255,255,255,.05);border:1px solid #182a40;border-radius:6px;padding:3px 9px;cursor:pointer;transition:color .2s,border-color .2s;user-select:none;}
+.expand-btn:hover{color:#00e5ff;border-color:rgba(0,229,255,.3);}
+.expand-btn .arr{font-size:9px;transition:transform .3s;}
+.expand-btn.open .arr{transform:rotate(180deg);}
 
-/* 카드 우하단 펼치기 버튼 */
-.expand-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  margin-top: 8px;
-  float: right;
-
-  font-size: 10px;
-  font-weight: 700;
-  font-family: 'Space Mono', monospace;
-
-  color: #4a6080;
-  background: rgba(255,255,255,.05);
-
-  border: 1px solid #182a40;
-  border-radius: 6px;
-
-  padding: 3px 9px;
-  cursor: pointer;
-
-  transition: color .2s, border-color .2s;
-  user-select: none;
-}
-
-.expand-btn:hover { 
-  color: #00e5ff; 
-  border-color: rgba(0,229,255,.3); 
-}
-
-.expand-btn .arr { 
-  font-size: 9px; 
-  transition: transform .3s; 
-}
-
-.expand-btn.open .arr { 
-  transform: rotate(180deg); 
-}
-
-/* 마일스톤 카드 wrapper */
-.milestone-card {
-  background: #112035;
-  border-radius: 10px;
-  padding: 12px;
-  margin-bottom: 10px;
-
-  border: 1px solid rgba(0,229,255,.08);
-}
-
-.milestone-card-hdr {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 8px;
-}
-
-.milestone-card-title { 
-  font-size: 11px; 
-  font-weight: 700; 
-  color: #e2e8f0; 
-}
-
-.milestone-card-pct { 
-  font-size: 10px; 
-  font-family: 'Space Mono', monospace; 
-  color: #4a6080; 
-}
-
+.milestone-card{background:#112035;border-radius:10px;padding:12px;margin-bottom:10px;border:1px solid rgba(0,229,255,.08);}
+.milestone-card-hdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;}
+.milestone-card-title{font-size:11px;font-weight:700;color:#e2e8f0;}
+.milestone-card-pct{font-size:10px;font-family:'Space Mono',monospace;color:#4a6080;}
 </style>
-
 </head>
 <body>
 <div class="wrap">
@@ -414,333 +300,242 @@ let selectedMonth = 'all';
 document.getElementById('inp-date').value = new Date().toISOString().slice(0,10);
 
 function onQSInput() {
-const raw = document.getElementById('qs-input').value.trim();
-const btn = document.getElementById('btn-qs');
-const preview = document.getElementById('qs-preview');
-const goalPrev = document.getElementById('qs-goal-preview');
-qsParsed = null; btn.disabled = true;
-preview.style.display = 'none'; goalPrev.style.display = 'none';
+  const raw = document.getElementById('qs-input').value.trim();
+  const btn = document.getElementById('btn-qs');
+  const preview = document.getElementById('qs-preview');
+  const goalPrev = document.getElementById('qs-goal-preview');
+  qsParsed = null; btn.disabled = true;
+  preview.style.display = 'none'; goalPrev.style.display = 'none';
 
-const result = {};
+  const result = {};
 
-const saveMatch = raw.match(/SAVE::({[^\n]+})/);
-if (saveMatch) {
-try {
-const d = JSON.parse(saveMatch[1]);
-if (d.date && d.plusSh) {
-result.save = d;
-const md = (d.plusSh||0)*156 + (d.kodexSh||0)*244;
-document.getElementById('qp-date').textContent = d.date;
-document.getElementById('qp-plus').textContent = (d.plusSh||0)+'주';
-document.getElementById('qp-kodex').textContent = (d.kodexSh||0)+'주';
-document.getElementById('qp-div').textContent = (md/10000).toFixed(2)+'만';
-preview.style.display = 'grid';
-}
-} catch(e) {}
-}
+  const saveMatch = raw.match(/SAVE::({[^\n]+})/);
+  if (saveMatch) {
+    try {
+      const d = JSON.parse(saveMatch[1]);
+      if (d.date && d.plusSh) {
+        result.save = d;
+        const md = (d.plusSh||0)*156 + (d.kodexSh||0)*244;
+        document.getElementById('qp-date').textContent = d.date;
+        document.getElementById('qp-plus').textContent = (d.plusSh||0)+'주';
+        document.getElementById('qp-kodex').textContent = (d.kodexSh||0)+'주';
+        document.getElementById('qp-div').textContent = (md/10000).toFixed(2)+'만';
+        preview.style.display = 'grid';
+      }
+    } catch(e) {}
+  }
 
-const goalMatch = raw.match(/GOAL::({[^\n]+})/);
-if (goalMatch) {
-try {
-const d = JSON.parse(goalMatch[1]);
-if (d.discharge) {
-result.goal = d;
-goalPrev.style.display = 'block';
-goalPrev.innerHTML = `🎯 목표 확인 · 전역: PLUS ${d.discharge.plusSh}주 / 배당 ${d.discharge.div}만 · 이번달: PLUS ${d.monthGoal?.plusSh||'-'}주`;
-}
-} catch(e) {}
-}
+  const goalMatch = raw.match(/GOAL::({[^\n]+})/);
+  if (goalMatch) {
+    try {
+      const d = JSON.parse(goalMatch[1]);
+      if (d.discharge) {
+        result.goal = d;
+        goalPrev.style.display = 'block';
+        goalPrev.innerHTML = `🎯 목표 확인 · 전역: PLUS ${d.discharge.plusSh}주 / 배당 ${d.discharge.div}만 · 이번달: PLUS ${d.monthGoal?.plusSh||'-'}주`;
+      }
+    } catch(e) {}
+  }
 
-if (result.save || result.goal) {
-qsParsed = result;
-btn.disabled = false;
-if (result.save && result.goal) btn.textContent = '⚡ 기록 + 목표 동시 저장';
-else if (result.save) btn.textContent = '⚡ 기록 저장';
-else btn.textContent = '🎯 목표 업데이트';
-}
+  if (result.save || result.goal) {
+    qsParsed = result;
+    btn.disabled = false;
+    if (result.save && result.goal) btn.textContent = '⚡ 기록 + 목표 동시 저장';
+    else if (result.save) btn.textContent = '⚡ 기록 저장';
+    else btn.textContent = '🎯 목표 업데이트';
+  }
 }
 
 function quickSave() {
-if (!qsParsed) return;
-let msg = [];
-if (qsParsed.save) {
-const d = qsParsed.save;
-const rec = { date:d.date, total:d.total||0, plusSh:d.plusSh||0, plusP:d.plusP||0,
-kodexSh:d.kodexSh||0, kodexP:d.kodexP||0, div:d.div||0, orders:d.orders||0 };
-upsertRecord(rec); persist();
-msg.push('기록 저장 ✅');
-}
-
-if (qsParsed.goal) {
-  goals = qsParsed.goal;
-
-  const today = new Date().toISOString().slice(0,10);
-
-  // 🔥 전역 목표
-  goals.updatedAt = today;
-
-  // 🔥 월 목표도 같이 넣기
-  if(goals.months){
-    Object.keys(goals.months).forEach(m=>{
-      goals.months[m].updatedAt = today;
-    });
+  if (!qsParsed) return;
+  let msg = [];
+  if (qsParsed.save) {
+    const d = qsParsed.save;
+    const rec = { date:d.date, total:d.total||0, plusSh:d.plusSh||0, plusP:d.plusP||0,
+      kodexSh:d.kodexSh||0, kodexP:d.kodexP||0, div:d.div||0, orders:d.orders||0 };
+    upsertRecord(rec); persist();
+    msg.push('기록 저장 ✅');
   }
 
-  localStorage.setItem(GKEY, JSON.stringify(goals));
-  msg.push('목표 업데이트 🎯');
+  if (qsParsed.goal) {
+    goals = qsParsed.goal;
+    const today = new Date().toISOString().slice(0,10);
+    goals.updatedAt = today;
+    if(goals.months){
+      Object.keys(goals.months).forEach(m=>{
+        goals.months[m].updatedAt = today;
+      });
+    }
+    localStorage.setItem(GKEY, JSON.stringify(goals));
+    msg.push('목표 업데이트 🎯');
+  }
+
+  toast(msg.join(' · '));
+  document.getElementById('qs-input').value='';
+  document.getElementById('qs-preview').style.display='none';
+  document.getElementById('qs-goal-preview').style.display='none';
+  document.getElementById('btn-qs').disabled=true;
+  document.getElementById('btn-qs').textContent='⚡ 바로 저장';
+  qsParsed=null;
+  renderAll();
 }
 
-toast(msg.join(' · '));
-document.getElementById('qs-input').value='';
-document.getElementById('qs-preview').style.display='none';
-document.getElementById('qs-goal-preview').style.display='none';
-document.getElementById('btn-qs').disabled=true;
-document.getElementById('btn-qs').textContent='⚡ 바로 저장';
-qsParsed=null;
-renderAll();}
-
 function switchTab(t) {
-document.getElementById('tab-input').style.display   = t==='input'  ?'block':'none';
-document.getElementById('tab-records').style.display = t==='records'?'block':'none';
-document.querySelectorAll('.tab').forEach((b,i)=>b.classList.toggle('active',['input','records'][i]===t));
-if(t==='records') renderAll();
+  document.getElementById('tab-input').style.display   = t==='input'  ?'block':'none';
+  document.getElementById('tab-records').style.display = t==='records'?'block':'none';
+  document.querySelectorAll('.tab').forEach((b,i)=>b.classList.toggle('active',['input','records'][i]===t));
+  if(t==='records') renderAll();
 }
 
 function updatePreview() {
-const ps=+document.getElementById('inp-plus-sh').value||0;
-const ks=+document.getElementById('inp-kodex-sh').value||0;
-const tot=+document.getElementById('inp-total').value||0;
-if(ps||ks){
-document.getElementById('preview-card').classList.add('show');
-document.getElementById('pv-plus').textContent=ps?ps+'주':'-';
-document.getElementById('pv-kodex').textContent=ks?ks+'주':'-';
-document.getElementById('pv-div').textContent=((ps*156+ks*244)/10000).toFixed(2)+'만';
-document.getElementById('pv-total').textContent=tot?(tot/10000).toFixed(0)+'만':'-';
-}
+  const ps=+document.getElementById('inp-plus-sh').value||0;
+  const ks=+document.getElementById('inp-kodex-sh').value||0;
+  const tot=+document.getElementById('inp-total').value||0;
+  if(ps||ks){
+    document.getElementById('preview-card').classList.add('show');
+    document.getElementById('pv-plus').textContent=ps?ps+'주':'-';
+    document.getElementById('pv-kodex').textContent=ks?ks+'주':'-';
+    document.getElementById('pv-div').textContent=((ps*156+ks*244)/10000).toFixed(2)+'만';
+    document.getElementById('pv-total').textContent=tot?(tot/10000).toFixed(0)+'만':'-';
+  }
 }
 
 function saveRecord() {
-const rec={date:document.getElementById('inp-date').value,
-total:+document.getElementById('inp-total').value||0,
-plusSh:+document.getElementById('inp-plus-sh').value||0,
-plusP:+document.getElementById('inp-plus-p').value||0,
-kodexSh:+document.getElementById('inp-kodex-sh').value||0,
-kodexP:+document.getElementById('inp-kodex-p').value||0,
-div:+document.getElementById('inp-div').value||0,
-orders:+document.getElementById('inp-orders').value||0};
-if(!rec.date||!rec.plusSh){toast('날짜와 PLUS 수량은 필수예요!',true);return;}
-upsertRecord(rec); persist(); toast('저장 완료!'); clearForm();
+  const rec={date:document.getElementById('inp-date').value,
+    total:+document.getElementById('inp-total').value||0,
+    plusSh:+document.getElementById('inp-plus-sh').value||0,
+    plusP:+document.getElementById('inp-plus-p').value||0,
+    kodexSh:+document.getElementById('inp-kodex-sh').value||0,
+    kodexP:+document.getElementById('inp-kodex-p').value||0,
+    div:+document.getElementById('inp-div').value||0,
+    orders:+document.getElementById('inp-orders').value||0};
+  if(!rec.date||!rec.plusSh){toast('날짜와 PLUS 수량은 필수예요!',true);return;}
+  upsertRecord(rec); persist(); toast('저장 완료!'); clearForm();
 }
 
 function upsertRecord(rec){
-const idx=records.findIndex(r=>r.date===rec.date);
-if(idx>=0)records[idx]=rec; else records.push(rec);
-records.sort((a,b)=>a.date.localeCompare(b.date));
+  const idx=records.findIndex(r=>r.date===rec.date);
+  if(idx>=0)records[idx]=rec; else records.push(rec);
+  records.sort((a,b)=>a.date.localeCompare(b.date));
 }
 
 function clearForm(){
-['inp-total','inp-plus-sh','inp-plus-p','inp-kodex-sh','inp-kodex-p','inp-div','inp-orders'].forEach(id=>document.getElementById(id).value='');
-document.getElementById('inp-date').value=new Date().toISOString().slice(0,10);
-document.getElementById('preview-card').classList.remove('show');
+  ['inp-total','inp-plus-sh','inp-plus-p','inp-kodex-sh','inp-kodex-p','inp-div','inp-orders'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('inp-date').value=new Date().toISOString().slice(0,10);
+  document.getElementById('preview-card').classList.remove('show');
 }
 
 function persist(){try{localStorage.setItem(SKEY,JSON.stringify(records));}catch(e){}}
 
 function loadData(){
-try{const r=localStorage.getItem(SKEY);if(r)records=JSON.parse(r);}catch(e){records=[];}
-try{const g=localStorage.getItem(GKEY);if(g)goals=JSON.parse(g);}catch(e){goals=null;}
-if(records.length===0){
-records=[
-{date:'2026-03-09',total:4442572,plusSh:200,plusP:8660,kodexSh:36,kodexP:16515,div:28835,orders:9},
-{date:'2026-03-10',total:4619025,plusSh:201,plusP:8705,kodexSh:36,kodexP:17500,div:28835,orders:12},
-{date:'2026-03-11',total:4636344,plusSh:202,plusP:8810,kodexSh:37,kodexP:17735,div:28835,orders:13},
-{date:'2026-03-12',total:4648291,plusSh:203,plusP:8895,kodexSh:37,kodexP:17315,div:28835,orders:13},
-{date:'2026-03-13',total:4654861,plusSh:204,plusP:8835,kodexSh:38,kodexP:17025,div:28835,orders:14},
-{date:'2026-03-16',total:4682449,plusSh:205,plusP:8790,kodexSh:39,kodexP:17270,div:28835,orders:17},
-{date:'2026-03-18',total:4741814,plusSh:207,plusP:8835,kodexSh:40,kodexP:18440,div:39295,orders:20},
-{date:'2026-03-19',total:4836170,plusSh:213,plusP:8890,kodexSh:40,kodexP:18025,div:39295,orders:22},
-{date:'2026-03-20',total:4927173,plusSh:214,plusP:9080,kodexSh:41,kodexP:18035,div:39295,orders:24},
-{date:'2026-03-21',total:4883596,plusSh:214,plusP:9080,kodexSh:41,kodexP:18035,div:39295,orders:24},
-{date:'2026-03-22',total:4883596,plusSh:214,plusP:9080,kodexSh:41,kodexP:18035,div:39295,orders:24},
-{date:'2026-03-23',total:5011794,plusSh:248,plusP:8640,kodexSh:42,kodexP:16865,div:39295,orders:31},
-];
-persist();
-}
+  try{const r=localStorage.getItem(SKEY);if(r)records=JSON.parse(r);}catch(e){records=[];}
+  try{const g=localStorage.getItem(GKEY);if(g)goals=JSON.parse(g);}catch(e){goals=null;}
+  // 데모 데이터 없음 — 첫 실행 시 빈 상태로 시작
 }
 
 function pctColor(pct, isFuture){
-if(isFuture){
-if(pct>=80) return '#00e5ff';
-if(pct>=50) return '#a78bfa';
-return '#4a6080';
-}
-if(pct>=105) return '#fbbf24';
-if(pct>=95)  return '#00e5ff';
-if(pct>=85)  return '#fbbf24';
-return '#fb7185';
+  if(isFuture){
+    if(pct>=80) return '#00e5ff';
+    if(pct>=50) return '#a78bfa';
+    return '#4a6080';
+  }
+  if(pct>=105) return '#fbbf24';
+  if(pct>=95)  return '#00e5ff';
+  if(pct>=85)  return '#fbbf24';
+  return '#fb7185';
 }
 function pctLabel(pct, isFuture){
-if(isFuture) return '';
-if(pct>=105) return '초과 달성 🚀';
-if(pct>=95)  return '정상 궤도 ✅';
-if(pct>=85)  return '소폭 미달 ⚠️';
-return '계획 수정 필요 ❗';
+  if(isFuture) return '';
+  if(pct>=105) return '초과 달성 🚀';
+  if(pct>=95)  return '정상 궤도 ✅';
+  if(pct>=85)  return '소폭 미달 ⚠️';
+  return '계획 수정 필요 ❗';
 }
 
 function renderDischarge(){
-const sec = document.getElementById('discharge-section');
-const latest = records.length ? records[records.length-1] : null;
-if(!goals || !latest){ sec.innerHTML='<div class="no-goal">체크 후 🎯 GOAL:: 코드를 붙여넣으면 달성도가 표시돼요</div>'; return; }
-const d = goals.discharge;
-const curDiv = (latest.plusSh*156+latest.kodexSh*244)/10000;
+  const sec = document.getElementById('discharge-section');
+  const latest = records.length ? records[records.length-1] : null;
+  if(!goals || !latest){ sec.innerHTML='<div class="no-goal">체크 후 🎯 GOAL:: 코드를 붙여넣으면 달성도가 표시돼요</div>'; return; }
+  const d = goals.discharge;
+  if(!d){ sec.innerHTML='<div class="no-goal">🎯 GOAL:: 코드를 붙여넣으면 달성도가 표시돼요</div>'; return; }
 
-// ── 헬퍼 ──────────────────────────────
-function msCard(label, plusGoal, kodexGoal, divGoal, borderColor){
-  const safeDiv = (a, b) => b ? (a / b) : 0;
+  const curDiv = (latest.plusSh*156+latest.kodexSh*244)/10000;
 
-  const pPct = Math.round(safeDiv(latest.plusSh, plusGoal) * 100);
-  const kPct = Math.round(safeDiv(latest.kodexSh, kodexGoal) * 100);
-  const dPct = Math.round(safeDiv(curDiv, divGoal) * 100);
-  const avg  = Math.round((pPct + kPct + dPct) / 3);
-
-  return `
-<div class="milestone-card" style="border-color:${borderColor || 'rgba(0,229,255,.08)'};">
+  function msCard(label, plusGoal, kodexGoal, divGoal, borderColor){
+    const pPct = Math.round(latest.plusSh / plusGoal * 100);
+    const kPct = Math.round(latest.kodexSh / kodexGoal * 100);
+    const dPct = Math.round(curDiv / divGoal * 100);
+    const avg  = Math.round((pPct+kPct+dPct)/3);
+    return `<div class="milestone-card" style="border-color:${borderColor||'rgba(0,229,255,.08)'};">
   <div class="milestone-card-hdr">
     <span class="milestone-card-title">${label}</span>
     <span class="milestone-card-pct">${avg}% 진행</span>
   </div>
   <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
-    ${mkMini('PLUS','#00e5ff', latest.plusSh, plusGoal, '주', pPct, true)}
-    ${mkMini('KODEX','#a78bfa', latest.kodexSh, kodexGoal, '주', kPct, true)}
-    ${mkMini('배당','#fb923c', curDiv.toFixed(1), divGoal, '만', dPct, true)}
+    ${mkMini('PLUS','#00e5ff',latest.plusSh,plusGoal,'주',pPct,true)}
+    ${mkMini('KODEX','#a78bfa',latest.kodexSh,kodexGoal,'주',kPct,true)}
+    ${mkMini('배당','#fb923c',curDiv.toFixed(1),divGoal,'만',dPct,true)}
   </div>
 </div>`;
-}
+  }
 
-// ── 카드 목록 구성 ─────────────────────
-let allCards = [];
+  let allCards = [];
+  if(goals.milestones && goals.milestones.length){
+    goals.milestones.forEach(ms=>{
+      allCards.push(msCard(ms.label, ms.plusSh, ms.kodexSh, ms.div, 'rgba(0,229,255,.08)'));
+    });
+  } else {
+    allCards.push(msCard('일병 종료', Math.round(d.plusSh*0.4), Math.round(d.kodexSh*0.4), +(d.div*0.4).toFixed(1), 'rgba(0,229,255,.08)'));
+    allCards.push(msCard('상병 종료', Math.round(d.plusSh*0.7), Math.round(d.kodexSh*0.7), +(d.div*0.7).toFixed(1), 'rgba(167,139,250,.12)'));
+  }
 
-// 데이터 안전 체크
-const hasMilestones = goals?.milestones && Array.isArray(goals.milestones) && goals.milestones.length;
-
-// 1순위: 사용자 정의 마일스톤
-if (hasMilestones){
-  goals.milestones.forEach(ms => {
-    allCards.push(
-      msCard(
-        ms.label,
-        ms.plusSh,
-        ms.kodexSh,
-        ms.div,
-        'rgba(0,229,255,.08)' // ← 따옴표 수정
-      )
-    );
-  });
-
-} else {
-  // 자동 생성: 일병(40%), 상병(70%)
-  allCards.push(
-    msCard(
-      '일병 종료',
-      Math.round(d.plusSh * 0.4),
-      Math.round(d.kodexSh * 0.4),
-      +(d.div * 0.4).toFixed(1),
-      'rgba(0,229,255,.08)'
-    )
-  );
-
-  allCards.push(
-    msCard(
-      '상병 종료',
-      Math.round(d.plusSh * 0.7),
-      Math.round(d.kodexSh * 0.7),
-      +(d.div * 0.7).toFixed(1),
-      'rgba(167,139,250,.12)'
-    )
-  );
-}
-
-// 전역 최종 목표 카드 (여기 아래에 추가하면 됨)
-
-const plusPct  = const safeDiv = (a,b)=> b ? a/b : 0;
-
-const plusPct = Math.round(safeDiv(latest.plusSh, d.plusSh)*100);
-const kodexPct = Math.round(latest.kodexSh/d.kodexSh*100);
-const divPct   = Math.round(curDiv/d.div*100);
-
-const safeDiv = (a, b) => b ? (a / b) : 0;
-const clamp = v => Math.min(Math.max(v, 0), 100);
-
-// 퍼센트 안전 계산
-const plusPctSafe  = clamp(Math.round(safeDiv(latest.plusSh, d.plusSh) * 100));
-const kodexPctSafe = clamp(Math.round(safeDiv(latest.kodexSh, d.kodexSh) * 100));
-const divPctSafe   = clamp(Math.round(safeDiv(curDiv, d.div) * 100));
-
-const avgPct = Math.round((plusPctSafe + kodexPctSafe + divPctSafe) / 3);
-
-allCards.push(`
-<div class="milestone-card" style="border-color:rgba(0,229,255,.25);">
+  const plusPct  = Math.round(latest.plusSh/d.plusSh*100);
+  const kodexPct = Math.round(latest.kodexSh/d.kodexSh*100);
+  const divPct   = Math.round(curDiv/d.div*100);
+  allCards.push(`<div class="milestone-card" style="border-color:rgba(0,229,255,.25);">
   <div class="milestone-card-hdr">
     <span class="milestone-card-title" style="color:#00e5ff;">🏁 전역 최종 목표</span>
-    <span class="milestone-card-pct">${avgPct}% 진행</span>
+    <span class="milestone-card-pct">${Math.round((plusPct+kodexPct+divPct)/3)}% 진행</span>
   </div>
   <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
-    ${mkMini('PLUS','#00e5ff', latest.plusSh, d.plusSh, '주', plusPctSafe, true)}
-    ${mkMini('KODEX','#a78bfa', latest.kodexSh, d.kodexSh, '주', kodexPctSafe, true)}
-    ${mkMini('배당','#fb923c', curDiv.toFixed(1), d.div, '만', divPctSafe, true)}
+    ${mkMini('PLUS','#00e5ff',latest.plusSh,d.plusSh,'주',plusPct,true)}
+    ${mkMini('KODEX','#a78bfa',latest.kodexSh,d.kodexSh,'주',kodexPct,true)}
+    ${mkMini('배당','#fb923c',curDiv.toFixed(1),d.div,'만',divPct,true)}
   </div>
 </div>`);
 
-// ── 가장 가까운 시점(첫 번째) 위에, 나머지 접힘 ──
-const topCard     = allCards?.[0] || '';
-const hiddenCards = allCards.length > 1 ? allCards.slice(1).join('') : '';
-const hasHidden   = allCards.length > 1;
+  const topCard     = allCards[0];
+  const hiddenCards = allCards.slice(1).join('');
+  const hasHidden   = allCards.length > 1;
 
-const milestonesHtml = `
-<div>
+  const milestonesHtml = `<div>
   ${topCard}
-
   ${hasHidden ? `
   <div style="display:flex;justify-content:flex-end;margin-top:6px;">
-    <button class="expand-btn" id="goal-expand-btn" onclick="toggleGoals()">
-  <span class="txt">다른 시점 보기</span>
-  <span class="arr">▼</span>
-</button>
+    <button class="expand-btn" id="ms-expand-btn" onclick="toggleMilestones()">
+      <span>다른 시점 보기</span><span class="arr">▼</span>
+    </button>
   </div>
-
   <div id="ms-hidden-list" class="goal-hidden-list">
     ${hiddenCards}
-  </div>
-  ` : ''}
+  </div>` : ''}
 </div>`;
 
-// sec 존재 체크
-if (sec) {
-  sec.innerHTML = `
-<div class="ds-header">
+  sec.innerHTML=`<div class="ds-header">
   <div class="ds-title">🎖️ 전역 목표</div>
-  <div class="ds-date">${formatDateDiff(goals?.updatedAt || '2026-01-01')}</div>
+  <div class="ds-date">${formatDateDiff(goals.updatedAt || '2026-01-01')}</div>
 </div>
-
 <div id="goal-analysis" style="margin-bottom:10px;"></div>
+${milestonesHtml}`;
 
-${milestonesHtml}
-`;
-}
-
-// analyzeGoal은 별도 함수 — 안전하게 실행
-try {
-  const el = document.getElementById('goal-analysis'); // ← 따옴표 수정
-  if (el) el.innerHTML = analyzeGoal();
-} catch(e) {
-  console.warn('analyzeGoal error', e); // ← 따옴표 수정
+  try { document.getElementById('goal-analysis').innerHTML = analyzeGoal(); } catch(e){ console.warn('analyzeGoal error', e); }
 }
 
 function mkMini(label,color,cur,goal,unit,pct,isFuture){
-const c=pctColor(pct,isFuture);
-const lbl=pctLabel(pct,isFuture);
-const w=Math.min(pct,100);
-return `<div style="background:#0c1525;border-radius:8px;padding:8px;">
+  const c=pctColor(pct,isFuture);
+  const lbl=pctLabel(pct,isFuture);
+  const w=Math.min(pct,100);
+  return `<div style="background:#0c1525;border-radius:8px;padding:8px;">
 <div style="font-size:8px;color:#4a6080;font-family:'Space Mono',monospace;margin-bottom:4px;">${label}</div>
 <div style="font-size:14px;font-weight:900;font-family:'Space Mono',monospace;color:${color};">${cur}${unit}</div>
 <div style="font-size:9px;color:#4a6080;margin:2px 0;">목표 ${goal}${unit}</div>
@@ -752,47 +547,28 @@ return `<div style="background:#0c1525;border-radius:8px;padding:8px;">
 }
 
 function renderMonthGoal(ym){
-const card = document.getElementById('month-goal-card');
-const monthRecs = records.filter(r=>r.date.startsWith(ym));
+  const card = document.getElementById('month-goal-card');
+  const monthRecs = records.filter(r=>r.date.startsWith(ym));
+  if(!monthRecs.length){ card.innerHTML='<div class="no-goal">이 달 기록이 없어요.</div>'; return; }
+  const latest = monthRecs[monthRecs.length-1];
+  const curDiv = (latest.plusSh*156+latest.kodexSh*244)/10000;
 
-if(!monthRecs.length){
-  card.innerHTML='<div class="no-goal">이 달 기록이 없어요.</div>';
-  return;
-}
+  if(!goals || !goals.monthGoal || !goals.monthGoal.ym){
+    card.innerHTML='<div class="no-goal">🎯 GOAL:: 코드를 붙여넣으면 이 달 목표 달성도가 표시돼요</div>';
+    return;
+  }
+  const mg = goals.monthGoal;
+  const plusPct  = Math.round(latest.plusSh/mg.plusSh*100);
+  const kodexPct = Math.round(latest.kodexSh/mg.kodexSh*100);
+  const divPct   = Math.round(curDiv/mg.div*100);
 
-const latest = monthRecs[monthRecs.length-1];
-const curDiv = (latest.plusSh*156+latest.kodexSh*244)/10000;
-
-// 🔥 수정된 부분
-const mg = goals?.months?.[ym];
-
-if(!mg){
-  card.innerHTML='<div class="no-goal">🎯 이 달 목표 없음</div>';
-  return;
-}
-
-const safeDiv = (a,b)=> b ? a/b : 0;
-
-const plusPct  = Math.round(safeDiv(latest.plusSh, mg.plusSh)*100);
-const kodexPct = Math.round(safeDiv(latest.kodexSh, mg.kodexSh)*100);
-const divPct   = Math.round(safeDiv(curDiv, mg.div)*100);
-
-card.innerHTML=`
-<div class="mg-header">
-  <div class="mg-title">📅 ${ym.slice(5)}월 목표</div>
-</div>
-
-<div class="mg-grid">
-  ${mkMonthItem('PLUS','#00e5ff',latest.plusSh,mg.plusSh,'주',plusPct)}
-  ${mkMonthItem('KODEX','#a78bfa',latest.kodexSh,mg.kodexSh,'주',kodexPct)}
-  ${mkMonthItem('월배당','#fb923c',curDiv.toFixed(2),mg.div,'만',divPct)}
-</div>`;
+  card.innerHTML=`<div class="mg-header"><div class="mg-title">📅 ${ym.slice(5)}월 목표</div><div style="font-size:10px;color:#4a6080;font-family:'Space Mono',monospace;">${mg.ym} 기준</div></div><div class="mg-grid">${mkMonthItem('PLUS','#00e5ff',latest.plusSh,mg.plusSh,'주',plusPct)}${mkMonthItem('KODEX','#a78bfa',latest.kodexSh,mg.kodexSh,'주',kodexPct)}${mkMonthItem('월배당','#fb923c',curDiv.toFixed(2),mg.div,'만',divPct)}</div>`;
 }
 
 function mkMonthItem(label,color,cur,goal,unit,pct){
-const c=pctColor(pct,false); const w=Math.min(pct,100);
-const lbl=pctLabel(pct,false);
-return `<div class="mg-item">
+  const c=pctColor(pct,false); const w=Math.min(pct,100);
+  const lbl=pctLabel(pct,false);
+  return `<div class="mg-item">
 <div class="mg-l">${label}</div>
 <div class="mg-cur" style="color:${color}">${cur}${unit}</div>
 <div class="mg-goal">목표 ${goal}${unit}</div>
@@ -804,135 +580,135 @@ return `<div class="mg-item">
 function getMonths(){return [...new Set(records.map(r=>r.date.slice(0,7)))].sort();}
 
 function renderMonthSelector(){
-const scroll=document.getElementById('month-scroll');
-scroll.innerHTML='';
-const allBtn=document.createElement('button');
-allBtn.className='month-btn all-btn'+(selectedMonth==='all'?' active':'');
-allBtn.textContent='전체';
-allBtn.onclick=()=>{selectedMonth='all';renderMonthSelector();showSection('all');};
-scroll.appendChild(allBtn);
-getMonths().forEach(ym=>{
-const btn=document.createElement('button');
-btn.className='month-btn'+(selectedMonth===ym?' active':'');
-btn.textContent=ym.slice(5)+'월';
-btn.onclick=()=>{selectedMonth=ym;renderMonthSelector();showSection('month');renderMonthSection(ym);};
-scroll.appendChild(btn);
-});
+  const scroll=document.getElementById('month-scroll');
+  scroll.innerHTML='';
+  const allBtn=document.createElement('button');
+  allBtn.className='month-btn all-btn'+(selectedMonth==='all'?' active':'');
+  allBtn.textContent='전체';
+  allBtn.onclick=()=>{selectedMonth='all';renderMonthSelector();showSection('all');};
+  scroll.appendChild(allBtn);
+  getMonths().forEach(ym=>{
+    const btn=document.createElement('button');
+    btn.className='month-btn'+(selectedMonth===ym?' active':'');
+    btn.textContent=ym.slice(5)+'월';
+    btn.onclick=()=>{selectedMonth=ym;renderMonthSelector();showSection('month');renderMonthSection(ym);};
+    scroll.appendChild(btn);
+  });
 }
 
 function showSection(which){
-document.getElementById('section-all').style.display=which==='all'?'block':'none';
-document.getElementById('section-month').style.display=which==='month'?'block':'none';
+  document.getElementById('section-all').style.display=which==='all'?'block':'none';
+  document.getElementById('section-month').style.display=which==='month'?'block':'none';
 }
 
 function renderMonthSection(ym){
-document.getElementById('month-section-title').textContent=ym.slice(5)+'월';
-renderMonthGoal(ym);
-renderMonthInnerChart(ym);
-renderLogList(document.getElementById('log-list-month'),document.getElementById('empty-month'),ym);
+  document.getElementById('month-section-title').textContent=ym.slice(5)+'월';
+  renderMonthGoal(ym);
+  renderMonthInnerChart(ym);
+  renderLogList(document.getElementById('log-list-month'),document.getElementById('empty-month'),ym);
 }
 
 function renderMonthInnerChart(ym){
-const recs=records.filter(r=>r.date.startsWith(ym));
-const box=document.getElementById('month-chart-box');
-if(recs.length<2){box.style.display='none';return;}
-box.style.display='block';
-if(charts['month-inner']){charts['month-inner'].destroy();}
-const labels=recs.map(r=>r.date.slice(5));
-charts['month-inner']=new Chart(document.getElementById('month-inner-chart').getContext('2d'),{
-type:'line',
-data:{labels,datasets:[
-{label:'PLUS',data:recs.map(r=>r.plusSh),borderColor:'#00e5ff',backgroundColor:'rgba(0,229,255,.1)',borderWidth:2,pointRadius:3,fill:false,tension:0.4},
-{label:'KODEX',data:recs.map(r=>r.kodexSh),borderColor:'#a78bfa',backgroundColor:'rgba(167,139,250,.1)',borderWidth:2,pointRadius:3,fill:false,tension:0.4,yAxisID:'y2'}
-]},
-options:{responsive:true,plugins:{legend:{display:true,labels:{color:'#e2e8f0',font:{size:10},boxWidth:12}},tooltip:{backgroundColor:'#0c1525',titleColor:'#e2e8f0',bodyColor:'#e2e8f0'}},
-scales:{x:{grid:{color:'#182a40'},ticks:{color:'#4a6080',font:{size:9}}},y:{grid:{color:'#182a40'},ticks:{color:'#00e5ff',font:{size:9}},position:'left'},y2:{grid:{display:false},ticks:{color:'#a78bfa',font:{size:9}},position:'right'}}}
-});
+  const recs=records.filter(r=>r.date.startsWith(ym));
+  const box=document.getElementById('month-chart-box');
+  if(recs.length<2){box.style.display='none';return;}
+  box.style.display='block';
+  if(charts['month-inner']){charts['month-inner'].destroy();}
+  const labels=recs.map(r=>r.date.slice(5));
+  charts['month-inner']=new Chart(document.getElementById('month-inner-chart').getContext('2d'),{
+    type:'line',
+    data:{labels,datasets:[
+      {label:'PLUS',data:recs.map(r=>r.plusSh),borderColor:'#00e5ff',backgroundColor:'rgba(0,229,255,.1)',borderWidth:2,pointRadius:3,fill:false,tension:0.4},
+      {label:'KODEX',data:recs.map(r=>r.kodexSh),borderColor:'#a78bfa',backgroundColor:'rgba(167,139,250,.1)',borderWidth:2,pointRadius:3,fill:false,tension:0.4,yAxisID:'y2'}
+    ]},
+    options:{responsive:true,plugins:{legend:{display:true,labels:{color:'#e2e8f0',font:{size:10},boxWidth:12}},tooltip:{backgroundColor:'#0c1525',titleColor:'#e2e8f0',bodyColor:'#e2e8f0'}},
+    scales:{x:{grid:{color:'#182a40'},ticks:{color:'#4a6080',font:{size:9}}},y:{grid:{color:'#182a40'},ticks:{color:'#00e5ff',font:{size:9}},position:'left'},y2:{grid:{display:false},ticks:{color:'#a78bfa',font:{size:9}},position:'right'}}}
+  });
 }
 
 function renderMonthlyCharts(){
-const wrap=document.getElementById('monthly-charts');
-['mc-shares','mc-div'].forEach(k=>{try{if(charts[k])charts[k].destroy();}catch(e){}});
-const months=getMonths();
-if(!months.length){wrap.innerHTML='';return;}
+  const wrap=document.getElementById('monthly-charts');
+  ['mc-shares','mc-div'].forEach(k=>{try{if(charts[k])charts[k].destroy();}catch(e){}});
+  const months=getMonths();
+  if(!months.length){wrap.innerHTML='';return;}
 
-const monthData=months.map(ym=>{
-const recs=records.filter(r=>r.date.startsWith(ym));
-if(!recs.length)return null;
-const last=recs[recs.length-1];
-const allBefore=records.filter(r=>r.date<recs[0].date);
-const prev=allBefore.length?allBefore[allBefore.length-1]:null;
-return {
-label:ym.slice(5)+'월',
-plusGain:prev?last.plusSh-prev.plusSh:last.plusSh-recs[0].plusSh,
-kodexGain:prev?last.kodexSh-prev.kodexSh:last.kodexSh-recs[0].kodexSh,
-divGain:prev?(last.plusSh*156+last.kodexSh*244-(prev.plusSh*156+prev.kodexSh*244))/10000 : (last.plusSh*156+last.kodexSh*244-(recs[0].plusSh*156+recs[0].kodexSh*244))/10000
-};
-}).filter(Boolean);
+  const monthData=months.map(ym=>{
+    const recs=records.filter(r=>r.date.startsWith(ym));
+    if(!recs.length)return null;
+    const last=recs[recs.length-1];
+    const allBefore=records.filter(r=>r.date<recs[0].date);
+    const prev=allBefore.length?allBefore[allBefore.length-1]:null;
+    return {
+      label:ym.slice(5)+'월',
+      plusGain:prev?last.plusSh-prev.plusSh:last.plusSh-recs[0].plusSh,
+      kodexGain:prev?last.kodexSh-prev.kodexSh:last.kodexSh-recs[0].kodexSh,
+      divGain:prev?(last.plusSh*156+last.kodexSh*244-(prev.plusSh*156+prev.kodexSh*244))/10000 : (last.plusSh*156+last.kodexSh*244-(recs[0].plusSh*156+recs[0].kodexSh*244))/10000
+    };
+  }).filter(Boolean);
 
-wrap.innerHTML='';
-const r1=document.createElement('div');r1.className='chart-box';
-r1.innerHTML='<div class="chart-title" style="color:#e2e8f0">📦 종목별 수량 증가 (월별)</div><canvas id="mc-shares" height="140"></canvas>';
-wrap.appendChild(r1);
-charts['mc-shares']=new Chart(document.getElementById('mc-shares').getContext('2d'),{type:'bar',
-data:{labels:monthData.map(d=>d.label),datasets:[
-{label:'PLUS',data:monthData.map(d=>d.plusGain),backgroundColor:'rgba(0,229,255,.7)',borderColor:'#00e5ff',borderWidth:1,borderRadius:4},
-{label:'KODEX',data:monthData.map(d=>d.kodexGain),backgroundColor:'rgba(167,139,250,.7)',borderColor:'#a78bfa',borderWidth:1,borderRadius:4}
-]},
-options:{responsive:true,plugins:{legend:{display:true,labels:{color:'#e2e8f0',font:{size:10},boxWidth:12}},tooltip:{backgroundColor:'#0c1525',titleColor:'#e2e8f0',bodyColor:'#e2e8f0',callbacks:{label:c=>` ${c.dataset.label} +${c.parsed.y}주`}}},
-scales:{x:{grid:{color:'#182a40'},ticks:{color:'#4a6080',font:{size:10}}},y:{grid:{color:'#182a40'},ticks:{color:'#4a6080',font:{size:9}}}}}
-});
+  wrap.innerHTML='';
+  const r1=document.createElement('div');r1.className='chart-box';
+  r1.innerHTML='<div class="chart-title" style="color:#e2e8f0">📦 종목별 수량 증가 (월별)</div><canvas id="mc-shares" height="140"></canvas>';
+  wrap.appendChild(r1);
+  charts['mc-shares']=new Chart(document.getElementById('mc-shares').getContext('2d'),{type:'bar',
+    data:{labels:monthData.map(d=>d.label),datasets:[
+      {label:'PLUS',data:monthData.map(d=>d.plusGain),backgroundColor:'rgba(0,229,255,.7)',borderColor:'#00e5ff',borderWidth:1,borderRadius:4},
+      {label:'KODEX',data:monthData.map(d=>d.kodexGain),backgroundColor:'rgba(167,139,250,.7)',borderColor:'#a78bfa',borderWidth:1,borderRadius:4}
+    ]},
+    options:{responsive:true,plugins:{legend:{display:true,labels:{color:'#e2e8f0',font:{size:10},boxWidth:12}},tooltip:{backgroundColor:'#0c1525',titleColor:'#e2e8f0',bodyColor:'#e2e8f0',callbacks:{label:c=>` ${c.dataset.label} +${c.parsed.y}주`}}},
+    scales:{x:{grid:{color:'#182a40'},ticks:{color:'#4a6080',font:{size:10}}},y:{grid:{color:'#182a40'},ticks:{color:'#4a6080',font:{size:9}}}}}
+  });
 
-const r2=document.createElement('div');r2.className='chart-box';
-r2.innerHTML='<div class="chart-title" style="color:#e2e8f0">📈 월 배당 증가액 (월별)</div><canvas id="mc-div" height="120"></canvas>';
-wrap.appendChild(r2);
-charts['mc-div']=new Chart(document.getElementById('mc-div').getContext('2d'),{type:'bar',
-data:{labels:monthData.map(d=>d.label),datasets:[{label:'배당 증가',data:monthData.map(d=>+d.divGain.toFixed(2)),backgroundColor:'rgba(251,146,60,.7)',borderColor:'#fb923c',borderWidth:1,borderRadius:4}]},
-options:{responsive:true,plugins:{legend:{display:false},tooltip:{backgroundColor:'#0c1525',borderColor:'#fb923c',borderWidth:1,titleColor:'#e2e8f0',bodyColor:'#fb923c',callbacks:{label:c=>` +${c.parsed.y.toFixed(2)}만원`}}},
-scales:{x:{grid:{color:'#182a40'},ticks:{color:'#4a6080',font:{size:10}}},y:{grid:{color:'#182a40'},ticks:{color:'#4a6080',font:{size:9}}}}}
-});
+  const r2=document.createElement('div');r2.className='chart-box';
+  r2.innerHTML='<div class="chart-title" style="color:#e2e8f0">📈 월 배당 증가액 (월별)</div><canvas id="mc-div" height="120"></canvas>';
+  wrap.appendChild(r2);
+  charts['mc-div']=new Chart(document.getElementById('mc-div').getContext('2d'),{type:'bar',
+    data:{labels:monthData.map(d=>d.label),datasets:[{label:'배당 증가',data:monthData.map(d=>+d.divGain.toFixed(2)),backgroundColor:'rgba(251,146,60,.7)',borderColor:'#fb923c',borderWidth:1,borderRadius:4}]},
+    options:{responsive:true,plugins:{legend:{display:false},tooltip:{backgroundColor:'#0c1525',borderColor:'#fb923c',borderWidth:1,titleColor:'#e2e8f0',bodyColor:'#fb923c',callbacks:{label:c=>` +${c.parsed.y.toFixed(2)}만원`}}},
+    scales:{x:{grid:{color:'#182a40'},ticks:{color:'#4a6080',font:{size:10}}},y:{grid:{color:'#182a40'},ticks:{color:'#4a6080',font:{size:9}}}}}
+  });
 }
 
 function renderLogList(listEl,emptyEl,filterYm){
-let filtered=filterYm?records.filter(r=>r.date.startsWith(filterYm)):[...records];
-if(!filtered.length){listEl.innerHTML='';emptyEl.style.display='block';return;}
-emptyEl.style.display='none';
-const sorted=[...filtered].reverse();
-listEl.innerHTML=sorted.map(r=>{
-const globalIdx=records.indexOf(r);
-const prev=globalIdx>0?records[globalIdx-1]:null;
-const md=r.plusSh*156+r.kodexSh*244;
-const isLatest=globalIdx===records.length-1;
-let delta='';
-if(prev){
-const dp=r.plusSh-prev.plusSh,dk=r.kodexSh-prev.kodexSh;
-const dd=md-(prev.plusSh*156+prev.kodexSh*244),dt=r.total-prev.total;
-delta=`<div class="log-delta"> <span class="ld ${dp>0?'ld-plus-up':dp<0?'ld-plus-dn':'ld-plus-neu'}">PLUS ${dp>=0?'+':''}${dp}주</span> <span class="ld ${dk>0?'ld-kodex-up':dk<0?'ld-kodex-dn':'ld-kodex-neu'}">KODEX ${dk>=0?'+':''}${dk}주</span> <span class="ld ${dd>0?'ld-div-up':dd<0?'ld-div-dn':'ld-div-neu'}">배당 ${dd>=0?'+':''}${(dd/10000).toFixed(2)}만</span> <span class="ld ${dt>0?'ld-tot-up':dt<0?'ld-tot-dn':'ld-tot-neu'}">자산 ${dt>=0?'+':''}${(dt/10000).toFixed(0)}만</span> </div>`;
-}
-return `<div class="log-item ${isLatest?'latest':''}"> <button class="log-del" onclick="delRec('${r.date}')">✕</button> <div class="log-top"><span class="log-date">${r.date}</span>${isLatest?'<span class="log-badge">LATEST</span>':''}</div> <div class="log-nums"> <div><div class="ln-l">PLUS</div><div class="ln-v" style="color:#00e5ff">${r.plusSh}주</div></div> <div><div class="ln-l">KODEX</div><div class="ln-v" style="color:#a78bfa">${r.kodexSh}주</div></div> <div><div class="ln-l">월배당</div><div class="ln-v" style="color:#fb923c">${(md/10000).toFixed(2)}만</div></div> <div><div class="ln-l">총자산</div><div class="ln-v" style="color:#fbbf24">${r.total?(r.total/10000).toFixed(0):'-'}만</div></div> </div> <div class="log-detail">@${r.plusP?r.plusP.toLocaleString():'-'} · @${r.kodexP?r.kodexP.toLocaleString():'-'} · 주문 ${r.orders}건</div> ${delta} </div>`;
-}).join('');
+  let filtered=filterYm?records.filter(r=>r.date.startsWith(filterYm)):[...records];
+  if(!filtered.length){listEl.innerHTML='';emptyEl.style.display='block';return;}
+  emptyEl.style.display='none';
+  const sorted=[...filtered].reverse();
+  listEl.innerHTML=sorted.map(r=>{
+    const globalIdx=records.indexOf(r);
+    const prev=globalIdx>0?records[globalIdx-1]:null;
+    const md=r.plusSh*156+r.kodexSh*244;
+    const isLatest=globalIdx===records.length-1;
+    let delta='';
+    if(prev){
+      const dp=r.plusSh-prev.plusSh,dk=r.kodexSh-prev.kodexSh;
+      const dd=md-(prev.plusSh*156+prev.kodexSh*244),dt=r.total-prev.total;
+      delta=`<div class="log-delta"><span class="ld ${dp>0?'ld-plus-up':dp<0?'ld-plus-dn':'ld-plus-neu'}">PLUS ${dp>=0?'+':''}${dp}주</span><span class="ld ${dk>0?'ld-kodex-up':dk<0?'ld-kodex-dn':'ld-kodex-neu'}">KODEX ${dk>=0?'+':''}${dk}주</span><span class="ld ${dd>0?'ld-div-up':dd<0?'ld-div-dn':'ld-div-neu'}">배당 ${dd>=0?'+':''}${(dd/10000).toFixed(2)}만</span><span class="ld ${dt>0?'ld-tot-up':dt<0?'ld-tot-dn':'ld-tot-neu'}">자산 ${dt>=0?'+':''}${(dt/10000).toFixed(0)}만</span></div>`;
+    }
+    return `<div class="log-item ${isLatest?'latest':''}"><button class="log-del" onclick="delRec('${r.date}')">✕</button><div class="log-top"><span class="log-date">${r.date}</span>${isLatest?'<span class="log-badge">LATEST</span>':''}</div><div class="log-nums"><div><div class="ln-l">PLUS</div><div class="ln-v" style="color:#00e5ff">${r.plusSh}주</div></div><div><div class="ln-l">KODEX</div><div class="ln-v" style="color:#a78bfa">${r.kodexSh}주</div></div><div><div class="ln-l">월배당</div><div class="ln-v" style="color:#fb923c">${(md/10000).toFixed(2)}만</div></div><div><div class="ln-l">총자산</div><div class="ln-v" style="color:#fbbf24">${r.total?(r.total/10000).toFixed(0):'-'}만</div></div></div><div class="log-detail">@${r.plusP?r.plusP.toLocaleString():'-'} · @${r.kodexP?r.kodexP.toLocaleString():'-'} · 주문 ${r.orders}건</div>${delta}</div>`;
+  }).join('');
 }
 
 function renderAll(){
-const n=records.length;
-document.getElementById('s-cnt').textContent=n+'회';
-if(n>=2){
-const f=records[0],l=records[n-1];
-document.getElementById('s-plus').textContent='+'+(l.plusSh-f.plusSh)+'주';
-document.getElementById('s-kodex').textContent='+'+(l.kodexSh-f.kodexSh)+'주';
-const dd=(l.plusSh*156+l.kodexSh*244)-(f.plusSh*156+f.kodexSh*244);
-document.getElementById('s-div').textContent='+'+(dd/10000).toFixed(2)+'만';
-}
-renderMonthSelector();
-if(selectedMonth==='all'){
-showSection('all');
-renderDischarge();
-renderMonthlyCharts();
-renderLogList(document.getElementById('log-list-all'),document.getElementById('empty-all'),null);
-} else {
-showSection('month');
-renderMonthSection(selectedMonth);
-}
+  const n=records.length;
+  document.getElementById('s-cnt').textContent=n+'회';
+  if(n>=2){
+    const f=records[0],l=records[n-1];
+    document.getElementById('s-plus').textContent='+'+(l.plusSh-f.plusSh)+'주';
+    document.getElementById('s-kodex').textContent='+'+(l.kodexSh-f.kodexSh)+'주';
+    const dd=(l.plusSh*156+l.kodexSh*244)-(f.plusSh*156+f.kodexSh*244);
+    document.getElementById('s-div').textContent='+'+(dd/10000).toFixed(2)+'만';
+  }
+  renderMonthSelector();
+  if(selectedMonth==='all'){
+    showSection('all');
+    renderDischarge();
+    renderMonthlyCharts();
+    renderLogList(document.getElementById('log-list-all'),document.getElementById('empty-all'),null);
+  } else {
+    showSection('month');
+    renderMonthSection(selectedMonth);
+  }
 }
 
 function delRec(date){records=records.filter(r=>r.date!==date);persist();renderAll();}
@@ -946,249 +722,137 @@ function toast(msg,isErr=false){const t=document.getElementById('toast');t.textC
 function formatDateDiff(dateStr){
   const today = new Date();
   const target = new Date(dateStr);
-
-  // 날짜 유효성 체크
-  if (isNaN(target.getTime())) return '날짜 오류';
-
-  const diffTime = today - target;
-  const diff = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-
-  if (diff === 0) return `${dateStr} 기준 (오늘)`;
-  if (diff > 0) return `${dateStr} 기준 (${diff}일 전)`;
+  const diff = Math.floor((today - target) / (1000 * 60 * 60 * 24));
+  if(diff === 0) return `${dateStr} 기준 (오늘)`;
+  if(diff > 0) return `${dateStr} 기준 (${diff}일 전)`;
   return `${dateStr} 기준 (${Math.abs(diff)}일 후)`;
 }
 
 function endOfMonth(date){
   const d = new Date(date);
-
-  // 유효하지 않은 날짜 방어
-  if (isNaN(d.getTime())) return null;
-
-  return new Date(d.getFullYear(), d.getMonth() + 1, 0);
+  return new Date(d.getFullYear(), d.getMonth()+1, 0);
 }
 
 function analyzeGoal(){
+  if(!goals || !goals.discharge || records.length < 2) return '';
 
-if(!goals || !goals.discharge || records.length < 2){
-  return '';
-}
+  // GOAL:: 코드에 enlistDate/dischargeDate가 있으면 우선 사용, 없으면 기본값
+  const enlistDate = new Date(goals.enlistDate || "2025-08-17");
+  const dischargeDate = new Date(goals.dischargeDate || "2027-04-17");
 
-const enlistDate = new Date("2025-08-17");
-
-function addMonths(date, m){
-  const d = new Date(date);
-  d.setMonth(d.getMonth() + m);
-  return d;
-}
-
-// 🔥 자동 시점 생성
-
-const privateDate = endOfMonth(addMonths(enlistDate, 8));   // 🔥 4월 말
-const corporalDate = endOfMonth(addMonths(enlistDate, 14)); // 🔥 10월 말
-
-const dischargeDate = new Date("2027-04-17");
-
-// 목표 (비율로 나눔)
-const d = goals.discharge;
-
-const targets = [
-  {
-    name:'일병',
-    date: privateDate,
-    plusSh: d.plusSh * 0.4,
-    kodexSh: d.kodexSh * 0.4,
-    div: d.div * 0.4
-  },
-  {
-    name:'상병',
-    date: corporalDate,
-    plusSh: d.plusSh * 0.7,
-    kodexSh: d.kodexSh * 0.7,
-    div: d.div * 0.7
-  },
-  {
-    name:'전역',
-    date: dischargeDate,
-    plusSh: d.plusSh,
-    kodexSh: d.kodexSh,
-    div: d.div
-  }
-];
-
-const first = records[0];
-const last = records[records.length-1];
-
-const days = Math.max(1, (new Date(last.date) - new Date(first.date)) / (1000*60*60*24));
-
-const plusSpeed = (last.plusSh - first.plusSh) / days;
-const kodexSpeed = (last.kodexSh - first.kodexSh) / days;
-
-const lastDiv = (last.plusSh*156 + last.kodexSh*244)/10000;
-const firstDiv = (first.plusSh*156 + first.kodexSh*244)/10000;
-const divSpeed = (lastDiv - firstDiv) / days;
-
-const today = new Date();
-
-function calc(t){
-
-  const goalDate = t.date;
-
-  const remainDays = Math.max(1,(goalDate - today) / (1000*60*60*24));
-
-  const plusRemain = t.plusSh - last.plusSh;
-  const kodexRemain = t.kodexSh - last.kodexSh;
-
-  const needPlus = remainDays > 0 ? plusRemain / remainDays : 0;
-  const needKodex = kodexRemain / remainDays;
-
-  const etaPlus = plusSpeed > 0 ? plusRemain / plusSpeed : Infinity;
-  const etaKodex = kodexSpeed > 0 ? kodexRemain / kodexSpeed : Infinity;
-  const etaDiv = divSpeed > 0 ? (t.div - lastDiv) / divSpeed : Infinity;
-
-  const etaDays = Math.max(etaPlus, etaKodex, etaDiv);
-
-  const etaDate = new Date();
-  etaDate.setDate(etaDate.getDate() + Math.ceil(etaDays));
-
-  const isOk = etaDate <= goalDate;
-
-  const passed = goalDate < today;
-
-  return {
-    name:t.name,
-    date:goalDate.toISOString().slice(0,10),
-    ok:isOk,
-    passed,
-    needPlus,
-    curPlus:plusSpeed
-  };
-}
-
-// 🔥 계산
-const results = targets.map(calc);
-
-function makeCard(r){
-
-  if(r.passed){
-    return `
-<div class="goal-card ${r.ok ? 'done' : 'fail'}">
-  <div class="goal-title">${r.name} (${r.date})</div>
-  <div class="goal-status ${r.ok ? 'goal-done' : 'goal-fail'}">
-    ${r.ok ? '✅ 목표 달성' : '❌ 목표 미달'}
-  </div>
-</div>
-`;
+  function addMonths(date, m){
+    const d = new Date(date);
+    d.setMonth(d.getMonth() + m);
+    return d;
   }
 
-  const diff = r.curPlus - r.needPlus;
-  const status = diff >= 0 ? 'ok' : 'bad';
+  const privateDate = endOfMonth(addMonths(enlistDate, 8));
+  const corporalDate = endOfMonth(addMonths(enlistDate, 14));
 
-  return `
-<div class="goal-card ${status}">
+  const d = goals.discharge;
+
+  const targets = [
+    { name:'일병', date: privateDate, plusSh: d.plusSh * 0.4, kodexSh: d.kodexSh * 0.4, div: d.div * 0.4 },
+    { name:'상병', date: corporalDate, plusSh: d.plusSh * 0.7, kodexSh: d.kodexSh * 0.7, div: d.div * 0.7 },
+    { name:'전역', date: dischargeDate, plusSh: d.plusSh, kodexSh: d.kodexSh, div: d.div }
+  ];
+
+  const first = records[0];
+  const last = records[records.length-1];
+  const days = Math.max(1, (new Date(last.date) - new Date(first.date)) / (1000*60*60*24));
+  const plusSpeed = (last.plusSh - first.plusSh) / days;
+  const kodexSpeed = (last.kodexSh - first.kodexSh) / days;
+  const lastDiv = (last.plusSh*156 + last.kodexSh*244)/10000;
+  const firstDiv = (first.plusSh*156 + first.kodexSh*244)/10000;
+  const divSpeed = (lastDiv - firstDiv) / days;
+  const today = new Date();
+
+  function calc(t){
+    const goalDate = t.date;
+    const passed = goalDate < today;
+    const remainDays = Math.max(1, (goalDate - today) / (1000*60*60*24));
+    const plusRemain = t.plusSh - last.plusSh;
+    const kodexRemain = t.kodexSh - last.kodexSh;
+    const needPlus = plusRemain / remainDays;
+    const needKodex = kodexRemain / remainDays;
+    const etaPlus = plusSpeed > 0 ? plusRemain / plusSpeed : Infinity;
+    const etaKodex = kodexSpeed > 0 ? kodexRemain / kodexSpeed : Infinity;
+    const etaDiv = divSpeed > 0 ? (t.div - lastDiv) / divSpeed : Infinity;
+    const etaDays = Math.max(etaPlus, etaKodex, etaDiv);
+    const etaDate = new Date();
+    etaDate.setDate(etaDate.getDate() + Math.ceil(etaDays));
+    const isOk = etaDate <= goalDate;
+    return { name:t.name, date:goalDate.toISOString().slice(0,10), ok:isOk, passed, needPlus, needKodex, curPlus:plusSpeed, curKodex:kodexSpeed };
+  }
+
+  const results = targets.map(calc);
+
+  function makeCard(r){
+    if(r.passed){
+      return `<div class="goal-card ${r.ok ? 'done' : 'fail'}">
   <div class="goal-title">${r.name} (${r.date})</div>
+  <div class="goal-status ${r.ok ? 'goal-done' : 'goal-fail'}">${r.ok ? '✅ 목표 달성' : '❌ 목표 미달'}</div>
+</div>`;
+    }
+    const diffPlus = r.curPlus - r.needPlus;
+    const diffKodex = r.curKodex - r.needKodex;
+    const status = (diffPlus >= 0 && diffKodex >= 0) ? 'ok' : 'bad';
+    return `<div class="goal-card ${status}">
+  <div class="goal-title">${r.name} (${r.date})</div>
+  <div class="goal-status ${r.ok ? 'goal-good' : 'goal-warn'}">${r.ok ? '🟢 달성 가능' : '🔴 달성 어려움'}</div>
+  <div class="goal-sub">PLUS 필요: +${r.needPlus.toFixed(1)}주/일 · 현재: +${r.curPlus.toFixed(1)}주/일 <span class="${diffPlus>=0?'goal-good':'goal-warn'}">${diffPlus>=0?'✓':'✗'}</span></div>
+  <div class="goal-sub">KODEX 필요: +${r.needKodex.toFixed(1)}주/일 · 현재: +${r.curKodex.toFixed(1)}주/일 <span class="${diffKodex>=0?'goal-good':'goal-warn'}">${diffKodex>=0?'✓':'✗'}</span></div>
+</div>`;
+  }
 
-  <div class="goal-status ${r.ok ? 'goal-good' : 'goal-warn'}">
-    ${r.ok ? '🟢 달성 가능' : '🔴 달성 어려움'}
-  </div>
+  const htmlCards = results.map(makeCard);
+  if (htmlCards.length === 0) return '';
 
-  <div class="goal-sub">
-    필요: +${r.needPlus.toFixed(1)}주 / 현재: +${r.curPlus.toFixed(1)}주
-  </div>
+  let topIdx = results.findIndex(r => !r.passed);
+  if (topIdx === -1) topIdx = results.length - 1;
 
-  <div class="goal-sub ${diff>=0 ? 'goal-good' : 'goal-warn'}">
-    ${diff>=0 ? '현재 속도 충분' : '속도 부족'}
-  </div>
-</div>
-`;
-}
+  const topCard = htmlCards[topIdx];
+  const restCards = htmlCards.filter((_, i) => i !== topIdx).join('');
 
-// 🔥 슬라이드 형태로 카드 분리하기
-const htmlCards = results.map(makeCard);
-
-if (htmlCards.length === 0) return '';
-
-// 아직 지나지 않은 '가장 가까운 시점' 찾기
-let topIdx = results.findIndex(r => !r.passed);
-if (topIdx === -1) topIdx = results.length - 1; // 다 지났으면 마지막 전역 카드
-
-const topCard = htmlCards[topIdx];
-const restCards = htmlCards.filter((_, i) => i !== topIdx).join('');
-
-return `
-<div class="goal-accordion">
- ${topCard}
-
-<div style="overflow:hidden; margin-top:6px;">
-  <div style="display:flex; justify-content:flex-end;">
+  return `<div class="goal-accordion">
+  ${topCard}
+  <div style="overflow:hidden;">
     <button class="expand-btn" id="goal-expand-btn" onclick="toggleGoals()">
-      <span class="txt">다른 시점 보기</span>
-      <span class="arr">▼</span>
+      <span>다른 시점 보기</span><span class="arr">▼</span>
     </button>
   </div>
-  <div id="hiddenGoals" class="goal-hidden-list">
-    ${restCards}
-  </div>
-</div>
-`;
+  <div id="hiddenGoals" class="goal-hidden-list">${restCards}</div>
+</div>`;
 }
 
-// 🔥 목표 카드 슬라이드 열기/닫기 스위치 함수
-
-// 목표 토글
-function toggleGoals(){
-  const list = document.getElementById('hiddenGoals'); // ← id 통일
-  const btn  = document.getElementById('goal-expand-btn');
-
-  if (!list) return;
-
-  const isOpen = list.classList.contains('open');
-
-  if (isOpen) {
+function toggleGoals() {
+  const list = document.getElementById('hiddenGoals');
+  const btn = document.getElementById('goal-expand-btn');
+  if(!list) return;
+  if (list.classList.contains('open')) {
     list.classList.remove('open');
-    if (btn) {
-      btn.classList.remove('open');
-      const txt = btn.querySelector('.txt');
-      if (txt) txt.textContent = '다른 시점 보기';
-    }
+    if(btn){ btn.classList.remove('open'); btn.querySelector('span:first-child').textContent='다른 시점 보기'; }
   } else {
     list.classList.add('open');
-    if (btn) {
-      btn.classList.add('open');
-      const txt = btn.querySelector('.txt');
-      if (txt) txt.textContent = '접기';
-    }
+    if(btn){ btn.classList.add('open'); btn.querySelector('span:first-child').textContent='접기'; }
   }
 }
 
-// 마일스톤 토글
-function toggleMilestones(){
+function toggleMilestones() {
   const list = document.getElementById('ms-hidden-list');
-  const btn  = document.getElementById('ms-expand-btn');
-
-  if (!list) return;
-
-  const isOpen = list.classList.contains('open');
-
-  if (isOpen) {
+  const btn = document.getElementById('ms-expand-btn');
+  if(!list) return;
+  if (list.classList.contains('open')) {
     list.classList.remove('open');
-    if (btn) {
-      btn.classList.remove('open');
-      const txt = btn.querySelector('.txt');
-      if (txt) txt.textContent = '다른 시점 보기';
-    }
+    if(btn){ btn.classList.remove('open'); btn.querySelector('span:first-child').textContent='다른 시점 보기'; }
   } else {
     list.classList.add('open');
-    if (btn) {
-      btn.classList.add('open');
-      const txt = btn.querySelector('.txt');
-      if (txt) txt.textContent = '접기';
-    }
+    if(btn){ btn.classList.add('open'); btn.querySelector('span:first-child').textContent='접기'; }
   }
 }
 
 loadData();
 renderAll();
-
 </script>
 </body>
 </html>
