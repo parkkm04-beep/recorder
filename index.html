@@ -204,43 +204,13 @@ textarea.paste-area{width:100%;background:#112035;border:1px solid #182a40;borde
 .goal-done{color:#a78bfa;}
 .goal-fail{color:#9ca3af;}
 
-/* 🔥 슬라이드 및 펼치기 버튼 스타일 */
-.goal-accordion { position: relative; display: flex; flex-direction: column; gap: 10px; }
-
-/* 첫 번째 카드 안에 들어갈 펼치기 버튼 */
-.expand-btn {
-  position: absolute;
-  right: 15px;
-  bottom: 15px;
-  background: rgba(255, 255, 255, 0.1);
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 11px;
-  font-weight: 700;
-  color: #94a3b8;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  cursor: pointer;
-  z-index: 10;
-  transition: all 0.2s;
-}
-
-.expand-btn:hover { background: rgba(255, 255, 255, 0.2); color: #fff; }
-
-/* 숨겨진 카드 리스트 */
-.goal-hidden-list {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.goal-hidden-list.open {
-  max-height: 2000px; /* 모든 카드가 보일 수 있게 넉넉히 */
-  margin-top: 5px;
-}
-
+/* 🔥 목표 슬라이드(아코디언) 효과 CSS */
+.goal-accordion { display: flex; flex-direction: column; gap: 8px; }
+.goal-trigger { cursor: pointer; transition: transform 0.2s ease; }
+.goal-trigger:active { transform: scale(0.99); }
+.toggle-text { text-align: center; font-size: 11px; color: #94a3b8; margin-top: 4px; font-weight: 700; font-family: 'Space Mono', monospace; }
+.goal-hidden-list { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-in-out; display: flex; flex-direction: column; gap: 8px; }
+.goal-hidden-list.open { max-height: 1000px; margin-top: 8px; }
 
 </style>
 
@@ -909,33 +879,17 @@ function makeCard(r){
 `;
 }
 
-// 🔥 여기서부터 교체하세요
+// 🔥 슬라이드 형태로 카드 분리하기
 const htmlCards = results.map(makeCard);
 
 if (htmlCards.length === 0) return '';
 
-// 1. 가장 가까운 목표(첫 번째 카드)와 나머지 분리
-const firstCardHtml = htmlCards[0];
-const restCardsHtml = htmlCards.slice(1).join('');
+// 아직 지나지 않은 '가장 가까운 시점' 찾기
+let topIdx = results.findIndex(r => !r.passed);
+if (topIdx === -1) topIdx = results.length - 1; // 다 지났으면 마지막 전역 카드
 
-// 2. 첫 번째 카드 안에 "펼치기" 버튼을 강제로 삽입하는 방식
-const firstCardWithBtn = firstCardHtml.replace(
-  '</div>\n</div>', 
-  `<div class="expand-btn" id="expandBtn" onclick="toggleGoals(event)">펼치기 ▼</div></div></div>`
-);
-
-return `
-<div class="goal-accordion">
-  <div style="position:relative;">
-    ${firstCardWithBtn}
-  </div>
-  
-  <div id="hiddenGoals" class="goal-hidden-list">
-    ${restCardsHtml}
-  </div>
-</div>
-`;
-
+const topCard = htmlCards[topIdx];
+const restCards = htmlCards.filter((_, i) => i !== topIdx).join('');
 
 return `
 <div class="goal-accordion">
@@ -950,21 +904,26 @@ return `
 `;
 }
 
-function toggleGoals(event) {
-  // 카드 자체 클릭이 아니라 버튼 클릭 시에만 동작하게 방어
-  event.stopPropagation(); 
-  
+
+function endOfMonth(date){
+  const d = new Date(date);
+  return new Date(d.getFullYear(), d.getMonth()+1, 0);
+}
+
+// 🔥 목표 카드 슬라이드 열기/닫기 스위치 함수
+function toggleGoals() {
   const list = document.getElementById('hiddenGoals');
-  const btn = document.getElementById('expandBtn');
+  const text = document.getElementById('toggleText');
 
   if (list.classList.contains('open')) {
     list.classList.remove('open');
-    btn.innerHTML = '펼치기 ▼';
+    text.innerText = '▼ 다른 시점 목표 확인하기 ▼';
   } else {
     list.classList.add('open');
-    btn.innerHTML = '접기 ▲';
+    text.innerText = '▲ 닫기 ▲';
   }
 }
+
 
 </script>
 </body>
