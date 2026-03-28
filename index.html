@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 수정본
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -206,11 +206,80 @@ textarea.paste-area{width:100%;background:#112035;border:1px solid #182a40;borde
 
 /* 🔥 목표 슬라이드(아코디언) 효과 CSS */
 .goal-accordion { display: flex; flex-direction: column; gap: 8px; }
-.goal-trigger { cursor: pointer; transition: transform 0.2s ease; }
-.goal-trigger:active { transform: scale(0.99); }
-.toggle-text { text-align: center; font-size: 11px; color: #94a3b8; margin-top: 4px; font-weight: 700; font-family: 'Space Mono', monospace; }
 .goal-hidden-list { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-in-out; display: flex; flex-direction: column; gap: 8px; }
-.goal-hidden-list.open { max-height: 1000px; margin-top: 8px; }
+
+.goal-hidden-list.open { 
+  max-height: 2000px; 
+  margin-top: 8px; 
+}
+
+/* 카드 우하단 펼치기 버튼 */
+.expand-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 8px;
+  float: right;
+
+  font-size: 10px;
+  font-weight: 700;
+  font-family: 'Space Mono', monospace;
+
+  color: #4a6080;
+  background: rgba(255,255,255,.05);
+
+  border: 1px solid #182a40;
+  border-radius: 6px;
+
+  padding: 3px 9px;
+  cursor: pointer;
+
+  transition: color .2s, border-color .2s;
+  user-select: none;
+}
+
+.expand-btn:hover { 
+  color: #00e5ff; 
+  border-color: rgba(0,229,255,.3); 
+}
+
+.expand-btn .arr { 
+  font-size: 9px; 
+  transition: transform .3s; 
+}
+
+.expand-btn.open .arr { 
+  transform: rotate(180deg); 
+}
+
+/* 마일스톤 카드 wrapper */
+.milestone-card {
+  background: #112035;
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 10px;
+
+  border: 1px solid rgba(0,229,255,.08);
+}
+
+.milestone-card-hdr {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.milestone-card-title { 
+  font-size: 11px; 
+  font-weight: 700; 
+  color: #e2e8f0; 
+}
+
+.milestone-card-pct { 
+  font-size: 10px; 
+  font-family: 'Space Mono', monospace; 
+  color: #4a6080; 
+}
 
 </style>
 
@@ -524,25 +593,147 @@ const latest = records.length ? records[records.length-1] : null;
 if(!goals || !latest){ sec.innerHTML='<div class="no-goal">체크 후 🎯 GOAL:: 코드를 붙여넣으면 달성도가 표시돼요</div>'; return; }
 const d = goals.discharge;
 const curDiv = (latest.plusSh*156+latest.kodexSh*244)/10000;
-const plusPct  = Math.round(latest.plusSh/d.plusSh*100);
+
+// ── 헬퍼 ──────────────────────────────
+function msCard(label, plusGoal, kodexGoal, divGoal, borderColor){
+  const safeDiv = (a, b) => b ? (a / b) : 0;
+
+  const pPct = Math.round(safeDiv(latest.plusSh, plusGoal) * 100);
+  const kPct = Math.round(safeDiv(latest.kodexSh, kodexGoal) * 100);
+  const dPct = Math.round(safeDiv(curDiv, divGoal) * 100);
+  const avg  = Math.round((pPct + kPct + dPct) / 3);
+
+  return `
+<div class="milestone-card" style="border-color:${borderColor || 'rgba(0,229,255,.08)'};">
+  <div class="milestone-card-hdr">
+    <span class="milestone-card-title">${label}</span>
+    <span class="milestone-card-pct">${avg}% 진행</span>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
+    ${mkMini('PLUS','#00e5ff', latest.plusSh, plusGoal, '주', pPct, true)}
+    ${mkMini('KODEX','#a78bfa', latest.kodexSh, kodexGoal, '주', kPct, true)}
+    ${mkMini('배당','#fb923c', curDiv.toFixed(1), divGoal, '만', dPct, true)}
+  </div>
+</div>`;
+}
+
+// ── 카드 목록 구성 ─────────────────────
+let allCards = [];
+
+// 데이터 안전 체크
+const hasMilestones = goals?.milestones && Array.isArray(goals.milestones) && goals.milestones.length;
+
+// 1순위: 사용자 정의 마일스톤
+if (hasMilestones){
+  goals.milestones.forEach(ms => {
+    allCards.push(
+      msCard(
+        ms.label,
+        ms.plusSh,
+        ms.kodexSh,
+        ms.div,
+        'rgba(0,229,255,.08)' // ← 따옴표 수정
+      )
+    );
+  });
+
+} else {
+  // 자동 생성: 일병(40%), 상병(70%)
+  allCards.push(
+    msCard(
+      '일병 종료',
+      Math.round(d.plusSh * 0.4),
+      Math.round(d.kodexSh * 0.4),
+      +(d.div * 0.4).toFixed(1),
+      'rgba(0,229,255,.08)'
+    )
+  );
+
+  allCards.push(
+    msCard(
+      '상병 종료',
+      Math.round(d.plusSh * 0.7),
+      Math.round(d.kodexSh * 0.7),
+      +(d.div * 0.7).toFixed(1),
+      'rgba(167,139,250,.12)'
+    )
+  );
+}
+
+// 전역 최종 목표 카드 (여기 아래에 추가하면 됨)
+
+const plusPct  = const safeDiv = (a,b)=> b ? a/b : 0;
+
+const plusPct = Math.round(safeDiv(latest.plusSh, d.plusSh)*100);
 const kodexPct = Math.round(latest.kodexSh/d.kodexSh*100);
 const divPct   = Math.round(curDiv/d.div*100);
 
-let milestonesHtml = '';
-if(goals.milestones){
-goals.milestones.forEach(ms=>{
-const pPct=Math.round(latest.plusSh/ms.plusSh*100);
-const kPct=Math.round(latest.kodexSh/ms.kodexSh*100);
-const dPct=Math.round(curDiv/ms.div*100);
-const avg=Math.round((pPct+kPct+dPct)/3);
-milestonesHtml+=` <div style="background:#112035;border-radius:10px;padding:12px;margin-bottom:10px;"> <div style="display:flex;justify-content:space-between;margin-bottom:8px;"> <span style="font-size:11px;font-weight:700;color:#e2e8f0;">${ms.label}</span> <span style="font-size:10px;font-family:'Space Mono',monospace;color:#4a6080;">${avg}% 진행</span> </div> <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;"> ${mkMini('PLUS','#00e5ff',latest.plusSh,ms.plusSh,'주',pPct,true)} ${mkMini('KODEX','#a78bfa',latest.kodexSh,ms.kodexSh,'주',kPct,true)} ${mkMini('배당','#fb923c',curDiv.toFixed(1),ms.div,'만',dPct,true)} </div> </div>`;
-});
+const safeDiv = (a, b) => b ? (a / b) : 0;
+const clamp = v => Math.min(Math.max(v, 0), 100);
+
+// 퍼센트 안전 계산
+const plusPctSafe  = clamp(Math.round(safeDiv(latest.plusSh, d.plusSh) * 100));
+const kodexPctSafe = clamp(Math.round(safeDiv(latest.kodexSh, d.kodexSh) * 100));
+const divPctSafe   = clamp(Math.round(safeDiv(curDiv, d.div) * 100));
+
+const avgPct = Math.round((plusPctSafe + kodexPctSafe + divPctSafe) / 3);
+
+allCards.push(`
+<div class="milestone-card" style="border-color:rgba(0,229,255,.25);">
+  <div class="milestone-card-hdr">
+    <span class="milestone-card-title" style="color:#00e5ff;">🏁 전역 최종 목표</span>
+    <span class="milestone-card-pct">${avgPct}% 진행</span>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
+    ${mkMini('PLUS','#00e5ff', latest.plusSh, d.plusSh, '주', plusPctSafe, true)}
+    ${mkMini('KODEX','#a78bfa', latest.kodexSh, d.kodexSh, '주', kodexPctSafe, true)}
+    ${mkMini('배당','#fb923c', curDiv.toFixed(1), d.div, '만', divPctSafe, true)}
+  </div>
+</div>`);
+
+// ── 가장 가까운 시점(첫 번째) 위에, 나머지 접힘 ──
+const topCard     = allCards?.[0] || '';
+const hiddenCards = allCards.length > 1 ? allCards.slice(1).join('') : '';
+const hasHidden   = allCards.length > 1;
+
+const milestonesHtml = `
+<div>
+  ${topCard}
+
+  ${hasHidden ? `
+  <div style="display:flex;justify-content:flex-end;margin-top:6px;">
+    <button class="expand-btn" id="goal-expand-btn" onclick="toggleGoals()">
+  <span class="txt">다른 시점 보기</span>
+  <span class="arr">▼</span>
+</button>
+  </div>
+
+  <div id="ms-hidden-list" class="goal-hidden-list">
+    ${hiddenCards}
+  </div>
+  ` : ''}
+</div>`;
+
+// sec 존재 체크
+if (sec) {
+  sec.innerHTML = `
+<div class="ds-header">
+  <div class="ds-title">🎖️ 전역 목표</div>
+  <div class="ds-date">${formatDateDiff(goals?.updatedAt || '2026-01-01')}</div>
+</div>
+
+<div id="goal-analysis" style="margin-bottom:10px;"></div>
+
+${milestonesHtml}
+`;
 }
 
-sec.innerHTML=` <div class="ds-header"> <div class="ds-title">🎖️ 전역 목표</div> <div class="ds-date">
-
-  ${formatDateDiff(goals.updatedAt || d.date)}
-</div> </div> <div id="goal-analysis" style="font-size:10px;color:#4a6080;font-family:'Space Mono',monospace;margin-bottom:10px;"></div>  ${milestonesHtml} <div style="background:#112035;border-radius:10px;padding:12px;border:1px solid rgba(0,229,255,.15);"> <div style="display:flex;justify-content:space-between;margin-bottom:10px;"> <span style="font-size:12px;font-weight:700;color:#00e5ff;">🏁 전역 최종 목표</span> <span style="font-size:10px;color:#4a6080;font-family:'Space Mono',monospace;">${Math.round((plusPct+kodexPct+divPct)/3)}% 진행</span> </div> <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;"> ${mkMini('PLUS','#00e5ff',latest.plusSh,d.plusSh,'주',plusPct,true)} ${mkMini('KODEX','#a78bfa',latest.kodexSh,d.kodexSh,'주',kodexPct,true)} ${mkMini('배당','#fb923c',curDiv.toFixed(1),d.div,'만',divPct,true)} </div> </div>`;document.getElementById('goal-analysis').innerHTML = analyzeGoal();
+// analyzeGoal은 별도 함수 — 안전하게 실행
+try {
+  const el = document.getElementById('goal-analysis'); // ← 따옴표 수정
+  if (el) el.innerHTML = analyzeGoal();
+} catch(e) {
+  console.warn('analyzeGoal error', e); // ← 따옴표 수정
 }
 
 function mkMini(label,color,cur,goal,unit,pct,isFuture){
@@ -563,20 +754,39 @@ return `<div style="background:#0c1525;border-radius:8px;padding:8px;">
 function renderMonthGoal(ym){
 const card = document.getElementById('month-goal-card');
 const monthRecs = records.filter(r=>r.date.startsWith(ym));
-if(!monthRecs.length){ card.innerHTML='<div class="no-goal">이 달 기록이 없어요.</div>'; return; }
+
+if(!monthRecs.length){
+  card.innerHTML='<div class="no-goal">이 달 기록이 없어요.</div>';
+  return;
+}
+
 const latest = monthRecs[monthRecs.length-1];
 const curDiv = (latest.plusSh*156+latest.kodexSh*244)/10000;
 
-if(!goals || !goals.monthGoal || !goals.monthGoal.ym){
-card.innerHTML='<div class="no-goal">🎯 GOAL:: 코드를 붙여넣으면 이 달 목표 달성도가 표시돼요</div>';
-return;
-}
-const mg = goals.monthGoal;
-const plusPct  = Math.round(latest.plusSh/mg.plusSh*100);
-const kodexPct = Math.round(latest.kodexSh/mg.kodexSh*100);
-const divPct   = Math.round(curDiv/mg.div*100);
+// 🔥 수정된 부분
+const mg = goals?.months?.[ym];
 
-card.innerHTML=` <div class="mg-header"> <div class="mg-title">📅 ${ym.slice(5)}월 목표</div> <div style="font-size:10px;color:#4a6080;font-family:'Space Mono',monospace;">${mg.ym} 기준</div> </div> <div class="mg-grid"> ${mkMonthItem('PLUS','#00e5ff',latest.plusSh,mg.plusSh,'주',plusPct)} ${mkMonthItem('KODEX','#a78bfa',latest.kodexSh,mg.kodexSh,'주',kodexPct)} ${mkMonthItem('월배당','#fb923c',curDiv.toFixed(2),mg.div,'만',divPct)} </div>`;
+if(!mg){
+  card.innerHTML='<div class="no-goal">🎯 이 달 목표 없음</div>';
+  return;
+}
+
+const safeDiv = (a,b)=> b ? a/b : 0;
+
+const plusPct  = Math.round(safeDiv(latest.plusSh, mg.plusSh)*100);
+const kodexPct = Math.round(safeDiv(latest.kodexSh, mg.kodexSh)*100);
+const divPct   = Math.round(safeDiv(curDiv, mg.div)*100);
+
+card.innerHTML=`
+<div class="mg-header">
+  <div class="mg-title">📅 ${ym.slice(5)}월 목표</div>
+</div>
+
+<div class="mg-grid">
+  ${mkMonthItem('PLUS','#00e5ff',latest.plusSh,mg.plusSh,'주',plusPct)}
+  ${mkMonthItem('KODEX','#a78bfa',latest.kodexSh,mg.kodexSh,'주',kodexPct)}
+  ${mkMonthItem('월배당','#fb923c',curDiv.toFixed(2),mg.div,'만',divPct)}
+</div>`;
 }
 
 function mkMonthItem(label,color,cur,goal,unit,pct){
@@ -737,11 +947,24 @@ function formatDateDiff(dateStr){
   const today = new Date();
   const target = new Date(dateStr);
 
-  const diff = Math.floor((today - target) / (1000 * 60 * 60 * 24));
+  // 날짜 유효성 체크
+  if (isNaN(target.getTime())) return '날짜 오류';
 
-  if(diff === 0) return `${dateStr} 기준 (오늘)`;
-  if(diff > 0) return `${dateStr} 기준 (${diff}일 전)`;
+  const diffTime = today - target;
+  const diff = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+  if (diff === 0) return `${dateStr} 기준 (오늘)`;
+  if (diff > 0) return `${dateStr} 기준 (${diff}일 전)`;
   return `${dateStr} 기준 (${Math.abs(diff)}일 후)`;
+}
+
+function endOfMonth(date){
+  const d = new Date(date);
+
+  // 유효하지 않은 날짜 방어
+  if (isNaN(d.getTime())) return null;
+
+  return new Date(d.getFullYear(), d.getMonth() + 1, 0);
 }
 
 function analyzeGoal(){
@@ -810,12 +1033,12 @@ function calc(t){
 
   const goalDate = t.date;
 
-  const remainDays = (goalDate - today) / (1000*60*60*24);
+  const remainDays = Math.max(1,(goalDate - today) / (1000*60*60*24));
 
   const plusRemain = t.plusSh - last.plusSh;
   const kodexRemain = t.kodexSh - last.kodexSh;
 
-  const needPlus = plusRemain / remainDays;
+  const needPlus = remainDays > 0 ? plusRemain / remainDays : 0;
   const needKodex = kodexRemain / remainDays;
 
   const etaPlus = plusSpeed > 0 ? plusRemain / plusSpeed : Infinity;
@@ -893,9 +1116,14 @@ const restCards = htmlCards.filter((_, i) => i !== topIdx).join('');
 
 return `
 <div class="goal-accordion">
-  <div class="goal-trigger" onclick="toggleGoals()">
-    ${topCard}
-    <div class="toggle-text" id="toggleText">▼ 다른 시점 목표 확인하기 ▼</div>
+ ${topCard}
+
+<div style="overflow:hidden; margin-top:6px;">
+  <div style="display:flex; justify-content:flex-end;">
+    <button class="expand-btn" id="goal-expand-btn" onclick="toggleGoals()">
+      <span class="txt">다른 시점 보기</span>
+      <span class="arr">▼</span>
+    </button>
   </div>
   <div id="hiddenGoals" class="goal-hidden-list">
     ${restCards}
@@ -904,26 +1132,62 @@ return `
 `;
 }
 
-
-function endOfMonth(date){
-  const d = new Date(date);
-  return new Date(d.getFullYear(), d.getMonth()+1, 0);
-}
-
 // 🔥 목표 카드 슬라이드 열기/닫기 스위치 함수
-function toggleGoals() {
-  const list = document.getElementById('hiddenGoals');
-  const text = document.getElementById('toggleText');
 
-  if (list.classList.contains('open')) {
+// 목표 토글
+function toggleGoals(){
+  const list = document.getElementById('hiddenGoals'); // ← id 통일
+  const btn  = document.getElementById('goal-expand-btn');
+
+  if (!list) return;
+
+  const isOpen = list.classList.contains('open');
+
+  if (isOpen) {
     list.classList.remove('open');
-    text.innerText = '▼ 다른 시점 목표 확인하기 ▼';
+    if (btn) {
+      btn.classList.remove('open');
+      const txt = btn.querySelector('.txt');
+      if (txt) txt.textContent = '다른 시점 보기';
+    }
   } else {
     list.classList.add('open');
-    text.innerText = '▲ 닫기 ▲';
+    if (btn) {
+      btn.classList.add('open');
+      const txt = btn.querySelector('.txt');
+      if (txt) txt.textContent = '접기';
+    }
   }
 }
 
+// 마일스톤 토글
+function toggleMilestones(){
+  const list = document.getElementById('ms-hidden-list');
+  const btn  = document.getElementById('ms-expand-btn');
+
+  if (!list) return;
+
+  const isOpen = list.classList.contains('open');
+
+  if (isOpen) {
+    list.classList.remove('open');
+    if (btn) {
+      btn.classList.remove('open');
+      const txt = btn.querySelector('.txt');
+      if (txt) txt.textContent = '다른 시점 보기';
+    }
+  } else {
+    list.classList.add('open');
+    if (btn) {
+      btn.classList.add('open');
+      const txt = btn.querySelector('.txt');
+      if (txt) txt.textContent = '접기';
+    }
+  }
+}
+
+loadData();
+renderAll();
 
 </script>
 </body>
