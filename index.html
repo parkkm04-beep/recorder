@@ -247,7 +247,15 @@ textarea.paste-area{width:100%;background:#112035;border:1px solid #182a40;borde
     <div class="sec">월별 증가량</div>
     <div id="monthly-charts"></div>
     <div class="sec">전체 기록</div>
-    <div id="log-list-all"></div>
+    <div id="log-list-latest"></div>
+
+<div style="display:flex;justify-content:flex-end;margin-top:6px;">
+  <button class="expand-btn" id="log-expand-btn" onclick="toggleLogs(this)">
+    <span>전체 기록 보기</span><span class="arr">▼</span>
+  </button>
+</div>
+
+<div id="log-hidden-list" class="goal-hidden-list"></div>
     <div class="empty-state" id="empty-all" style="display:none">아직 저장된 기록이 없어요.</div>
   </div>
 
@@ -262,7 +270,15 @@ textarea.paste-area{width:100%;background:#112035;border:1px solid #182a40;borde
       <canvas id="month-inner-chart" height="140"></canvas>
     </div>
     <div class="sec">기록 목록</div>
-    <div id="log-list-month"></div>
+    <div id="log-list-month-latest"></div>
+
+<div style="display:flex;justify-content:flex-end;margin-top:6px;">
+  <button class="expand-btn" onclick="toggleLogs(this)">
+    <span>전체 기록 보기</span><span class="arr">▼</span>
+  </button>
+</div>
+
+<div id="log-list-month-hidden" class="goal-hidden-list"></div>
     <div class="empty-state" id="empty-month" style="display:none">이 달 기록이 없어요.</div>
   </div>
 
@@ -641,7 +657,12 @@ function renderAllContent() {
   if (nav.type === 'all') {
     renderDischarge();
     renderMonthlyCharts(filtered);
-    renderLogList(document.getElementById('log-list-all'), document.getElementById('empty-all'), null);
+    renderLogList(
+  document.getElementById('log-list-latest'),
+  document.getElementById('log-hidden-list'),
+  document.getElementById('empty-all'),
+  null
+);
   } else if (nav.type === 'year') {
     renderDischarge();
     renderMonthlyCharts(filtered);
@@ -653,7 +674,12 @@ function renderMonthSection(ym) {
   document.getElementById('month-section-title').textContent = ym.slice(5) + '월';
   renderMonthGoal(ym);
   renderMonthInnerChart(ym);
-  renderLogList(document.getElementById('log-list-month'), document.getElementById('empty-month'), ym);
+  renderLogList(
+  document.getElementById('log-list-month-latest'),
+  document.getElementById('log-list-month-hidden'),
+  document.getElementById('empty-month'),
+  ym
+);
 }
 
 // ────────────────────────────────────────────────
@@ -1119,48 +1145,37 @@ function renderMonthlyCharts(filtered) {
 // ────────────────────────────────────────────────
 // 기록 목록
 // ────────────────────────────────────────────────
-function renderLogList(listEl, emptyEl, filterPrefix) {
+
+function renderLogList(latestEl, hiddenEl, emptyEl, filterPrefix) {
   let filtered = filterPrefix
     ? records.filter(r => r.date.startsWith(filterPrefix))
     : [...records];
 
-  if (!filtered.length) { listEl.innerHTML = ''; emptyEl.style.display = 'block'; return; }
+  if (!filtered.length) {
+    latestEl.innerHTML = '';
+    hiddenEl.innerHTML = '';
+    emptyEl.style.display = 'block';
+    return;
+  }
+
   emptyEl.style.display = 'none';
 
-  listEl.innerHTML = [...filtered].reverse().map(r => {
-    const globalIdx = records.indexOf(r);
-    const prev      = globalIdx > 0 ? records[globalIdx - 1] : null;
-    const md        = r.plusSh * 156 + r.kodexSh * 244;
-    const isLatest  = globalIdx === records.length - 1;
-    let delta = '';
-    if (prev) {
-      const dp = r.plusSh  - prev.plusSh;
-      const dk = r.kodexSh - prev.kodexSh;
-      const dd = md - (prev.plusSh*156 + prev.kodexSh*244);
-      const dt = r.total - prev.total;
-      delta = `<div class="log-delta">
-  <span class="ld ${dp>0?'ld-plus-up':dp<0?'ld-plus-dn':'ld-plus-neu'}">PLUS ${dp>=0?'+':''}${dp}주</span>
-  <span class="ld ${dk>0?'ld-kodex-up':dk<0?'ld-kodex-dn':'ld-kodex-neu'}">KODEX ${dk>=0?'+':''}${dk}주</span>
-  <span class="ld ${dd>0?'ld-div-up':dd<0?'ld-div-dn':'ld-div-neu'}">배당 ${dd>=0?'+':''}${(dd/10000).toFixed(2)}만</span>
-  <span class="ld ${dt>0?'ld-tot-up':dt<0?'ld-tot-dn':'ld-tot-neu'}">자산 ${dt>=0?'+':''}${(dt/10000).toFixed(0)}만</span>
-</div>`;
-    }
-    return `<div class="log-item ${isLatest?'latest':''}">
-  <button class="log-del" onclick="delRec('${r.date}')">✕</button>
-  <div class="log-top">
-    <span class="log-date">${r.date}</span>
-    ${isLatest ? '<span class="log-badge">LATEST</span>' : ''}
-  </div>
-  <div class="log-nums">
-    <div><div class="ln-l">PLUS</div><div class="ln-v" style="color:#00e5ff">${r.plusSh}주</div></div>
-    <div><div class="ln-l">KODEX</div><div class="ln-v" style="color:#a78bfa">${r.kodexSh}주</div></div>
-    <div><div class="ln-l">월배당</div><div class="ln-v" style="color:#fb923c">${(md/10000).toFixed(2)}만</div></div>
-    <div><div class="ln-l">총자산</div><div class="ln-v" style="color:#fbbf24">${r.total?(r.total/10000).toFixed(0):'-'}만</div></div>
-  </div>
-  <div class="log-detail">@${r.plusP?r.plusP.toLocaleString():'-'} · @${r.kodexP?r.kodexP.toLocaleString():'-'} · 주문 ${r.orders}건</div>
-  ${delta}
-</div>`;
-  }).join('');
+  const reversed = [...filtered].reverse();
+  const latest = reversed.slice(0, 3); // 최신 3개
+const rest   = reversed.slice(3);    // 나머지
+
+  // 최신 3개
+  latestEl.innerHTML =
+  latest.map((r, i) => renderLogItem(r, i === 0)).join('');
+
+  // 나머지
+  hiddenEl.innerHTML = rest.map(r => renderLogItem(r)).join('');
+
+  // 버튼 표시
+  const btnWrap = hiddenEl.previousElementSibling;
+  if (btnWrap) {
+    btnWrap.style.display = rest.length ? 'flex' : 'none';
+  }
 }
 
 // ────────────────────────────────────────────────
@@ -1302,6 +1317,76 @@ if (records.length) {
   const years = [...new Set(records.map(r => r.date.slice(0,4)))].sort();
   const latestYear = years[years.length - 1];
   nav = { type: 'year', year: latestYear, ym: null };
+}
+
+let logsExpanded = false;
+
+function toggleLogs() {
+  const hidden = document.getElementById('log-hidden-list');
+  const btn = document.getElementById('log-expand-btn');
+
+  logsExpanded = !logsExpanded;
+
+  hidden.classList.toggle('open', logsExpanded);
+  btn.classList.toggle('open', logsExpanded);
+
+  btn.querySelector('span').textContent =
+    logsExpanded ? '접기' : '전체 기록 보기';
+}
+
+function renderLogItem(r, isLatest=false) {
+  const globalIdx = records.indexOf(r);
+  const prev      = globalIdx > 0 ? records[globalIdx - 1] : null;
+  const md        = r.plusSh * 156 + r.kodexSh * 244;
+
+  let delta = '';
+  if (prev) {
+    const dp = r.plusSh  - prev.plusSh;
+    const dk = r.kodexSh - prev.kodexSh;
+    const dd = md - (prev.plusSh*156 + prev.kodexSh*244);
+    const dt = r.total - prev.total;
+
+    delta = `<div class="log-delta">
+      <span class="ld ${dp>0?'ld-plus-up':dp<0?'ld-plus-dn':'ld-plus-neu'}">PLUS ${dp>=0?'+':''}${dp}주</span>
+      <span class="ld ${dk>0?'ld-kodex-up':dk<0?'ld-kodex-dn':'ld-kodex-neu'}">KODEX ${dk>=0?'+':''}${dk}주</span>
+      <span class="ld ${dd>0?'ld-div-up':dd<0?'ld-div-dn':'ld-div-neu'}">배당 ${dd>=0?'+':''}${(dd/10000).toFixed(2)}만</span>
+      <span class="ld ${dt>0?'ld-tot-up':dt<0?'ld-tot-dn':'ld-tot-neu'}">자산 ${dt>=0?'+':''}${(dt/10000).toFixed(0)}만</span>
+    </div>`;
+  }
+
+  return `<div class="log-item ${isLatest?'latest':''}">
+    <button class="log-del" onclick="delRec('${r.date}')">✕</button>
+
+    <div class="log-top">
+      <span class="log-date">${r.date}</span>
+      ${isLatest ? '<span class="log-badge">LATEST</span>' : ''}
+    </div>
+
+    <div class="log-nums">
+      <div><div class="ln-l">PLUS</div><div class="ln-v" style="color:#00e5ff">${r.plusSh}주</div></div>
+      <div><div class="ln-l">KODEX</div><div class="ln-v" style="color:#a78bfa">${r.kodexSh}주</div></div>
+      <div><div class="ln-l">월배당</div><div class="ln-v" style="color:#fb923c">${(md/10000).toFixed(2)}만</div></div>
+      <div><div class="ln-l">총자산</div><div class="ln-v" style="color:#fbbf24">${r.total?(r.total/10000).toFixed(0):'-'}만</div></div>
+    </div>
+
+    <div class="log-detail">
+      @${r.plusP?r.plusP.toLocaleString():'-'} · 
+      @${r.kodexP?r.kodexP.toLocaleString():'-'} · 
+      주문 ${r.orders}건
+    </div>
+
+    ${delta}
+  </div>`;
+}
+
+function toggleLogs(btn) {
+  const hidden = btn.parentElement.nextElementSibling;
+
+  const isOpen = hidden.classList.toggle('open');
+
+  btn.classList.toggle('open', isOpen);
+  btn.querySelector('span').textContent =
+    isOpen ? '접기' : '전체 기록 보기';
 }
 
 renderAll();
