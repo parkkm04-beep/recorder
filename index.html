@@ -54,6 +54,18 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .btn-qs{width:100%;padding:12px;border-radius:10px;border:none;cursor:pointer;font-size:13px;font-weight:700;font-family:'Noto Sans KR',sans-serif;margin-top:6px;}
 .btn-qs:not(:disabled){background:linear-gradient(135deg,#065f46,#34d399);color:#000;}
 .btn-qs:disabled{background:#112035;color:#4a6080;cursor:not-allowed;}
+/* 클립보드 원터치 저장 버튼 */
+.btn-clipboard{width:100%;padding:15px;border-radius:12px;border:none;cursor:pointer;font-size:14px;font-weight:900;font-family:'Noto Sans KR',sans-serif;background:linear-gradient(135deg,#0a2a1a,#0d3d28);color:#34d399;border:1.5px solid rgba(52,211,153,.5);display:flex;align-items:center;justify-content:center;gap:10px;transition:all .2s;letter-spacing:.5px;}
+.btn-clipboard:hover{background:linear-gradient(135deg,#0d3d28,#065f46);border-color:#34d399;color:#fff;transform:translateY(-1px);box-shadow:0 4px 20px rgba(52,211,153,.2);}
+.btn-clipboard:active{transform:translateY(0);}
+.btn-clipboard .cb-icon{font-size:20px;line-height:1;}
+.btn-clipboard .cb-sub{font-size:9px;font-weight:400;opacity:.7;margin-top:1px;font-family:'Space Mono',monospace;}
+.clip-result{border-radius:10px;padding:12px 14px;margin-top:10px;font-size:11px;font-family:'Space Mono',monospace;display:none;}
+.clip-result.ok{background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.3);color:#34d399;}
+.clip-result.err{background:rgba(251,113,133,.1);border:1px solid rgba(251,113,133,.3);color:#fb7185;}
+.clip-divider{display:flex;align-items:center;gap:10px;margin:14px 0;}
+.clip-divider-line{flex:1;height:1px;background:#182a40;}
+.clip-divider-txt{font-size:10px;color:#4a6080;font-family:'Space Mono',monospace;white-space:nowrap;}
 
 .month-nav{margin-bottom:16px;display:flex;flex-direction:column;gap:0;}
 .mn-all-btn{display:inline-flex;align-items:center;gap:6px;padding:6px 16px;border-radius:20px;border:1px solid #182a40;background:transparent;color:#4a6080;font-size:11px;font-weight:700;cursor:pointer;font-family:'Space Mono',monospace;transition:all .15s;margin-bottom:10px;align-self:flex-start;}
@@ -181,24 +193,42 @@ textarea.paste-area{width:100%;background:#112035;border:1px solid #182a40;borde
   <div class="guide-box">
     <div class="guide-step"><div class="guide-num">1</div><div class="guide-txt">Claude 채팅에 <b>스크린샷 + "체크"</b> 전송</div></div>
     <div class="guide-step"><div class="guide-num">2</div><div class="guide-txt">결과 맨 아래 <b>SAVE:: + GOAL:: 두 줄</b> 전체 복사</div></div>
-    <div class="guide-step"><div class="guide-num">3</div><div class="guide-txt">아래 박스에 <b>두 줄 그대로 붙여넣기</b> → 기록 + 목표 동시 반영!</div></div>
+    <div class="guide-step"><div class="guide-num">3</div><div class="guide-txt">아래 버튼 하나만 누르면 <b>클립보드에서 바로 저장!</b></div></div>
   </div>
 
-  <div class="sec">⚡ 빠른 저장</div>
+  <div class="sec">⚡ 원터치 저장</div>
   <div class="quick-save-card">
-    <!-- [FIX] placeholder를 두 줄 복사 안내로 수정 -->
-    <div class="qs-label">📋 SAVE:: + GOAL:: 두 줄을 한번에 붙여넣기</div>
-    <textarea id="qs-input" class="qs-textarea" placeholder="SAVE::{...}
-GOAL::{...}
-(Claude 체크 결과 맨 아래 코드 블록 전체 복사)" oninput="onQSInput()"></textarea>
-    <div id="qs-preview" class="qs-preview" style="display:none">
+    <!-- 클립보드 원터치 저장 -->
+    <button class="btn-clipboard" onclick="clipboardSave()">
+      <span class="cb-icon">📋</span>
+      <div style="display:flex;flex-direction:column;align-items:flex-start;">
+        <span>클립보드에서 바로 저장</span>
+        <span class="cb-sub">SAVE:: + GOAL:: 복사 후 이 버튼만 누르세요</span>
+      </div>
+    </button>
+    <div id="clip-result" class="clip-result"></div>
+
+    <!-- 미리보기 (클립보드 파싱 성공 시 표시) -->
+    <div id="qs-preview" class="qs-preview" style="display:none;margin-top:10px;">
       <div><div class="qp-l">날짜</div><div class="qp-v" style="color:#00e5ff" id="qp-date">-</div></div>
       <div><div class="qp-l">PLUS</div><div class="qp-v" style="color:#00e5ff" id="qp-plus">-</div></div>
       <div><div class="qp-l">KODEX</div><div class="qp-v" style="color:#a78bfa" id="qp-kodex">-</div></div>
       <div><div class="qp-l">이달목표</div><div class="qp-v" style="color:#34d399" id="qp-monthgoal">-</div></div>
     </div>
-    <div id="qs-goal-preview" style="display:none;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.2);border-radius:8px;padding:10px 12px;margin:8px 0;font-size:11px;color:#fbbf24;font-family:'Space Mono',monospace;"></div>
-    <button class="btn-qs" id="btn-qs" onclick="quickSave()" disabled>⚡ 바로 저장</button>
+    <div id="qs-goal-preview" style="display:none;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.2);border-radius:8px;padding:10px 12px;margin-top:8px;font-size:11px;color:#fbbf24;font-family:'Space Mono',monospace;"></div>
+
+    <!-- 수동 붙여넣기 폴백 (클립보드 권한 거부 시 표시) -->
+    <div id="manual-fallback" style="display:none;">
+      <div class="clip-divider">
+        <div class="clip-divider-line"></div>
+        <span class="clip-divider-txt">클립보드 권한 없음 — 직접 붙여넣기</span>
+        <div class="clip-divider-line"></div>
+      </div>
+      <div class="qs-label">SAVE:: + GOAL:: 두 줄 붙여넣기</div>
+      <textarea id="qs-input" class="qs-textarea" placeholder="SAVE::{...}
+GOAL::{...}" oninput="onQSInput()"></textarea>
+      <button class="btn-qs" id="btn-qs" onclick="quickSave()" disabled>⚡ 바로 저장</button>
+    </div>
   </div>
 
   <div style="display:flex;align-items:center;gap:10px;margin:4px 0 18px;">
@@ -380,26 +410,14 @@ function getMonthGoal(goals, ym) {
   return null;
 }
 
-// ── 빠른 저장 파싱 ──
-function onQSInput() {
-  const raw = document.getElementById('qs-input').value.trim();
-  const btn = document.getElementById('btn-qs');
-  const preview = document.getElementById('qs-preview');
-  const goalPrev = document.getElementById('qs-goal-preview');
-  qsParsed = null;
-  btn.disabled = true;
-  preview.style.display = 'none';
-  goalPrev.style.display = 'none';
-
+// ── 공통: raw 텍스트 파싱 후 저장 ──
+function parseAndSave(raw) {
   const result = {};
 
-  // [FIX] 중첩 {} 를 올바르게 추출하는 balanced brace 파서
-  // 기존 /GOAL::(\{[\s\S]*?\})/ 정규식은 첫 번째 } 에서 끊기는 버그가 있음
   function extractJSON(str, prefix) {
     const idx = str.indexOf(prefix);
     if (idx === -1) return null;
-    let i = idx + prefix.length;
-    let depth = 0;
+    let i = idx + prefix.length, depth = 0;
     while (i < str.length) {
       if (str[i] === '{') depth++;
       else if (str[i] === '}') { depth--; if (depth === 0) return str.slice(idx + prefix.length, i + 1); }
@@ -412,79 +430,140 @@ function onQSInput() {
   if (saveJson) {
     try {
       const d = JSON.parse(saveJson);
-      if (d.date && d.plusSh != null) {
-        result.save = d;
-        document.getElementById('qp-date').textContent  = d.date;
-        document.getElementById('qp-plus').textContent  = (d.plusSh || 0) + '주';
-        document.getElementById('qp-kodex').textContent = (d.kodexSh || 0) + '주';
-        preview.style.display = 'grid';
-      }
-    } catch(e) { console.warn('SAVE parse error', e); }
+      if (d.date && d.plusSh != null) result.save = d;
+    } catch(e) {}
   }
 
   const goalJson = extractJSON(raw, 'GOAL::');
-  const goalMatch = goalJson ? [null, goalJson] : null;
-  if (goalMatch) {
+  if (goalJson) {
     try {
-      const d = JSON.parse(goalMatch[1]);
-      if (d.discharge) {
-        result.goal = d;
-        goalPrev.style.display = 'block';
-
-        // [FIX] monthGoal은 객체 맵이므로 오늘 달 키로 조회
-        const curYM = todayYM();
-        const mg = getMonthGoal(d, curYM);
-        const mgTxt = mg ? `PLUS ${mg.plusSh}주 / KODEX ${mg.kodexSh}주 / 배당 ${mg.div}만` : '월 목표 없음';
-
-        // [FIX] SAVE 미리보기의 이달목표 셀 업데이트
-        document.getElementById('qp-monthgoal').textContent = mg ? mg.plusSh + '주' : '-';
-
-        goalPrev.innerHTML = `🎯 전역: PLUS ${d.discharge.plusSh}주 / 배당 ${d.discharge.div}만 · ${curYM} 목표: ${mgTxt}`;
-      }
-    } catch(e) { console.warn('GOAL parse error', e); }
+      const d = JSON.parse(goalJson);
+      if (d.discharge) result.goal = d;
+    } catch(e) {}
   }
 
-  if (result.save || result.goal) {
-    qsParsed = result;
+  return (result.save || result.goal) ? result : null;
+}
+
+function applyParsed(parsed) {
+  const msg = [];
+  if (parsed.save) {
+    const d = parsed.save;
+    upsertRecord({ date:d.date, total:d.total||0, plusSh:d.plusSh||0, plusP:d.plusP||0, kodexSh:d.kodexSh||0, kodexP:d.kodexP||0, div:d.div||0, orders:d.orders||0 });
+    persist();
+    msg.push('기록 저장 ✅');
+  }
+  if (parsed.goal) {
+    goals = parsed.goal;
+    goals.updatedAt = new Date().toISOString().slice(0,10);
+    localStorage.setItem(GKEY, JSON.stringify(goals));
+    msg.push('목표 업데이트 🎯');
+  }
+  renderAll();
+  return msg.join(' · ');
+}
+
+function showParsedPreview(parsed) {
+  if (parsed && parsed.save) {
+    const d = parsed.save;
+    document.getElementById('qp-date').textContent  = d.date;
+    document.getElementById('qp-plus').textContent  = (d.plusSh||0) + '주';
+    document.getElementById('qp-kodex').textContent = (d.kodexSh||0) + '주';
+    const curYM = todayYM();
+    const mg = parsed.goal ? getMonthGoal(parsed.goal, curYM) : null;
+    document.getElementById('qp-monthgoal').textContent = mg ? mg.plusSh + '주' : '-';
+    document.getElementById('qs-preview').style.display = 'grid';
+  }
+  if (parsed && parsed.goal) {
+    const d = parsed.goal;
+    const curYM = todayYM();
+    const mg = getMonthGoal(d, curYM);
+    const mgTxt = mg ? `PLUS ${mg.plusSh}주 / KODEX ${mg.kodexSh}주 / 배당 ${mg.div}만` : '월 목표 없음';
+    const gp = document.getElementById('qs-goal-preview');
+    gp.innerHTML = `🎯 전역: PLUS ${d.discharge.plusSh}주 / 배당 ${d.discharge.div}만 · ${curYM} 목표: ${mgTxt}`;
+    gp.style.display = 'block';
+  }
+}
+
+// ── 클립보드 원터치 저장 ──
+async function clipboardSave() {
+  const resultEl = document.getElementById('clip-result');
+  const fallback = document.getElementById('manual-fallback');
+
+  // 미리보기 초기화
+  document.getElementById('qs-preview').style.display = 'none';
+  document.getElementById('qs-goal-preview').style.display = 'none';
+  resultEl.style.display = 'none';
+
+  try {
+    const text = await navigator.clipboard.readText();
+    if (!text || !text.includes('SAVE::') && !text.includes('GOAL::')) {
+      resultEl.className = 'clip-result err';
+      resultEl.textContent = '❌ 클립보드에 SAVE:: 또는 GOAL:: 코드가 없어요. Claude 체크 결과를 먼저 복사해주세요.';
+      resultEl.style.display = 'block';
+      return;
+    }
+
+    const parsed = parseAndSave(text);
+    if (!parsed) {
+      resultEl.className = 'clip-result err';
+      resultEl.textContent = '❌ 코드 파싱 실패. Claude 체크 결과의 SAVE:: + GOAL:: 두 줄을 복사했는지 확인해주세요.';
+      resultEl.style.display = 'block';
+      return;
+    }
+
+    // 미리보기 표시 후 저장
+    showParsedPreview(parsed);
+    const msg = applyParsed(parsed);
+
+    resultEl.className = 'clip-result ok';
+    resultEl.textContent = '✅ ' + msg;
+    resultEl.style.display = 'block';
+    toast(msg);
+
+    // 3초 후 결과 메시지 숨김
+    setTimeout(() => { resultEl.style.display = 'none'; }, 3000);
+
+  } catch(e) {
+    // 권한 거부 → 수동 폴백 표시
+    resultEl.className = 'clip-result err';
+    resultEl.textContent = '⚠️ 클립보드 접근 권한이 없어요. 아래 텍스트 박스에 직접 붙여넣기 해주세요.';
+    resultEl.style.display = 'block';
+    fallback.style.display = 'block';
+    fallback.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+}
+
+// ── 빠른 저장 파싱 (수동 폴백용) ──
+function onQSInput() {
+  const raw = document.getElementById('qs-input').value.trim();
+  const btn = document.getElementById('btn-qs');
+  qsParsed = null;
+  btn.disabled = true;
+  document.getElementById('qs-preview').style.display = 'none';
+  document.getElementById('qs-goal-preview').style.display = 'none';
+
+  const parsed = parseAndSave(raw);
+  if (parsed) {
+    qsParsed = parsed;
+    showParsedPreview(parsed);
     btn.disabled = false;
-    if (result.save && result.goal) btn.textContent = '⚡ 기록 + 목표 동시 저장';
-    else if (result.save) btn.textContent = '⚡ 기록 저장';
+    if (parsed.save && parsed.goal) btn.textContent = '⚡ 기록 + 목표 동시 저장';
+    else if (parsed.save) btn.textContent = '⚡ 기록 저장';
     else btn.textContent = '🎯 목표 업데이트';
   }
 }
 
 function quickSave() {
   if (!qsParsed) return;
-  const msg = [];
-
-  if (qsParsed.save) {
-    const d = qsParsed.save;
-    const rec = {
-      date: d.date, total: d.total || 0,
-      plusSh: d.plusSh || 0, plusP: d.plusP || 0,
-      kodexSh: d.kodexSh || 0, kodexP: d.kodexP || 0,
-      div: d.div || 0, orders: d.orders || 0
-    };
-    upsertRecord(rec);
-    persist();
-    msg.push('기록 저장 ✅');
-  }
-
-  if (qsParsed.goal) {
-    goals = qsParsed.goal;
-    goals.updatedAt = new Date().toISOString().slice(0, 10);
-    localStorage.setItem(GKEY, JSON.stringify(goals));
-    msg.push('목표 업데이트 🎯');
-  }
-
-  toast(msg.join(' · '));
+  const msg = applyParsed(qsParsed);
+  toast(msg);
   document.getElementById('qs-input').value = '';
   document.getElementById('qs-preview').style.display = 'none';
   document.getElementById('qs-goal-preview').style.display = 'none';
   document.getElementById('btn-qs').disabled = true;
   document.getElementById('btn-qs').textContent = '⚡ 바로 저장';
   qsParsed = null;
-  renderAll();
 }
 
 // ── 탭 전환 ──
