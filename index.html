@@ -119,6 +119,10 @@ canvas{width:100%!important;}
 .ld-div-up{color:#fb923c;}.ld-div-dn{color:#f97316;}.ld-div-neu{color:#4a6080;}
 .ld-tot-up{color:#fbbf24;}.ld-tot-dn{color:#fb7185;}.ld-tot-neu{color:#4a6080;}
 .log-del{position:absolute;top:10px;right:12px;background:transparent;border:none;color:#4a6080;cursor:pointer;font-size:13px;}
+.log-show-more{width:100%;margin-top:8px;padding:10px;border-radius:10px;border:1px dashed #182a40;background:transparent;color:#4a6080;font-size:11px;font-weight:700;cursor:pointer;font-family:'Space Mono',monospace;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .2s;}
+.log-show-more:hover{color:#00e5ff;border-color:rgba(0,229,255,.4);background:rgba(0,229,255,.04);}
+.log-hidden-wrap{overflow:hidden;max-height:0;transition:max-height .4s ease;}
+.log-hidden-wrap.open{max-height:20000px;}
 .backup-panel{background:#0c1525;border:1px solid rgba(251,191,36,.2);border-radius:12px;padding:14px;margin-bottom:16px;}
 .backup-title{font-size:9px;color:#fbbf24;font-weight:700;font-family:'Space Mono',monospace;margin-bottom:10px;letter-spacing:2px;}
 .backup-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
@@ -1079,34 +1083,26 @@ function renderMonthlyCharts(filtered) {
   });
 }
 
-// ── 기록 목록 ──
-function renderLogList(listEl, emptyEl, filterPrefix) {
-  let filtered = filterPrefix
-    ? records.filter(r => r.date.startsWith(filterPrefix))
-    : [...records];
-
-  if (!filtered.length) { listEl.innerHTML = ''; emptyEl.style.display = 'block'; return; }
-  emptyEl.style.display = 'none';
-
-  listEl.innerHTML = [...filtered].reverse().map(r => {
-    const globalIdx = records.indexOf(r);
-    const prev      = globalIdx > 0 ? records[globalIdx - 1] : null;
-    const md        = r.plusSh * 156 + r.kodexSh * 244;
-    const isLatest  = globalIdx === records.length - 1;
-    let delta = '';
-    if (prev) {
-      const dp = r.plusSh  - prev.plusSh;
-      const dk = r.kodexSh - prev.kodexSh;
-      const dd = md - (prev.plusSh*156 + prev.kodexSh*244);
-      const dt = r.total - prev.total;
-      delta = `<div class="log-delta">
+// ── 기록 카드 HTML 생성 ──
+function buildLogCard(r) {
+  const globalIdx = records.indexOf(r);
+  const prev      = globalIdx > 0 ? records[globalIdx - 1] : null;
+  const md        = r.plusSh * 156 + r.kodexSh * 244;
+  const isLatest  = globalIdx === records.length - 1;
+  let delta = '';
+  if (prev) {
+    const dp = r.plusSh  - prev.plusSh;
+    const dk = r.kodexSh - prev.kodexSh;
+    const dd = md - (prev.plusSh*156 + prev.kodexSh*244);
+    const dt = r.total - prev.total;
+    delta = `<div class="log-delta">
 <span class="ld ${dp>0?'ld-plus-up':dp<0?'ld-plus-dn':'ld-plus-neu'}">PLUS ${dp>=0?'+':''}${dp}주</span>
 <span class="ld ${dk>0?'ld-kodex-up':dk<0?'ld-kodex-dn':'ld-kodex-neu'}">KODEX ${dk>=0?'+':''}${dk}주</span>
 <span class="ld ${dd>0?'ld-div-up':dd<0?'ld-div-dn':'ld-div-neu'}">배당 ${dd>=0?'+':''}${(dd/10000).toFixed(2)}만</span>
 <span class="ld ${dt>0?'ld-tot-up':dt<0?'ld-tot-dn':'ld-tot-neu'}">자산 ${dt>=0?'+':''}${(dt/10000).toFixed(0)}만</span>
 </div>`;
-    }
-    return `<div class="log-item ${isLatest?'latest':''}">
+  }
+  return `<div class="log-item ${isLatest?'latest':''}">
 <button class="log-del" onclick="delRec('${r.date}')">✕</button>
 <div class="log-top">
   <span class="log-date">${r.date}</span>
@@ -1121,7 +1117,52 @@ function renderLogList(listEl, emptyEl, filterPrefix) {
 <div class="log-detail">@${r.plusP?r.plusP.toLocaleString():'-'} · @${r.kodexP?r.kodexP.toLocaleString():'-'} · 주문 ${r.orders}건</div>
 ${delta}
 </div>`;
-  }).join('');
+}
+
+// ── 기록 목록 (최근 3개 + 펼치기) ──
+const LOG_PREVIEW = 3;
+
+function renderLogList(listEl, emptyEl, filterPrefix) {
+  let filtered = filterPrefix
+    ? records.filter(r => r.date.startsWith(filterPrefix))
+    : [...records];
+
+  if (!filtered.length) { listEl.innerHTML = ''; emptyEl.style.display = 'block'; return; }
+  emptyEl.style.display = 'none';
+
+  const reversed  = [...filtered].reverse();
+  const visible   = reversed.slice(0, LOG_PREVIEW);
+  const hidden    = reversed.slice(LOG_PREVIEW);
+  const hiddenCnt = hidden.length;
+
+  // 고유 ID (같은 페이지에 여러 목록이 공존할 수 있으므로 prefix 기반)
+  const uid = 'log-more-' + (filterPrefix || 'all').replace(/[^a-z0-9]/gi, '_');
+
+  let html = visible.map(buildLogCard).join('');
+
+  if (hiddenCnt > 0) {
+    html += `
+<div class="log-hidden-wrap" id="${uid}-wrap">
+  ${hidden.map(buildLogCard).join('')}
+</div>
+<button class="log-show-more" id="${uid}-btn" onclick="toggleLogMore('${uid}')">
+  <span id="${uid}-label">▼ 이전 기록 ${hiddenCnt}개 더 보기</span>
+</button>`;
+  }
+
+  listEl.innerHTML = html;
+}
+
+function toggleLogMore(uid) {
+  const wrap  = document.getElementById(uid + '-wrap');
+  const btn   = document.getElementById(uid + '-btn');
+  const label = document.getElementById(uid + '-label');
+  if (!wrap) return;
+  const open = wrap.classList.toggle('open');
+  label.textContent = open
+    ? '▲ 접기'
+    : `▼ 이전 기록 ${wrap.querySelectorAll('.log-item').length}개 더 보기`;
+  if (btn) btn.style.borderStyle = open ? 'solid' : 'dashed';
 }
 
 // ── 통계 ──
