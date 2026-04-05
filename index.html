@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>투자 체크 로그</title>
+<title>투자 체크 로그 v14</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 .ok{color:#22c55e;font-weight:600;}
@@ -46,7 +46,6 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .btn-secondary{width:100%;padding:11px;border-radius:10px;border:1px solid #182a40;cursor:pointer;font-size:12px;font-weight:700;font-family:'Noto Sans KR',sans-serif;background:transparent;color:#4a6080;}
 .quick-save-card{background:linear-gradient(135deg,#0a1f10,#0c1a28);border:1px solid rgba(52,211,153,.3);border-radius:14px;padding:16px;margin-bottom:16px;}
 .qs-label{font-size:10px;color:#34d399;font-family:'Space Mono',monospace;margin-bottom:8px;}
-/* [FIX] textarea 높이를 두 줄 코드가 잘 보이도록 80px로 늘림 */
 .qs-textarea{width:100%;background:rgba(0,0,0,.3);border:1px solid rgba(52,211,153,.2);border-radius:8px;padding:10px 12px;color:#e2e8f0;font-size:11px;font-family:'Space Mono',monospace;height:80px;resize:none;outline:none;line-height:1.5;}
 .qs-preview{background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.2);border-radius:8px;padding:10px 12px;margin:8px 0;display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
 .qs-preview .qp-l{font-size:9px;color:#4a6080;}
@@ -54,7 +53,6 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .btn-qs{width:100%;padding:12px;border-radius:10px;border:none;cursor:pointer;font-size:13px;font-weight:700;font-family:'Noto Sans KR',sans-serif;margin-top:6px;}
 .btn-qs:not(:disabled){background:linear-gradient(135deg,#065f46,#34d399);color:#000;}
 .btn-qs:disabled{background:#112035;color:#4a6080;cursor:not-allowed;}
-/* 클립보드 원터치 저장 버튼 */
 .btn-clipboard{width:100%;padding:15px;border-radius:12px;border:none;cursor:pointer;font-size:14px;font-weight:900;font-family:'Noto Sans KR',sans-serif;background:linear-gradient(135deg,#0a2a1a,#0d3d28);color:#34d399;border:1.5px solid rgba(52,211,153,.5);display:flex;align-items:center;justify-content:center;gap:10px;transition:all .2s;letter-spacing:.5px;}
 .btn-clipboard:hover{background:linear-gradient(135deg,#0d3d28,#065f46);border-color:#34d399;color:#fff;transform:translateY(-1px);box-shadow:0 4px 20px rgba(52,211,153,.2);}
 .btn-clipboard:active{transform:translateY(0);}
@@ -174,6 +172,41 @@ textarea.paste-area{width:100%;background:#112035;border:1px solid #182a40;borde
 
 @keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .fade-in{animation:fadeUp .3s ease;}
+
+/* 배당 차트 */
+.div-chart-box{background:#0c1525;border:1px solid rgba(251,146,60,.25);border-radius:14px;padding:14px;margin-bottom:10px;}
+.div-chart-title{font-size:11px;font-weight:700;font-family:'Space Mono',monospace;margin-bottom:4px;letter-spacing:1px;color:#fb923c;}
+.div-chart-sub{font-size:9px;color:#4a6080;font-family:'Space Mono',monospace;margin-bottom:10px;}
+.div-legend{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;}
+.div-legend-item{display:flex;align-items:center;gap:4px;font-size:9px;font-family:'Space Mono',monospace;color:#e2e8f0;}
+.div-legend-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0;}
+.div-legend-item.est .div-legend-dot{background:repeating-linear-gradient(45deg,#fbbf24 0px,#fbbf24 2px,transparent 2px,transparent 4px);border:1px solid #fbbf24;}
+.div-legend-item.other .div-legend-dot{background:repeating-linear-gradient(45deg,#9ca3af 0px,#9ca3af 2px,transparent 2px,transparent 4px);border:1px solid #9ca3af;}
+
+/* 배당 입금 시점 뱃지 */
+.div-timing-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
+.div-timing-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:6px;font-size:9px;font-family:'Space Mono',monospace;font-weight:700;border:1px solid;}
+.div-timing-badge.early{background:rgba(0,229,255,.08);border-color:rgba(0,229,255,.3);color:#00e5ff;}
+.div-timing-badge.mid{background:rgba(167,139,250,.08);border-color:rgba(167,139,250,.3);color:#a78bfa;}
+.div-timing-badge.other-t{background:rgba(156,163,175,.08);border-color:rgba(156,163,175,.3);color:#9ca3af;}
+
+/* 배당락일 안내 박스 */
+.exdate-info-box{background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.25);border-radius:10px;padding:10px 12px;margin-bottom:12px;font-size:10px;font-family:'Space Mono',monospace;color:#fbbf24;line-height:1.7;}
+.exdate-info-box b{color:#fbbf24;}
+
+/* 스킬 코드 생성기 패널 */
+.skill-gen-panel{background:#0c1525;border:1px solid rgba(52,211,153,.25);border-radius:14px;padding:16px;margin-bottom:16px;}
+.skill-gen-title{font-size:9px;color:#34d399;font-weight:700;font-family:'Space Mono',monospace;margin-bottom:10px;letter-spacing:2px;}
+.skill-gen-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
+.skill-gen-item label{display:block;font-size:9px;color:#4a6080;font-family:'Space Mono',monospace;margin-bottom:4px;letter-spacing:1px;}
+.skill-gen-item input{width:100%;background:#112035;border:1px solid #182a40;border-radius:6px;padding:8px 10px;color:#e2e8f0;font-size:13px;font-family:'Space Mono',monospace;outline:none;}
+.skill-gen-item input:focus{border-color:#34d399;}
+.skill-gen-item.span2{grid-column:1/-1;}
+.skill-gen-out{background:#0a1a0f;border:1px solid rgba(52,211,153,.2);border-radius:8px;padding:10px 12px;font-size:10px;font-family:'Space Mono',monospace;color:#34d399;word-break:break-all;line-height:1.6;min-height:56px;margin-bottom:8px;white-space:pre-wrap;}
+.btn-skill-copy{width:100%;padding:11px;border-radius:8px;border:none;cursor:pointer;font-size:12px;font-weight:700;font-family:'Noto Sans KR',sans-serif;background:linear-gradient(135deg,#065f46,#34d399);color:#000;}
+.skill-gen-tabs{display:flex;gap:6px;margin-bottom:12px;}
+.sgt{flex:1;padding:7px;border-radius:7px;border:1px solid #182a40;background:transparent;color:#4a6080;font-size:10px;font-weight:700;cursor:pointer;font-family:'Space Mono',monospace;}
+.sgt.active{background:#112035;border-color:#34d399;color:#34d399;}
 </style>
 </head>
 <body>
@@ -192,23 +225,21 @@ textarea.paste-area{width:100%;background:#112035;border:1px solid #182a40;borde
   <div class="sec">사용법</div>
   <div class="guide-box">
     <div class="guide-step"><div class="guide-num">1</div><div class="guide-txt">Claude 채팅에 <b>스크린샷 + "체크"</b> 전송</div></div>
-    <div class="guide-step"><div class="guide-num">2</div><div class="guide-txt">결과 맨 아래 <b>SAVE:: + GOAL:: 두 줄</b> 전체 복사</div></div>
+    <div class="guide-step"><div class="guide-num">2</div><div class="guide-txt">결과 맨 아래 <b>SAVE:: / GOAL:: / DIV::</b> 코드 전체 복사</div></div>
     <div class="guide-step"><div class="guide-num">3</div><div class="guide-txt">아래 버튼 하나만 누르면 <b>클립보드에서 바로 저장!</b></div></div>
   </div>
 
   <div class="sec">⚡ 원터치 저장</div>
   <div class="quick-save-card">
-    <!-- 클립보드 원터치 저장 -->
     <button class="btn-clipboard" onclick="clipboardSave()">
       <span class="cb-icon">📋</span>
       <div style="display:flex;flex-direction:column;align-items:flex-start;">
         <span>클립보드에서 바로 저장</span>
-        <span class="cb-sub">SAVE:: + GOAL:: 복사 후 이 버튼만 누르세요</span>
+        <span class="cb-sub">SAVE:: / GOAL:: / DIV:: 복사 후 이 버튼만 누르세요</span>
       </div>
     </button>
     <div id="clip-result" class="clip-result"></div>
 
-    <!-- 미리보기 (클립보드 파싱 성공 시 표시) -->
     <div id="qs-preview" class="qs-preview" style="display:none;margin-top:10px;">
       <div><div class="qp-l">날짜</div><div class="qp-v" style="color:#00e5ff" id="qp-date">-</div></div>
       <div><div class="qp-l">PLUS</div><div class="qp-v" style="color:#00e5ff" id="qp-plus">-</div></div>
@@ -217,16 +248,16 @@ textarea.paste-area{width:100%;background:#112035;border:1px solid #182a40;borde
     </div>
     <div id="qs-goal-preview" style="display:none;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.2);border-radius:8px;padding:10px 12px;margin-top:8px;font-size:11px;color:#fbbf24;font-family:'Space Mono',monospace;"></div>
 
-    <!-- 수동 붙여넣기 폴백 (클립보드 권한 거부 시 표시) -->
     <div id="manual-fallback" style="display:none;">
       <div class="clip-divider">
         <div class="clip-divider-line"></div>
         <span class="clip-divider-txt">클립보드 권한 없음 — 직접 붙여넣기</span>
         <div class="clip-divider-line"></div>
       </div>
-      <div class="qs-label">SAVE:: + GOAL:: 두 줄 붙여넣기</div>
+      <div class="qs-label">SAVE:: / GOAL:: / DIV:: 코드 붙여넣기</div>
       <textarea id="qs-input" class="qs-textarea" placeholder="SAVE::{...}
-GOAL::{...}" oninput="onQSInput()"></textarea>
+GOAL::{...}
+DIV::{...}" oninput="onQSInput()"></textarea>
       <button class="btn-qs" id="btn-qs" onclick="quickSave()" disabled>⚡ 바로 저장</button>
     </div>
   </div>
@@ -235,6 +266,77 @@ GOAL::{...}" oninput="onQSInput()"></textarea>
     <div style="flex:1;height:1px;background:#182a40"></div>
     <span style="font-size:10px;color:#4a6080;font-family:'Space Mono',monospace;">또는 직접 입력</span>
     <div style="flex:1;height:1px;background:#182a40"></div>
+  </div>
+
+  <div class="sec">🧬 스킬 코드 생성기</div>
+  <div class="skill-gen-panel">
+    <div class="skill-gen-title">DIV:: / SAVE:: 코드 직접 생성 → 복사</div>
+    <div class="skill-gen-tabs">
+      <button class="sgt active" onclick="sgTab('div')">💰 DIV:: 생성</button>
+      <button class="sgt" onclick="sgTab('save')">💾 SAVE:: 생성</button>
+    </div>
+
+    <!-- DIV:: 탭 -->
+    <div id="sg-div-panel">
+      <div class="skill-gen-grid">
+        <div class="skill-gen-item span2">
+          <label>연월 (YYYY-MM)</label>
+          <input type="month" id="sg-ym" oninput="genDivCode()">
+        </div>
+        <div class="skill-gen-item">
+          <label>PLUS 실제배당 (주당·원)</label>
+          <input type="number" id="sg-plus-actual" placeholder="158" oninput="genDivCode()">
+        </div>
+        <div class="skill-gen-item">
+          <label>PLUS 예상배당 (주당·원)</label>
+          <input type="number" id="sg-plus-est" placeholder="158" oninput="genDivCode()">
+        </div>
+        <div class="skill-gen-item">
+          <label>PLUS 배당락일 기준 수량</label>
+          <input type="number" id="sg-plus-exsh" placeholder="260" oninput="genDivCode()">
+        </div>
+        <div class="skill-gen-item">
+          <label>PLUS 배당락일 (DD)</label>
+          <input type="number" id="sg-plus-exday" placeholder="3" min="1" max="31" oninput="genDivCode()">
+        </div>
+        <div class="skill-gen-item">
+          <label>KODEX 실제배당 (주당·원)</label>
+          <input type="number" id="sg-kodex-actual" placeholder="미확정=빈칸" oninput="genDivCode()">
+        </div>
+        <div class="skill-gen-item">
+          <label>KODEX 예상배당 (주당·원)</label>
+          <input type="number" id="sg-kodex-est" placeholder="246" oninput="genDivCode()">
+        </div>
+        <div class="skill-gen-item">
+          <label>KODEX 배당락일 기준 수량</label>
+          <input type="number" id="sg-kodex-exsh" placeholder="47" oninput="genDivCode()">
+        </div>
+        <div class="skill-gen-item">
+          <label>KODEX 배당락일 (DD)</label>
+          <input type="number" id="sg-kodex-exday" placeholder="12" min="1" max="31" oninput="genDivCode()">
+        </div>
+      </div>
+      <div class="skill-gen-out" id="sg-div-out">← 위 값 입력 시 코드 자동 생성</div>
+      <button class="btn-skill-copy" onclick="copySkillCode('div')">📋 DIV:: 코드 복사</button>
+    </div>
+
+    <!-- SAVE:: 탭 -->
+    <div id="sg-save-panel" style="display:none">
+      <div class="skill-gen-grid">
+        <div class="skill-gen-item span2"><label>날짜</label><input type="date" id="sg-date" oninput="genSaveCode()"></div>
+        <div class="skill-gen-item"><label>PLUS 수량</label><input type="number" id="sg-psh" placeholder="260" oninput="genSaveCode()"></div>
+        <div class="skill-gen-item"><label>PLUS 주가</label><input type="number" id="sg-pp" placeholder="8520" oninput="genSaveCode()"></div>
+        <div class="skill-gen-item"><label>KODEX 수량</label><input type="number" id="sg-ksh" placeholder="47" oninput="genSaveCode()"></div>
+        <div class="skill-gen-item"><label>KODEX 주가</label><input type="number" id="sg-kp" placeholder="16810" oninput="genSaveCode()"></div>
+        <div class="skill-gen-item"><label>이달 배당합계(원)</label><input type="number" id="sg-div" placeholder="52642" oninput="genSaveCode()"></div>
+        <div class="skill-gen-item"><label>주문 건수</label><input type="number" id="sg-orders" placeholder="6" oninput="genSaveCode()"></div>
+        <div class="skill-gen-item span2"><label>총 평가액(원)</label><input type="number" id="sg-total" placeholder="5200394" oninput="genSaveCode()"></div>
+        <div class="skill-gen-item"><label>PLUS 주당배당(원)</label><input type="number" id="sg-plus-rate" placeholder="158" oninput="genSaveCode()"></div>
+        <div class="skill-gen-item"><label>KODEX 주당배당(원)</label><input type="number" id="sg-kodex-rate" placeholder="246" oninput="genSaveCode()"></div>
+      </div>
+      <div class="skill-gen-out" id="sg-save-out">← 위 값 입력 시 코드 자동 생성</div>
+      <button class="btn-skill-copy" onclick="copySkillCode('save')">📋 SAVE:: 코드 복사</button>
+    </div>
   </div>
 
   <div class="sec">수동 입력</div>
@@ -282,6 +384,8 @@ GOAL::{...}" oninput="onQSInput()"></textarea>
     </div>
     <div class="sec">월별 증가량</div>
     <div id="monthly-charts"></div>
+    <div class="sec">💰 종목별 배당금 실적 vs 예상</div>
+    <div id="div-detail-charts"></div>
     <div class="sec">전체 기록</div>
     <div id="log-list-all"></div>
     <div class="empty-state" id="empty-all" style="display:none">아직 저장된 기록이 없어요.</div>
@@ -321,11 +425,85 @@ GOAL::{...}" oninput="onQSInput()"></textarea>
 <script>
 const SKEY = 'invest-logs-v6';
 const GKEY = 'invest-goals-v1';
+const DKEY = 'invest-divrates-v2'; // v2: exDay / exSh 필드 포함
 let records = [];
 let goals = null;
+let divRates = {};
 let charts = {};
 let qsParsed = null;
 let nav = { type:'all', year:null, ym:null };
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 배당락일 DB (연도·월별 실제 날짜)
+// DIV::에 exDay가 있으면 해당 값 우선, 없으면 아래 DB 조회 → 없으면 fallback 사용
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+const EX_DAY_DB = {
+  PLUS: {
+    // 2025
+    '2025-01': 24, '2025-02': 27, '2025-03': 28, '2025-04': 29,
+    '2025-05': 29, '2025-06': 27, '2025-07': 30, '2025-08': 28,
+    '2025-09': 29, '2025-10': 30, '2025-11': 27, '2025-12': 29,
+    // 2026 (추정 — stockanalysis 조회값으로 업데이트)
+    '2026-01': 28, '2026-02': 26, '2026-03': 27, '2026-04': 29,
+    '2026-05': 28, '2026-06': 29, '2026-07': 30, '2026-08': 28,
+    '2026-09': 29, '2026-10': 29, '2026-11': 27, '2026-12': 29,
+    // 2027 (추정)
+    '2027-01': 28, '2027-02': 26, '2027-03': 30, '2027-04': 28,
+  },
+  KODEX: {
+    // 2025
+    '2025-01': 14, '2025-02': 13, '2025-03': 13, '2025-04': 14,
+    '2025-05': 14, '2025-06': 12, '2025-07': 14, '2025-08': 13,
+    '2025-09': 12, '2025-10': 14, '2025-11': 13, '2025-12': 12,
+    // 2026 (추정 — stockanalysis 조회값으로 업데이트)
+    '2026-01': 13, '2026-02': 12, '2026-03': 13, '2026-04': 13,
+    '2026-05': 13, '2026-06': 12, '2026-07': 13, '2026-08': 13,
+    '2026-09': 14, '2026-10': 13, '2026-11': 12, '2026-12': 14,
+    // 2027 (추정)
+    '2027-01': 13, '2027-02': 12, '2027-03': 12, '2027-04': 13,
+  }
+};
+// DB에 없는 연월의 fallback
+const DEFAULT_EX_DAY_FALLBACK = { PLUS: 29, KODEX: 13 };
+
+function getDefaultExDay(ticker, ym) {
+  return EX_DAY_DB[ticker]?.[ym] ?? DEFAULT_EX_DAY_FALLBACK[ticker] ?? null;
+}
+// 하위 호환: 기존 DEFAULT_EX_DAY 참조 제거용 alias (info box 등에서 사용)
+const DEFAULT_EX_DAY = DEFAULT_EX_DAY_FALLBACK;
+
+// 배당락일 이전 마지막 체크 수량을 구하는 함수
+// ym: "2026-04", ticker: "PLUS"|"KODEX"
+// exDay: 해당 월의 배당락일 (일, 1~31)
+// 반환: 배당락일 직전 마지막 체크 기록의 수량 (없으면 null)
+function getExDateSh(ym, ticker, exDay) {
+  const exDateStr = ym + '-' + String(exDay).padStart(2, '0');
+  // 배당락일 이전(당일 포함) 기록 중 가장 마지막
+  const candidates = records.filter(r => r.date.startsWith(ym) && r.date <= exDateStr);
+  if (!candidates.length) {
+    // 해당 월 이전 기록에서 가장 마지막
+    const before = records.filter(r => r.date < ym + '-01');
+    if (!before.length) return null;
+    const prev = before[before.length - 1];
+    return ticker === 'PLUS' ? prev.plusSh : prev.kodexSh;
+  }
+  const last = candidates[candidates.length - 1];
+  return ticker === 'PLUS' ? last.plusSh : last.kodexSh;
+}
+
+// 다음 달 ym 문자열 반환 ("2026-04" → "2026-05")
+function nextYm(ym) {
+  const [y, m] = ym.split('-').map(Number);
+  if (m === 12) return (y + 1) + '-01';
+  return y + '-' + String(m + 1).padStart(2, '0');
+}
+
+// 전달 ym 문자열 반환 ("2026-04" → "2026-03")
+function prevYm(ym) {
+  const [y, m] = ym.split('-').map(Number);
+  if (m === 1) return (y - 1) + '-12';
+  return y + '-' + String(m - 1).padStart(2, '0');
+}
 
 document.getElementById('inp-date').value = new Date().toISOString().slice(0,10);
 
@@ -351,10 +529,8 @@ const KR_HOLIDAYS = new Set([
 ]);
 
 function countTradingDays(fromDate, toDate) {
-  const start = new Date(fromDate);
-  const end   = new Date(toDate);
-  start.setHours(0,0,0,0);
-  end.setHours(0,0,0,0);
+  const start = new Date(fromDate); start.setHours(0,0,0,0);
+  const end   = new Date(toDate);   end.setHours(0,0,0,0);
   if (start >= end) return 0;
   let count = 0;
   const cur = new Date(start);
@@ -370,16 +546,10 @@ function countTradingDays(fromDate, toDate) {
   return count;
 }
 
-function tradingDaySpan(fromDate, toDate) {
-  return Math.max(1, countTradingDays(fromDate, toDate));
-}
+function tradingDaySpan(fromDate, toDate) { return Math.max(1, countTradingDays(fromDate, toDate)); }
 
 function pctColor(pct, isFuture) {
-  if (isFuture) {
-    if (pct >= 80) return '#00e5ff';
-    if (pct >= 50) return '#a78bfa';
-    return '#4a6080';
-  }
+  if (isFuture) { if (pct >= 80) return '#00e5ff'; if (pct >= 50) return '#a78bfa'; return '#4a6080'; }
   if (pct >= 105) return '#ef4444';
   if (pct >= 95)  return '#00e5ff';
   if (pct >= 85)  return '#fbbf24';
@@ -394,26 +564,26 @@ function pctLabel(pct, isFuture) {
   return '계획 수정 필요 ❗';
 }
 
-// ── [FIX] 오늘 날짜를 YYYY-MM 형식으로 반환 ──
-function todayYM() {
-  return new Date().toISOString().slice(0, 7);
-}
+function todayYM() { return new Date().toISOString().slice(0, 7); }
 
-// ── [FIX] monthGoal 객체 맵에서 현재 달 목표 꺼내기 ──
 function getMonthGoal(goals, ym) {
   if (!goals || !goals.monthGoal) return null;
   const mg = goals.monthGoal;
-  // 스킬 출력: {"2026-03": {plusSh, kodexSh, div}, ...}
   if (mg[ym]) return mg[ym];
-  // 구버전 호환: 직접 {plusSh, kodexSh, div} 형태
   if (mg.plusSh != null) return mg;
   return null;
 }
 
-// ── 공통: raw 텍스트 파싱 후 저장 ──
+// ── DIV:: 파싱 — v2 스키마 (exDay, exSh 포함) ──
+// DIV::{"ym":"2026-04",
+//   "rates":{
+//     "PLUS":{"actual":158,"exDay":3,"exSh":260},
+//     "KODEX":{"actual":246,"exDay":12,"exSh":47}
+//   },
+//   "estimated":{"PLUS":158,"KODEX":246}
+// }
 function parseAndSave(raw) {
   const result = {};
-
   function extractJSON(str, prefix) {
     const idx = str.indexOf(prefix);
     if (idx === -1) return null;
@@ -428,28 +598,25 @@ function parseAndSave(raw) {
 
   const saveJson = extractJSON(raw, 'SAVE::');
   if (saveJson) {
-    try {
-      const d = JSON.parse(saveJson);
-      if (d.date && d.plusSh != null) result.save = d;
-    } catch(e) {}
+    try { const d = JSON.parse(saveJson); if (d.date && d.plusSh != null) result.save = d; } catch(e) {}
   }
-
   const goalJson = extractJSON(raw, 'GOAL::');
   if (goalJson) {
-    try {
-      const d = JSON.parse(goalJson);
-      if (d.discharge) result.goal = d;
-    } catch(e) {}
+    try { const d = JSON.parse(goalJson); if (d.discharge) result.goal = d; } catch(e) {}
   }
-
-  return (result.save || result.goal) ? result : null;
+  const divJson = extractJSON(raw, 'DIV::');
+  if (divJson) {
+    try { const d = JSON.parse(divJson); if (d.ym && d.rates) result.div = d; } catch(e) {}
+  }
+  return (result.save || result.goal || result.div) ? result : null;
 }
 
 function applyParsed(parsed) {
   const msg = [];
   if (parsed.save) {
     const d = parsed.save;
-    upsertRecord({ date:d.date, total:d.total||0, plusSh:d.plusSh||0, plusP:d.plusP||0, kodexSh:d.kodexSh||0, kodexP:d.kodexP||0, div:d.div||0, orders:d.orders||0 });
+    upsertRecord({ date:d.date, total:d.total||0, plusSh:d.plusSh||0, plusP:d.plusP||0,
+      kodexSh:d.kodexSh||0, kodexP:d.kodexP||0, div:d.div||0, orders:d.orders||0, divDetail:d.divDetail||null });
     persist();
     msg.push('기록 저장 ✅');
   }
@@ -458,6 +625,24 @@ function applyParsed(parsed) {
     goals.updatedAt = new Date().toISOString().slice(0,10);
     localStorage.setItem(GKEY, JSON.stringify(goals));
     msg.push('목표 업데이트 🎯');
+  }
+  if (parsed.div) {
+    const { ym, rates, estimated } = parsed.div;
+    // 종목별 데이터 머지 — exDay, exSh 포함
+    Object.entries(rates).forEach(([ticker, data]) => {
+      if (!divRates[ticker]) divRates[ticker] = {};
+      divRates[ticker][ym] = { ...divRates[ticker][ym], ...data };
+    });
+    // estimated 저장
+    if (estimated) {
+      Object.entries(estimated).forEach(([ticker, rate]) => {
+        if (!divRates[ticker]) divRates[ticker] = {};
+        if (!divRates[ticker][ym]) divRates[ticker][ym] = {};
+        if (divRates[ticker][ym].estimated == null) divRates[ticker][ym].estimated = rate;
+      });
+    }
+    persistDivRates();
+    msg.push('배당금 업데이트 💰');
   }
   renderAll();
   return msg.join(' · ');
@@ -489,67 +674,52 @@ function showParsedPreview(parsed) {
 async function clipboardSave() {
   const resultEl = document.getElementById('clip-result');
   const fallback = document.getElementById('manual-fallback');
-
-  // 미리보기 초기화
   document.getElementById('qs-preview').style.display = 'none';
   document.getElementById('qs-goal-preview').style.display = 'none';
   resultEl.style.display = 'none';
-
   try {
     const text = await navigator.clipboard.readText();
-    if (!text || !text.includes('SAVE::') && !text.includes('GOAL::')) {
+    if (!text || (!text.includes('SAVE::') && !text.includes('GOAL::') && !text.includes('DIV::'))) {
       resultEl.className = 'clip-result err';
-      resultEl.textContent = '❌ 클립보드에 SAVE:: 또는 GOAL:: 코드가 없어요. Claude 체크 결과를 먼저 복사해주세요.';
-      resultEl.style.display = 'block';
-      return;
+      resultEl.textContent = '❌ 클립보드에 SAVE:: / GOAL:: / DIV:: 코드가 없어요. 코드를 먼저 복사해주세요.';
+      resultEl.style.display = 'block'; return;
     }
-
     const parsed = parseAndSave(text);
     if (!parsed) {
       resultEl.className = 'clip-result err';
-      resultEl.textContent = '❌ 코드 파싱 실패. Claude 체크 결과의 SAVE:: + GOAL:: 두 줄을 복사했는지 확인해주세요.';
-      resultEl.style.display = 'block';
-      return;
+      resultEl.textContent = '❌ 코드 파싱 실패. 올바르게 복사했는지 확인해주세요.';
+      resultEl.style.display = 'block'; return;
     }
-
-    // 미리보기 표시 후 저장
     showParsedPreview(parsed);
     const msg = applyParsed(parsed);
-
     resultEl.className = 'clip-result ok';
     resultEl.textContent = '✅ ' + msg;
     resultEl.style.display = 'block';
     toast(msg);
-
-    // 3초 후 결과 메시지 숨김
     setTimeout(() => { resultEl.style.display = 'none'; }, 3000);
-
   } catch(e) {
-    // 권한 거부 → 수동 폴백 표시
     resultEl.className = 'clip-result err';
     resultEl.textContent = '⚠️ 클립보드 접근 권한이 없어요. 아래 텍스트 박스에 직접 붙여넣기 해주세요.';
     resultEl.style.display = 'block';
     fallback.style.display = 'block';
-    fallback.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    fallback.scrollIntoView({ behavior:'smooth', block:'nearest' });
   }
 }
 
-// ── 빠른 저장 파싱 (수동 폴백용) ──
 function onQSInput() {
   const raw = document.getElementById('qs-input').value.trim();
   const btn = document.getElementById('btn-qs');
-  qsParsed = null;
-  btn.disabled = true;
+  qsParsed = null; btn.disabled = true;
   document.getElementById('qs-preview').style.display = 'none';
   document.getElementById('qs-goal-preview').style.display = 'none';
-
   const parsed = parseAndSave(raw);
   if (parsed) {
-    qsParsed = parsed;
-    showParsedPreview(parsed);
-    btn.disabled = false;
-    if (parsed.save && parsed.goal) btn.textContent = '⚡ 기록 + 목표 동시 저장';
-    else if (parsed.save) btn.textContent = '⚡ 기록 저장';
+    qsParsed = parsed; showParsedPreview(parsed); btn.disabled = false;
+    if (parsed.save && parsed.goal && parsed.div) btn.textContent = '⚡ 기록 + 목표 + 배당 저장';
+    else if (parsed.save && parsed.goal) btn.textContent = '⚡ 기록 + 목표 동시 저장';
+    else if (parsed.save && parsed.div)  btn.textContent = '⚡ 기록 + 배당 저장';
+    else if (parsed.save)  btn.textContent = '⚡ 기록 저장';
+    else if (parsed.div)   btn.textContent = '💰 배당금 업데이트';
     else btn.textContent = '🎯 목표 업데이트';
   }
 }
@@ -566,16 +736,13 @@ function quickSave() {
   qsParsed = null;
 }
 
-// ── 탭 전환 ──
 function switchTab(t) {
   document.getElementById('tab-input').style.display   = t === 'input'   ? 'block' : 'none';
   document.getElementById('tab-records').style.display = t === 'records' ? 'block' : 'none';
-  document.querySelectorAll('.tab').forEach((b, i) =>
-    b.classList.toggle('active', ['input','records'][i] === t));
+  document.querySelectorAll('.tab').forEach((b,i) => b.classList.toggle('active', ['input','records'][i] === t));
   if (t === 'records') renderAll();
 }
 
-// ── 입력 폼 ──
 function updatePreview() {
   const ps  = +document.getElementById('inp-plus-sh').value  || 0;
   const ks  = +document.getElementById('inp-kodex-sh').value || 0;
@@ -601,16 +768,12 @@ function saveRecord() {
     orders:  +document.getElementById('inp-orders').value   || 0
   };
   if (!rec.date || !rec.plusSh) { toast('날짜와 PLUS 수량은 필수예요!', true); return; }
-  upsertRecord(rec);
-  persist();
-  toast('저장 완료!');
-  clearForm();
+  upsertRecord(rec); persist(); toast('저장 완료!'); clearForm();
 }
 
 function upsertRecord(rec) {
   const idx = records.findIndex(r => r.date === rec.date);
-  if (idx >= 0) records[idx] = rec;
-  else records.push(rec);
+  if (idx >= 0) records[idx] = rec; else records.push(rec);
   records.sort((a, b) => a.date.localeCompare(b.date));
 }
 
@@ -621,13 +784,13 @@ function clearForm() {
   document.getElementById('preview-card').classList.remove('show');
 }
 
-function persist() {
-  try { localStorage.setItem(SKEY, JSON.stringify(records)); } catch(e) {}
-}
+function persist() { try { localStorage.setItem(SKEY, JSON.stringify(records)); } catch(e) {} }
+function persistDivRates() { try { localStorage.setItem(DKEY, JSON.stringify(divRates)); } catch(e) {} }
 
 function loadData() {
   try { const r = localStorage.getItem(SKEY); if (r) records = JSON.parse(r); } catch(e) { records = []; }
   try { const g = localStorage.getItem(GKEY); if (g) goals   = JSON.parse(g); } catch(e) { goals   = null; }
+  try { const d = localStorage.getItem(DKEY); if (d) divRates = JSON.parse(d); } catch(e) { divRates = {}; }
 }
 
 // ── 월별 네비게이터 ──
@@ -646,56 +809,31 @@ function renderMonthNav() {
   const allBtn = document.createElement('button');
   allBtn.className = 'mn-all-btn' + (nav.type === 'all' ? ' active' : '');
   allBtn.textContent = '전체';
-  allBtn.onclick = () => {
-    nav = { type: 'all', year: null, ym: null };
-    renderMonthNav();
-    showSection('all');
-    renderAllContent();
-  };
+  allBtn.onclick = () => { nav = { type:'all', year:null, ym:null }; renderMonthNav(); showSection('all'); renderAllContent(); };
   container.appendChild(allBtn);
 
   [...years].reverse().forEach(yr => {
     const isExpanded = yr === expandedYear;
     const monthsInYear = months.filter(m => m.startsWith(yr));
-    const group = document.createElement('div');
-    group.className = 'mn-year-group';
-    const header = document.createElement('div');
-    header.className = 'mn-year-header';
-    header.innerHTML = `
-      <span class="mn-year-label${isExpanded ? '' : ' inactive'}">${yr}</span>
-      <span class="mn-year-arrow${isExpanded ? '' : ' inactive collapsed'}">▲</span>`;
+    const group = document.createElement('div'); group.className = 'mn-year-group';
+    const header = document.createElement('div'); header.className = 'mn-year-header';
+    header.innerHTML = `<span class="mn-year-label${isExpanded?'':' inactive'}">${yr}</span><span class="mn-year-arrow${isExpanded?'':' inactive collapsed'}">▲</span>`;
     header.onclick = () => {
-      if (isExpanded && nav.year === yr) {
-        nav = { type: 'all', year: null, ym: null };
-      } else {
-        nav = { type: 'year', year: yr, ym: null };
-        showSection('all');
-        renderAllContent();
-      }
+      if (isExpanded && nav.year === yr) nav = { type:'all', year:null, ym:null };
+      else { nav = { type:'year', year:yr, ym:null }; showSection('all'); renderAllContent(); }
       renderMonthNav();
     };
-    const wrap = document.createElement('div');
-    wrap.className = 'mn-months-wrap' + (isExpanded ? ' open' : '');
-    const row = document.createElement('div');
-    row.className = 'mn-months-row';
+    const wrap = document.createElement('div'); wrap.className = 'mn-months-wrap' + (isExpanded?' open':'');
+    const row  = document.createElement('div'); row.className = 'mn-months-row';
     monthsInYear.forEach(ym => {
       const mNum = parseInt(ym.slice(5), 10);
-      const label = String(mNum).padStart(2, '0') + '월';
       const btn = document.createElement('button');
       btn.className = 'mn-month-btn' + (nav.ym === ym ? ' active-month' : '');
-      btn.textContent = label;
-      btn.onclick = (e) => {
-        e.stopPropagation();
-        nav = { type: 'month', year: yr, ym };
-        renderMonthNav();
-        showSection('month');
-        renderMonthSection(ym);
-      };
+      btn.textContent = String(mNum).padStart(2,'0') + '월';
+      btn.onclick = e => { e.stopPropagation(); nav = { type:'month', year:yr, ym }; renderMonthNav(); showSection('month'); renderMonthSection(ym); };
       row.appendChild(btn);
     });
-    wrap.appendChild(row);
-    group.appendChild(header);
-    group.appendChild(wrap);
+    wrap.appendChild(row); group.appendChild(header); group.appendChild(wrap);
     container.appendChild(group);
   });
 }
@@ -705,14 +843,12 @@ function showSection(which) {
   document.getElementById('section-month').style.display = which === 'month' ? 'block' : 'none';
 }
 
-// ── 섹션별 렌더 ──
 function renderAllContent() {
   let filtered = records;
-  if (nav.type === 'year' && nav.year) {
-    filtered = records.filter(r => r.date.startsWith(nav.year));
-  }
+  if (nav.type === 'year' && nav.year) filtered = records.filter(r => r.date.startsWith(nav.year));
   renderDischarge();
   renderMonthlyCharts(filtered);
+  renderDivDetailCharts(filtered);
   renderLogList(document.getElementById('log-list-all'), document.getElementById('empty-all'),
     nav.type === 'year' ? nav.year + '-' : null);
 }
@@ -729,14 +865,10 @@ function renderDischarge() {
   const sec = document.getElementById('discharge-section');
   const latest = records.length ? records[records.length - 1] : null;
   if (!goals || !latest) {
-    sec.innerHTML = '<div class="no-goal">체크 후 🎯 GOAL:: 코드를 붙여넣으면 달성도가 표시돼요</div>';
-    return;
+    sec.innerHTML = '<div class="no-goal">체크 후 🎯 GOAL:: 코드를 붙여넣으면 달성도가 표시돼요</div>'; return;
   }
   const d = goals.discharge;
-  if (!d) {
-    sec.innerHTML = '<div class="no-goal">🎯 GOAL:: 코드를 붙여넣으면 달성도가 표시돼요</div>';
-    return;
-  }
+  if (!d) { sec.innerHTML = '<div class="no-goal">🎯 GOAL:: 코드를 붙여넣으면 달성도가 표시돼요</div>'; return; }
 
   const curDiv = (latest.plusSh * 156 + latest.kodexSh * 244) / 10000;
 
@@ -745,73 +877,56 @@ function renderDischarge() {
     const kPct = Math.round(latest.kodexSh / kodexGoal * 100);
     const dPct = Math.round(curDiv         / divGoal   * 100);
     const avg  = Math.round((pPct + kPct + dPct) / 3);
-    return `<div class="milestone-card" style="border-color:${borderColor || 'rgba(0,229,255,.08)'};">
-<div class="milestone-card-hdr">
-  <span class="milestone-card-title">${label}</span>
-  <span class="milestone-card-pct">${avg}% 진행</span>
-</div>
+    return `<div class="milestone-card" style="border-color:${borderColor||'rgba(0,229,255,.08)'};">
+<div class="milestone-card-hdr"><span class="milestone-card-title">${label}</span><span class="milestone-card-pct">${avg}% 진행</span></div>
 <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
   ${mkMini('PLUS','#00e5ff',latest.plusSh,plusGoal,'주',pPct,true)}
   ${mkMini('KODEX','#a78bfa',latest.kodexSh,kodexGoal,'주',kPct,true)}
   ${mkMini('배당','#fb923c',curDiv.toFixed(1),divGoal,'만',dPct,true)}
-</div>
-</div>`;
+</div></div>`;
   }
 
   const allCards = [];
   if (goals.milestones && goals.milestones.length) {
-    goals.milestones.forEach(ms => {
-      allCards.push(msCard(ms.label, ms.plusSh, ms.kodexSh, ms.div, 'rgba(0,229,255,.08)'));
-    });
+    goals.milestones.forEach(ms => allCards.push(msCard(ms.label, ms.plusSh, ms.kodexSh, ms.div, 'rgba(0,229,255,.08)')));
   } else {
-    allCards.push(msCard('일병 종료', Math.round(d.plusSh*0.4), Math.round(d.kodexSh*0.4), +(d.div*0.4).toFixed(1), 'rgba(0,229,255,.08)'));
-    allCards.push(msCard('상병 종료', Math.round(d.plusSh*0.7), Math.round(d.kodexSh*0.7), +(d.div*0.7).toFixed(1), 'rgba(167,139,250,.12)'));
+    allCards.push(msCard('일병 종료', Math.round(d.plusSh*.4), Math.round(d.kodexSh*.4), +(d.div*.4).toFixed(1), 'rgba(0,229,255,.08)'));
+    allCards.push(msCard('상병 종료', Math.round(d.plusSh*.7), Math.round(d.kodexSh*.7), +(d.div*.7).toFixed(1), 'rgba(167,139,250,.12)'));
   }
 
   const plusPct  = Math.round(latest.plusSh  / d.plusSh  * 100);
   const kodexPct = Math.round(latest.kodexSh / d.kodexSh * 100);
   const divPct   = Math.round(curDiv         / d.div     * 100);
   allCards.push(`<div class="milestone-card" style="border-color:rgba(0,229,255,.25);">
-<div class="milestone-card-hdr">
-  <span class="milestone-card-title" style="color:#00e5ff;">🏁 전역 최종 목표</span>
-  <span class="milestone-card-pct">${Math.round((plusPct+kodexPct+divPct)/3)}% 진행</span>
-</div>
+<div class="milestone-card-hdr"><span class="milestone-card-title" style="color:#00e5ff;">🏁 전역 최종 목표</span><span class="milestone-card-pct">${Math.round((plusPct+kodexPct+divPct)/3)}% 진행</span></div>
 <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
   ${mkMini('PLUS','#00e5ff',latest.plusSh,d.plusSh,'주',plusPct,true)}
   ${mkMini('KODEX','#a78bfa',latest.kodexSh,d.kodexSh,'주',kodexPct,true)}
   ${mkMini('배당','#fb923c',curDiv.toFixed(1),d.div,'만',divPct,true)}
-</div>
-</div>`);
+</div></div>`);
 
-  const topCard    = allCards[0];
+  const topCard   = allCards[0];
   const hiddenHtml = allCards.slice(1).join('');
   const hasHidden  = allCards.length > 1;
 
   sec.innerHTML = `<div class="ds-header">
 <div class="ds-title">🎖️ 전역 목표</div>
-<div class="ds-date">${formatDateDiff(goals.updatedAt || new Date().toISOString().slice(0,10))}</div>
+<div class="ds-date">${formatDateDiff(goals.updatedAt||new Date().toISOString().slice(0,10))}</div>
 </div>
 <div id="goal-analysis" style="margin-bottom:10px;"></div>
-<div>
-  ${topCard}
-  ${hasHidden ? `
-  <div style="display:flex;justify-content:flex-end;margin-top:6px;">
-    <button class="expand-btn" id="ms-expand-btn" onclick="toggleMilestones()">
-      <span>다른 시점 보기</span><span class="arr">▼</span>
-    </button>
-  </div>
-  <div id="ms-hidden-list" class="goal-hidden-list">${hiddenHtml}</div>` : ''}
+<div>${topCard}
+${hasHidden?`<div style="display:flex;justify-content:flex-end;margin-top:6px;">
+<button class="expand-btn" id="ms-expand-btn" onclick="toggleMilestones()"><span>다른 시점 보기</span><span class="arr">▼</span></button></div>
+<div id="ms-hidden-list" class="goal-hidden-list">${hiddenHtml}</div>`:''}
 </div>`;
 
-  try {
-    document.getElementById('goal-analysis').innerHTML = analyzeGoal();
-  } catch(e) { console.warn('analyzeGoal error', e); }
+  try { document.getElementById('goal-analysis').innerHTML = analyzeGoal(); } catch(e) {}
 }
 
 function mkMini(label, color, cur, goal, unit, pct, isFuture) {
-  const c   = pctColor(pct, isFuture);
+  const c = pctColor(pct, isFuture);
   const lbl = pctLabel(pct, isFuture);
-  const w   = Math.min(pct, 100);
+  const w = Math.min(pct, 100);
   return `<div style="background:#0c1525;border-radius:8px;padding:8px;">
 <div style="font-size:8px;color:#4a6080;font-family:'Space Mono',monospace;margin-bottom:4px;">${label}</div>
 <div style="font-size:14px;font-weight:900;font-family:'Space Mono',monospace;color:${color};">${cur}${unit}</div>
@@ -823,223 +938,136 @@ function mkMini(label, color, cur, goal, unit, pct, isFuture) {
 </div>`;
 }
 
-// ── 달성 가능성 분석 ──
 function analyzeGoal() {
   if (!goals || !goals.discharge || records.length < 2) return '';
-
   const enlistDate    = new Date(goals.enlistDate    || '2025-08-17');
   const dischargeDate = new Date(goals.dischargeDate || '2027-04-17');
-
-  function addMonths(date, m) {
-    const d = new Date(date);
-    d.setMonth(d.getMonth() + m);
-    return d;
-  }
-  function endOfMonth(date) {
-    const d = new Date(date);
-    return new Date(d.getFullYear(), d.getMonth() + 1, 0);
-  }
-
+  function addMonths(date, m) { const d=new Date(date); d.setMonth(d.getMonth()+m); return d; }
+  function endOfMonth(date) { const d=new Date(date); return new Date(d.getFullYear(),d.getMonth()+1,0); }
   const privateDate  = endOfMonth(addMonths(enlistDate, 8));
   const corporalDate = endOfMonth(addMonths(enlistDate, 14));
-
   const d = goals.discharge;
 
-  // [FIX] milestones의 date가 "2026-04" 형식이면 해당 월 말일로 변환
   function msDateToEndOfMonth(dateStr) {
     if (!dateStr) return null;
-    if (dateStr.length === 7) {
-      const [y, m] = dateStr.split('-').map(Number);
-      return new Date(y, m, 0); // 해당 월 마지막 날
-    }
+    if (dateStr.length === 7) { const [y,m]=dateStr.split('-').map(Number); return new Date(y,m,0); }
     return new Date(dateStr);
   }
 
   let targets = [
-    { name:'일병', date: privateDate,   plusGoal: Math.round(d.plusSh*0.4),  kodexGoal: Math.round(d.kodexSh*0.4),  divGoal: +(d.div*0.4).toFixed(1)  },
-    { name:'상병', date: corporalDate,  plusGoal: Math.round(d.plusSh*0.7),  kodexGoal: Math.round(d.kodexSh*0.7),  divGoal: +(d.div*0.7).toFixed(1)  },
-    { name:'전역', date: dischargeDate, plusGoal: d.plusSh,                  kodexGoal: d.kodexSh,                  divGoal: d.div                    }
+    { name:'일병', date:privateDate,   plusGoal:Math.round(d.plusSh*.4), kodexGoal:Math.round(d.kodexSh*.4), divGoal:+(d.div*.4).toFixed(1) },
+    { name:'상병', date:corporalDate,  plusGoal:Math.round(d.plusSh*.7), kodexGoal:Math.round(d.kodexSh*.7), divGoal:+(d.div*.7).toFixed(1) },
+    { name:'전역', date:dischargeDate, plusGoal:d.plusSh, kodexGoal:d.kodexSh, divGoal:d.div }
   ];
-
-  // [FIX] milestones date를 월말일로 올바르게 파싱
   if (goals.milestones && goals.milestones.length) {
-    goals.milestones.forEach((ms, i) => {
+    goals.milestones.forEach((ms,i) => {
       if (targets[i]) {
-        targets[i].plusGoal  = ms.plusSh;
-        targets[i].kodexGoal = ms.kodexSh;
-        targets[i].divGoal   = ms.div;
-        targets[i].date      = msDateToEndOfMonth(ms.date) || targets[i].date;
+        targets[i].plusGoal  = ms.plusSh; targets[i].kodexGoal = ms.kodexSh; targets[i].divGoal = ms.div;
+        targets[i].date = msDateToEndOfMonth(ms.date) || targets[i].date;
       }
     });
   }
 
-  const first   = records[0];
-  const last    = records[records.length - 1];
+  const first = records[0], last = records[records.length-1];
   const tradingSpan = tradingDaySpan(first.date, last.date);
   const plusSpeed  = (last.plusSh  - first.plusSh)  / tradingSpan;
   const kodexSpeed = (last.kodexSh - first.kodexSh) / tradingSpan;
-  const lastDiv    = (last.plusSh  * 156 + last.kodexSh  * 244) / 10000;
-  const firstDiv   = (first.plusSh * 156 + first.kodexSh * 244) / 10000;
+  const lastDiv    = (last.plusSh*156  + last.kodexSh*244)  / 10000;
+  const firstDiv   = (first.plusSh*156 + first.kodexSh*244) / 10000;
   const divSpeed   = (lastDiv - firstDiv) / tradingSpan;
-
-  const today = new Date();
-  today.setHours(0,0,0,0);
+  const today = new Date(); today.setHours(0,0,0,0);
 
   function calcTarget(t) {
-    const goalDate = new Date(t.date);
-    goalDate.setHours(0,0,0,0);
+    const goalDate = new Date(t.date); goalDate.setHours(0,0,0,0);
     const isPast = goalDate <= today;
     const remainTD = isPast ? 0 : countTradingDays(today, goalDate);
-    const remainCalDays = Math.round((goalDate - today) / (1000*60*60*24));
+    const remainCalDays = Math.round((goalDate-today)/(1000*60*60*24));
     const projPlus  = last.plusSh  + plusSpeed  * remainTD;
     const projKodex = last.kodexSh + kodexSpeed * remainTD;
     const projDiv   = lastDiv      + divSpeed   * remainTD;
-    const isOkPlus  = projPlus  >= t.plusGoal;
-    const isOkKodex = projKodex >= t.kodexGoal;
-    const isOkDiv   = projDiv   >= t.divGoal;
-    const allOk     = isOkPlus && isOkKodex && isOkDiv;
-    const plusPct  = Math.round(last.plusSh  / t.plusGoal  * 100);
-    const kodexPct = Math.round(last.kodexSh / t.kodexGoal * 100);
-    const divPct   = Math.round(lastDiv      / t.divGoal   * 100);
-    const needPlus  = remainTD > 0 ? (t.plusGoal  - last.plusSh)  / remainTD : null;
-    const needKodex = remainTD > 0 ? (t.kodexGoal - last.kodexSh) / remainTD : null;
-    const needDiv   = remainTD > 0 ? (t.divGoal   - lastDiv)      / remainTD : null;
-    return {
-      ...t, isPast, remainTD, remainCalDays, allOk,
-      isOkPlus, isOkKodex, isOkDiv,
-      plusPct, kodexPct, divPct,
-      projPlus: Math.round(projPlus),
-      projKodex: Math.round(projKodex),
-      projDiv: projDiv.toFixed(1),
-      needPlus, needKodex, needDiv,
-      plusSpeed, kodexSpeed, divSpeed
-    };
+    const isOkPlus=projPlus>=t.plusGoal, isOkKodex=projKodex>=t.kodexGoal, isOkDiv=projDiv>=t.divGoal;
+    const allOk=isOkPlus&&isOkKodex&&isOkDiv;
+    const plusPct=Math.round(last.plusSh/t.plusGoal*100), kodexPct=Math.round(last.kodexSh/t.kodexGoal*100), divPct=Math.round(lastDiv/t.divGoal*100);
+    const needPlus=remainTD>0?(t.plusGoal-last.plusSh)/remainTD:null;
+    const needKodex=remainTD>0?(t.kodexGoal-last.kodexSh)/remainTD:null;
+    const needDiv=remainTD>0?(t.divGoal-lastDiv)/remainTD:null;
+    return { ...t, isPast, remainTD, remainCalDays, allOk, isOkPlus, isOkKodex, isOkDiv,
+      plusPct, kodexPct, divPct, projPlus:Math.round(projPlus), projKodex:Math.round(projKodex),
+      projDiv:projDiv.toFixed(1), needPlus, needKodex, needDiv, plusSpeed, kodexSpeed, divSpeed };
   }
 
   const results = targets.map(calcTarget);
 
   function makeCard(r) {
     const goalDate = r.date instanceof Date ? r.date : new Date(r.date);
-    const dateStr  = goalDate.toISOString().slice(0, 10);
-
+    const dateStr  = goalDate.toISOString().slice(0,10);
     if (r.isPast) {
-      const reachedPlus  = last.plusSh  >= r.plusGoal;
-      const reachedKodex = last.kodexSh >= r.kodexGoal;
-      const reachedDiv   = lastDiv      >= r.divGoal;
-      const allReached   = reachedPlus && reachedKodex && reachedDiv;
-      return `<div class="goal-card ${allReached ? 'done' : 'fail'}">
+      const rP=last.plusSh>=r.plusGoal, rK=last.kodexSh>=r.kodexGoal, rD=lastDiv>=r.divGoal;
+      const allR=rP&&rK&&rD;
+      return `<div class="goal-card ${allR?'done':'fail'}">
 <div class="goal-title">${r.name} (${dateStr})</div>
-<div class="goal-status ${allReached ? 'goal-done' : 'goal-fail'}">${allReached ? '✅ 목표 달성' : '❌ 목표 미달'}</div>
-<div class="goal-sub">PLUS ${last.plusSh}주 / 목표 ${r.plusGoal}주 <span class="${reachedPlus?'goal-done':'goal-warn'}">${reachedPlus?'✓':'✗'}</span></div>
-<div class="goal-sub">KODEX ${last.kodexSh}주 / 목표 ${r.kodexGoal}주 <span class="${reachedKodex?'goal-done':'goal-warn'}">${reachedKodex?'✓':'✗'}</span></div>
-<div class="goal-sub">배당 ${lastDiv.toFixed(1)}만 / 목표 ${r.divGoal}만 <span class="${reachedDiv?'goal-done':'goal-warn'}">${reachedDiv?'✓':'✗'}</span></div>
+<div class="goal-status ${allR?'goal-done':'goal-fail'}">${allR?'✅ 목표 달성':'❌ 목표 미달'}</div>
+<div class="goal-sub">PLUS ${last.plusSh}주 / 목표 ${r.plusGoal}주 <span class="${rP?'goal-done':'goal-warn'}">${rP?'✓':'✗'}</span></div>
+<div class="goal-sub">KODEX ${last.kodexSh}주 / 목표 ${r.kodexGoal}주 <span class="${rK?'goal-done':'goal-warn'}">${rK?'✓':'✗'}</span></div>
+<div class="goal-sub">배당 ${lastDiv.toFixed(1)}만 / 목표 ${r.divGoal}만 <span class="${rD?'goal-done':'goal-warn'}">${rD?'✓':'✗'}</span></div>
 </div>`;
     }
-
-    const diffP = r.needPlus  != null ? (r.plusSpeed  - r.needPlus).toFixed(2)  : '∞';
-    const diffK = r.needKodex != null ? (r.kodexSpeed - r.needKodex).toFixed(2) : '∞';
-    const diffD = r.needDiv   != null ? (r.divSpeed   - r.needDiv).toFixed(3)   : '∞';
-    const isExceedP = r.plusPct  >= 105;
-    const isExceedK = r.kodexPct >= 105;
-    const isExceedD = r.divPct   >= 105;
-
-    return `<div class="goal-card ${r.allOk ? 'ok' : 'bad'}">
+    const diffP=r.needPlus!=null?(r.plusSpeed-r.needPlus).toFixed(2):'∞';
+    const diffK=r.needKodex!=null?(r.kodexSpeed-r.needKodex).toFixed(2):'∞';
+    const diffD=r.needDiv!=null?(r.divSpeed-r.needDiv).toFixed(3):'∞';
+    const isExceedP=r.plusPct>=105, isExceedK=r.kodexPct>=105, isExceedD=r.divPct>=105;
+    return `<div class="goal-card ${r.allOk?'ok':'bad'}">
 <div class="goal-title">${r.name} (${dateStr}, D-${Math.max(0,r.remainCalDays)} / 거래일 ${r.remainTD}일)</div>
-<div class="goal-status ${r.allOk ? 'goal-good' : 'goal-warn'}">${r.allOk ? '🟢 달성 가능' : '🔴 속도 부족'}</div>
-<div class="goal-sub">
-  PLUS 현재 ${last.plusSh}주 → 예상 ${r.projPlus}주 / 목표 ${r.plusGoal}주
-  <span class="${r.isOkPlus ? (isExceedP ? 'goal-exceed' : 'goal-good') : 'goal-warn'}">${r.isOkPlus ? '✓' : '✗'}</span>
-</div>
-<div class="goal-sub">
-  KODEX 현재 ${last.kodexSh}주 → 예상 ${r.projKodex}주 / 목표 ${r.kodexGoal}주
-  <span class="${r.isOkKodex ? (isExceedK ? 'goal-exceed' : 'goal-good') : 'goal-warn'}">${r.isOkKodex ? '✓' : '✗'}</span>
-</div>
-<div class="goal-sub">
-  배당 ${lastDiv.toFixed(1)}만 → 예상 ${r.projDiv}만 / 목표 ${r.divGoal}만
-  <span class="${r.isOkDiv ? (isExceedD ? 'goal-exceed' : 'goal-good') : 'goal-warn'}">${r.isOkDiv ? '✓' : '✗'}</span>
-</div>
+<div class="goal-status ${r.allOk?'goal-good':'goal-warn'}">${r.allOk?'🟢 달성 가능':'🔴 속도 부족'}</div>
+<div class="goal-sub">PLUS 현재 ${last.plusSh}주 → 예상 ${r.projPlus}주 / 목표 ${r.plusGoal}주 <span class="${r.isOkPlus?(isExceedP?'goal-exceed':'goal-good'):'goal-warn'}">${r.isOkPlus?'✓':'✗'}</span></div>
+<div class="goal-sub">KODEX 현재 ${last.kodexSh}주 → 예상 ${r.projKodex}주 / 목표 ${r.kodexGoal}주 <span class="${r.isOkKodex?(isExceedK?'goal-exceed':'goal-good'):'goal-warn'}">${r.isOkKodex?'✓':'✗'}</span></div>
+<div class="goal-sub">배당 ${lastDiv.toFixed(1)}만 → 예상 ${r.projDiv}만 / 목표 ${r.divGoal}만 <span class="${r.isOkDiv?(isExceedD?'goal-exceed':'goal-good'):'goal-warn'}">${r.isOkDiv?'✓':'✗'}</span></div>
 <div style="margin-top:7px;padding-top:7px;border-top:1px solid #182a40;font-family:'Space Mono',monospace;font-size:9px;">
-  <div style="display:grid;grid-template-columns:38px 60px 60px 52px;gap:2px 0;color:#4a6080;">
-    <div></div>
-    <div style="text-align:right;padding-right:8px;">필요</div>
-    <div style="text-align:right;padding-right:8px;">현재</div>
-    <div style="text-align:right;">여유</div>
-    <div style="color:#7ab8cc;">PLUS</div>
-    <div style="text-align:right;padding-right:8px;">${r.needPlus!=null?'+'+r.needPlus.toFixed(2):'-'}주</div>
-    <div style="text-align:right;padding-right:8px;">+${r.plusSpeed.toFixed(2)}주</div>
-    <div style="text-align:right;color:${Number(diffP)>=0?'#00e5ff':'#ef4444'}">${Number(diffP)>=0?'+':''}${diffP}</div>
-    <div style="color:#fb923c;">배당</div>
-    <div style="text-align:right;padding-right:8px;">${r.needDiv!=null?'+'+r.needDiv.toFixed(3):'-'}만</div>
-    <div style="text-align:right;padding-right:8px;">+${r.divSpeed.toFixed(3)}만</div>
-    <div style="text-align:right;color:${Number(diffD)>=0?'#00e5ff':'#ef4444'}">${Number(diffD)>=0?'+':''}${diffD}</div>
-  </div>
-  <div style="color:#283a50;margin-top:2px;font-size:8px;">단위: 주·만 / 거래일</div>
-</div>
+<div style="display:grid;grid-template-columns:38px 60px 60px 52px;gap:2px 0;color:#4a6080;">
+<div></div><div style="text-align:right;padding-right:8px;">필요</div><div style="text-align:right;padding-right:8px;">현재</div><div style="text-align:right;">여유</div>
+<div style="color:#7ab8cc;">PLUS</div><div style="text-align:right;padding-right:8px;">${r.needPlus!=null?'+'+r.needPlus.toFixed(2):'-'}주</div><div style="text-align:right;padding-right:8px;">+${r.plusSpeed.toFixed(2)}주</div><div style="text-align:right;color:${Number(diffP)>=0?'#00e5ff':'#ef4444'}">${Number(diffP)>=0?'+':''}${diffP}</div>
+<div style="color:#fb923c;">배당</div><div style="text-align:right;padding-right:8px;">${r.needDiv!=null?'+'+r.needDiv.toFixed(3):'-'}만</div><div style="text-align:right;padding-right:8px;">+${r.divSpeed.toFixed(3)}만</div><div style="text-align:right;color:${Number(diffD)>=0?'#00e5ff':'#ef4444'}">${Number(diffD)>=0?'+':''}${diffD}</div>
+</div><div style="color:#283a50;margin-top:2px;font-size:8px;">단위: 주·만 / 거래일</div></div>
 </div>`;
   }
 
   const htmlCards = results.map(makeCard);
   if (!htmlCards.length) return '';
-
   let topIdx = results.findIndex(r => !r.isPast);
   if (topIdx === -1) topIdx = results.length - 1;
-
   const topCard  = htmlCards[topIdx];
-  const restHtml = htmlCards.filter((_, i) => i !== topIdx).join('');
-
-  return `<div class="goal-accordion">
-${topCard}
-${restHtml ? `
-<div style="overflow:hidden;">
-  <button class="expand-btn" id="goal-expand-btn" onclick="toggleGoals()">
-    <span>다른 시점 보기</span><span class="arr">▼</span>
-  </button>
-</div>
-<div id="hiddenGoals" class="goal-hidden-list">${restHtml}</div>` : ''}
+  const restHtml = htmlCards.filter((_,i) => i !== topIdx).join('');
+  return `<div class="goal-accordion">${topCard}
+${restHtml?`<div style="overflow:hidden;"><button class="expand-btn" id="goal-expand-btn" onclick="toggleGoals()"><span>다른 시점 보기</span><span class="arr">▼</span></button></div>
+<div id="hiddenGoals" class="goal-hidden-list">${restHtml}</div>`:''}
 </div>`;
 }
 
-// ── [FIX] 이번 달 목표 달성도 — monthGoal 객체 맵 키로 조회 ──
+// ── 이번 달 목표 달성도 ──
 function renderMonthGoal(ym) {
-  const card      = document.getElementById('month-goal-card');
+  const card = document.getElementById('month-goal-card');
   const monthRecs = records.filter(r => r.date.startsWith(ym));
   if (!monthRecs.length) { card.innerHTML = '<div class="no-goal">이 달 기록이 없어요.</div>'; return; }
   const latest = monthRecs[monthRecs.length - 1];
   const curDiv = (latest.plusSh * 156 + latest.kodexSh * 244) / 10000;
-
-  // [FIX] getMonthGoal()로 올바르게 ym 키 조회
   const mg = getMonthGoal(goals, ym);
-  if (!mg) {
-    card.innerHTML = '<div class="no-goal">🎯 GOAL:: 코드를 붙여넣으면 이 달 목표 달성도가 표시돼요</div>';
-    return;
-  }
-
+  if (!mg) { card.innerHTML = '<div class="no-goal">🎯 GOAL:: 코드를 붙여넣으면 이 달 목표 달성도가 표시돼요</div>'; return; }
   const plusPct  = Math.round(latest.plusSh  / mg.plusSh  * 100);
   const kodexPct = Math.round(latest.kodexSh / mg.kodexSh * 100);
   const divPct   = Math.round(curDiv         / mg.div     * 100);
-
-  card.innerHTML = `<div class="mg-header">
-<div class="mg-title">📅 ${ym.slice(5)}월 목표</div>
-<div style="font-size:10px;color:#4a6080;font-family:'Space Mono',monospace;">${ym} 기준</div>
-</div>
+  card.innerHTML = `<div class="mg-header"><div class="mg-title">📅 ${ym.slice(5)}월 목표</div><div style="font-size:10px;color:#4a6080;font-family:'Space Mono',monospace;">${ym} 기준</div></div>
 <div class="mg-grid">
-  ${mkMonthItem('PLUS',   '#00e5ff', latest.plusSh,       mg.plusSh,  '주', plusPct)}
-  ${mkMonthItem('KODEX',  '#a78bfa', latest.kodexSh,      mg.kodexSh, '주', kodexPct)}
-  ${mkMonthItem('월배당', '#fb923c', curDiv.toFixed(2),   mg.div,     '만', divPct)}
+  ${mkMonthItem('PLUS',   '#00e5ff', latest.plusSh,     mg.plusSh,  '주', plusPct)}
+  ${mkMonthItem('KODEX',  '#a78bfa', latest.kodexSh,    mg.kodexSh, '주', kodexPct)}
+  ${mkMonthItem('월배당', '#fb923c', curDiv.toFixed(2), mg.div,     '만', divPct)}
 </div>`;
 }
 
 function mkMonthItem(label, color, cur, goal, unit, pct) {
-  const c   = pctColor(pct, false);
-  const w   = Math.min(pct, 100);
+  const c = pctColor(pct, false);
+  const w = Math.min(pct, 100);
   const lbl = pctLabel(pct, false);
-  return `<div class="mg-item">
-<div class="mg-l">${label}</div>
-<div class="mg-cur" style="color:${color}">${cur}${unit}</div>
-<div class="mg-goal">목표 ${goal}${unit}</div>
-<div class="mg-bar-wrap"><div class="mg-bar" style="width:${w}%;background:${c};"></div></div>
-<div class="mg-pct" style="color:${c}">${pct}% ${lbl}</div>
-</div>`;
+  return `<div class="mg-item"><div class="mg-l">${label}</div><div class="mg-cur" style="color:${color}">${cur}${unit}</div><div class="mg-goal">목표 ${goal}${unit}</div><div class="mg-bar-wrap"><div class="mg-bar" style="width:${w}%;background:${c};"></div></div><div class="mg-pct" style="color:${c}">${pct}% ${lbl}</div></div>`;
 }
 
 // ── 차트 ──
@@ -1049,132 +1077,410 @@ function renderMonthInnerChart(ym) {
   if (recs.length < 2) { box.style.display = 'none'; return; }
   box.style.display = 'block';
   if (charts['month-inner']) { charts['month-inner'].destroy(); charts['month-inner'] = null; }
-
-  charts['month-inner'] = new Chart(
-    document.getElementById('month-inner-chart').getContext('2d'), {
-      type: 'line',
-      data: {
-        labels: recs.map(r => r.date.slice(5)),
-        datasets: [
-          { label:'PLUS',  data: recs.map(r => r.plusSh),  borderColor:'#00e5ff', backgroundColor:'rgba(0,229,255,.1)',   borderWidth:2, pointRadius:3, fill:false, tension:0.4 },
-          { label:'KODEX', data: recs.map(r => r.kodexSh), borderColor:'#a78bfa', backgroundColor:'rgba(167,139,250,.1)', borderWidth:2, pointRadius:3, fill:false, tension:0.4, yAxisID:'y2' }
-        ]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend:  { display:true, labels:{ color:'#e2e8f0', font:{size:10}, boxWidth:12 } },
-          tooltip: { backgroundColor:'#0c1525', titleColor:'#e2e8f0', bodyColor:'#e2e8f0' }
-        },
-        scales: {
-          x:  { grid:{color:'#182a40'}, ticks:{color:'#4a6080',font:{size:9}} },
-          y:  { grid:{color:'#182a40'}, ticks:{color:'#00e5ff',font:{size:9}}, position:'left'  },
-          y2: { grid:{display:false},   ticks:{color:'#a78bfa',font:{size:9}}, position:'right' }
-        }
-      }
+  charts['month-inner'] = new Chart(document.getElementById('month-inner-chart').getContext('2d'), {
+    type: 'line',
+    data: { labels: recs.map(r=>r.date.slice(5)),
+      datasets: [
+        { label:'PLUS',  data:recs.map(r=>r.plusSh),  borderColor:'#00e5ff', backgroundColor:'rgba(0,229,255,.1)',   borderWidth:2, pointRadius:3, fill:false, tension:0.4 },
+        { label:'KODEX', data:recs.map(r=>r.kodexSh), borderColor:'#a78bfa', backgroundColor:'rgba(167,139,250,.1)', borderWidth:2, pointRadius:3, fill:false, tension:0.4, yAxisID:'y2' }
+      ]},
+    options: { responsive:true,
+      plugins:{ legend:{display:true,labels:{color:'#e2e8f0',font:{size:10},boxWidth:12}}, tooltip:{backgroundColor:'#0c1525',titleColor:'#e2e8f0',bodyColor:'#e2e8f0'} },
+      scales:{ x:{grid:{color:'#182a40'},ticks:{color:'#4a6080',font:{size:9}}}, y:{grid:{color:'#182a40'},ticks:{color:'#00e5ff',font:{size:9}},position:'left'}, y2:{grid:{display:false},ticks:{color:'#a78bfa',font:{size:9}},position:'right'} }
     }
-  );
+  });
 }
 
 function renderMonthlyCharts(filtered) {
   const wrap = document.getElementById('monthly-charts');
-  ['mc-shares','mc-div'].forEach(k => { try { if(charts[k]) charts[k].destroy(); } catch(e) {} charts[k] = null; });
-
+  ['mc-shares','mc-div'].forEach(k => { try { if(charts[k]) charts[k].destroy(); } catch(e) {} charts[k]=null; });
   const src    = filtered || records;
-  const months = [...new Set(src.map(r => r.date.slice(0,7)))].sort();
-  if (!months.length) { wrap.innerHTML = ''; return; }
-
+  const months = [...new Set(src.map(r=>r.date.slice(0,7)))].sort();
+  if (!months.length) { wrap.innerHTML=''; return; }
   const monthData = months.map(ym => {
-    const recs = src.filter(r => r.date.startsWith(ym));
+    const recs = src.filter(r=>r.date.startsWith(ym));
     if (!recs.length) return null;
-    const lastR = recs[recs.length - 1];
-    const allBefore = records.filter(r => r.date < recs[0].date);
-    const prev  = allBefore.length ? allBefore[allBefore.length - 1] : null;
-    return {
-      label:     ym.slice(5) + '월',
+    const lastR = recs[recs.length-1];
+    const allBefore = records.filter(r=>r.date < recs[0].date);
+    const prev  = allBefore.length ? allBefore[allBefore.length-1] : null;
+    return { label:ym.slice(5)+'월',
       plusGain:  prev ? lastR.plusSh  - prev.plusSh  : lastR.plusSh  - recs[0].plusSh,
       kodexGain: prev ? lastR.kodexSh - prev.kodexSh : lastR.kodexSh - recs[0].kodexSh,
-      divGain:   prev
-        ? (lastR.plusSh*156+lastR.kodexSh*244 - (prev.plusSh*156+prev.kodexSh*244)) / 10000
-        : (lastR.plusSh*156+lastR.kodexSh*244 - (recs[0].plusSh*156+recs[0].kodexSh*244)) / 10000
-    };
+      divGain:   prev ? (lastR.plusSh*156+lastR.kodexSh*244-(prev.plusSh*156+prev.kodexSh*244))/10000
+                      : (lastR.plusSh*156+lastR.kodexSh*244-(recs[0].plusSh*156+recs[0].kodexSh*244))/10000 };
   }).filter(Boolean);
-
   wrap.innerHTML = '';
-
-  const r1 = document.createElement('div');
-  r1.className = 'chart-box';
-  r1.innerHTML = '<div class="chart-title" style="color:#e2e8f0">📦 종목별 수량 증가 (월별)</div><canvas id="mc-shares" height="140"></canvas>';
+  const r1 = document.createElement('div'); r1.className='chart-box';
+  r1.innerHTML='<div class="chart-title" style="color:#e2e8f0">📦 종목별 수량 증가 (월별)</div><canvas id="mc-shares" height="140"></canvas>';
   wrap.appendChild(r1);
-
   charts['mc-shares'] = new Chart(document.getElementById('mc-shares').getContext('2d'), {
-    type: 'bar',
-    data: {
-      labels: monthData.map(d => d.label),
-      datasets: [
-        { label:'PLUS',  data: monthData.map(d => d.plusGain),  backgroundColor:'rgba(0,229,255,.7)',   borderColor:'#00e5ff', borderWidth:1, borderRadius:4 },
-        { label:'KODEX', data: monthData.map(d => d.kodexGain), backgroundColor:'rgba(167,139,250,.7)', borderColor:'#a78bfa', borderWidth:1, borderRadius:4 }
-      ]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend:  { display:true, labels:{ color:'#e2e8f0', font:{size:10}, boxWidth:12 } },
-        tooltip: { backgroundColor:'#0c1525', titleColor:'#e2e8f0', bodyColor:'#e2e8f0',
-          callbacks: { label: c => ` ${c.dataset.label} +${c.parsed.y}주` } }
-      },
-      scales: {
-        x: { grid:{color:'#182a40'}, ticks:{color:'#4a6080',font:{size:10}} },
-        y: { grid:{color:'#182a40'}, ticks:{color:'#4a6080',font:{size:9}}  }
-      }
-    }
+    type:'bar', data:{ labels:monthData.map(d=>d.label), datasets:[
+      { label:'PLUS',  data:monthData.map(d=>d.plusGain),  backgroundColor:'rgba(0,229,255,.7)',   borderColor:'#00e5ff', borderWidth:1, borderRadius:4 },
+      { label:'KODEX', data:monthData.map(d=>d.kodexGain), backgroundColor:'rgba(167,139,250,.7)', borderColor:'#a78bfa', borderWidth:1, borderRadius:4 }]},
+    options:{ responsive:true, plugins:{ legend:{display:true,labels:{color:'#e2e8f0',font:{size:10},boxWidth:12}}, tooltip:{backgroundColor:'#0c1525',titleColor:'#e2e8f0',bodyColor:'#e2e8f0', callbacks:{label:c=>` ${c.dataset.label} +${c.parsed.y}주`}} },
+      scales:{ x:{grid:{color:'#182a40'},ticks:{color:'#4a6080',font:{size:10}}}, y:{grid:{color:'#182a40'},ticks:{color:'#4a6080',font:{size:9}}} } }
   });
-
-  const r2 = document.createElement('div');
-  r2.className = 'chart-box';
-  r2.innerHTML = '<div class="chart-title" style="color:#e2e8f0">📈 월 배당 증가액 (월별)</div><canvas id="mc-div" height="120"></canvas>';
+  const r2 = document.createElement('div'); r2.className='chart-box';
+  r2.innerHTML='<div class="chart-title" style="color:#e2e8f0">📈 월 배당 증가액 (월별)</div><canvas id="mc-div" height="120"></canvas>';
   wrap.appendChild(r2);
-
   charts['mc-div'] = new Chart(document.getElementById('mc-div').getContext('2d'), {
-    type: 'bar',
-    data: {
-      labels: monthData.map(d => d.label),
-      datasets: [{
-        label: '배당 증가',
-        data: monthData.map(d => +d.divGain.toFixed(2)),
-        backgroundColor: 'rgba(251,146,60,.7)',
-        borderColor: '#fb923c', borderWidth: 1, borderRadius: 4
-      }]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend:  { display:false },
-        tooltip: { backgroundColor:'#0c1525', borderColor:'#fb923c', borderWidth:1,
-          titleColor:'#e2e8f0', bodyColor:'#fb923c',
-          callbacks: { label: c => ` +${c.parsed.y.toFixed(2)}만원` } }
-      },
-      scales: {
-        x: { grid:{color:'#182a40'}, ticks:{color:'#4a6080',font:{size:10}} },
-        y: { grid:{color:'#182a40'}, ticks:{color:'#4a6080',font:{size:9}}  }
-      }
-    }
+    type:'bar', data:{ labels:monthData.map(d=>d.label), datasets:[{ label:'배당 증가', data:monthData.map(d=>+d.divGain.toFixed(2)), backgroundColor:'rgba(251,146,60,.7)', borderColor:'#fb923c', borderWidth:1, borderRadius:4 }]},
+    options:{ responsive:true, plugins:{ legend:{display:false}, tooltip:{backgroundColor:'#0c1525',borderColor:'#fb923c',borderWidth:1,titleColor:'#e2e8f0',bodyColor:'#fb923c', callbacks:{label:c=>` +${c.parsed.y.toFixed(2)}만원`}} },
+      scales:{ x:{grid:{color:'#182a40'},ticks:{color:'#4a6080',font:{size:10}}}, y:{grid:{color:'#182a40'},ticks:{color:'#4a6080',font:{size:9}}} } }
   });
 }
 
-// ── 기록 카드 HTML 생성 ──
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 종목별 배당금 실적 vs 예상 차트
+// [v2 핵심 변경] 배당락일 기준 수량(exSh)으로 예상/실제 배당금 계산
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+const TICKER_COLORS = {
+  PLUS:  { fill:'rgba(0,229,255,.75)',   border:'#00e5ff' },
+  KODEX: { fill:'rgba(167,139,250,.75)', border:'#a78bfa' },
+  BITO:  { fill:'rgba(251,146,60,.75)',  border:'#fb923c' },
+  NVDA:  { fill:'rgba(52,211,153,.75)',  border:'#34d399' },
+  GOOGL: { fill:'rgba(251,191,36,.75)',  border:'#fbbf24' },
+};
+function tickerColor(ticker) { return TICKER_COLORS[ticker]||{fill:'rgba(156,163,175,.6)',border:'#9ca3af'}; }
+
+const DIV_TIMING = {
+  PLUS:  { label:'PLUS (월초 입금)', cls:'early', icon:'🌅' },
+  KODEX: { label:'KODEX (월중 입금)', cls:'mid',   icon:'📅' },
+};
+function divTimingLabel(ticker) { return DIV_TIMING[ticker]||{label:ticker+' (+@ 기타)',cls:'other-t',icon:'➕'}; }
+
+function renderDivDetailCharts(filtered) {
+  const wrap = document.getElementById('div-detail-charts');
+  Object.keys(charts).filter(k=>k.startsWith('div-')).forEach(k=>{ try{if(charts[k])charts[k].destroy();}catch(e){}charts[k]=null; });
+
+  const src    = filtered || records;
+  const months = [...new Set(src.map(r=>r.date.slice(0,7)))].sort();
+  if (!months.length) { wrap.innerHTML=''; return; }
+
+  // 기타 종목 수집
+  const coreSet  = new Set(['PLUS','KODEX']);
+  const otherSet = new Set();
+  Object.keys(divRates).forEach(t=>{ if(!coreSet.has(t)) otherSet.add(t); });
+
+  const coreTickers  = ['PLUS','KODEX'];
+  const otherTickers = [...otherSet];
+  const allTickers   = [...coreTickers, ...otherTickers];
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // [v3 핵심] matrix 구성 — 배당금은 "지급 받는 달(payYm)" 기준으로 표시
+  //
+  // ┌─────────────────────────────────────────────────────────┐
+  // │ PLUS                                                    │
+  // │  배당락일: 전월(ym-1) 말 (예: 3월 28일)                    │
+  // │  배당지급: 당월(ym) 초  (예: 4월 초)                        │
+  // │  → 4월 차트 = 3월 배당락일 직전 보유 수량 × 주당배당           │
+  // │  exSh 기준월 = prevYm(ym),  exDay = PLUS의 전월 배당락일     │
+  // ├─────────────────────────────────────────────────────────┤
+  // │ KODEX                                                   │
+  // │  배당락일: 당월(ym) 중순 (예: 4월 13일)                      │
+  // │  배당지급: 당월(ym) 중순 이후                                │
+  // │  → 4월 차트 = 4월 배당락일 직전 보유 수량 × 주당배당           │
+  // │  exSh 기준월 = ym,  exDay = KODEX의 당월 배당락일             │
+  // └─────────────────────────────────────────────────────────┘
+  //
+  // DIV:: 저장 기준:
+  //   ym = 배당금이 입금되는 달 (PLUS도 KODEX도 동일)
+  //   actual = 해당 달에 실제 입금된 주당 배당금
+  //   exDay  = 배당락일 (PLUS는 전월의 배당락일자, KODEX는 당월 배당락일자)
+  //
+  // exSh 자동 계산:
+  //   PLUS:  getExDateSh(prevYm(ym), 'PLUS',  exDayNum)  ← 전월 배당락일 직전 수량
+  //   KODEX: getExDateSh(ym,         'KODEX', exDayNum)  ← 당월 배당락일 직전 수량
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  const matrix = months.map(ym => {
+    const recs = src.filter(r=>r.date.startsWith(ym));
+    if (!recs.length) return null;
+    const last = recs[recs.length-1];
+    const row  = { ym, label:ym.slice(5)+'월', actual:{}, estimated:{}, exSh:{}, exDay:{}, exYm:{}, carryover:{} };
+
+    allTickers.forEach(ticker => {
+      const storedEx = divRates[ticker]?.[ym]; // DIV::로 저장된 데이터 (ym = 지급월)
+
+      // ── 배당락 발생월과 배당락일 결정 ──
+      // PLUS: 배당락은 전월 말 → 기준월 = prevYm(ym)
+      // KODEX: 배당락은 당월 중순 → 기준월 = ym
+      const isPlus  = ticker === 'PLUS';
+      const isKodex = ticker === 'KODEX';
+      const exYm    = isPlus ? prevYm(ym) : ym; // 배당락 발생월
+      row.exYm[ticker] = exYm;
+
+      // exDay: DIV:: 저장값 우선, 없으면 DB에서 조회 (배당락 발생월 기준)
+      const exDayNum = storedEx?.exDay ?? getDefaultExDay(ticker, exYm);
+      row.exDay[ticker] = exDayNum;
+
+      // ── exSh 결정 ──
+      // 우선순위: 1) DIV::exSh 저장값  2) 배당락 발생월의 락일 직전 체크 수량  3) 폴백
+      let exSh = storedEx?.exSh ?? null;
+      if (exSh == null && exDayNum != null && (isPlus || isKodex)) {
+        exSh = getExDateSh(exYm, ticker, exDayNum);
+      }
+      if (exSh == null) {
+        // 폴백: 해당 지급월 마지막 체크 수량
+        exSh = isPlus  ? last.plusSh
+             : isKodex ? last.kodexSh
+             : (last.divDetail?.[ticker]?.sh || 0);
+      }
+      row.exSh[ticker] = exSh || 0;
+
+      // ── 이월 수량 ──
+      // PLUS:  전월 락일 기준 수량 vs 전월 말 보유 수량
+      //        → 전월 말 마지막 체크에서 보유 수량 조회
+      // KODEX: 당월 락일 기준 수량 vs 당월 말 보유 수량
+      if (isPlus) {
+        const prevRecs = records.filter(r => r.date.startsWith(exYm));
+        const prevLast = prevRecs.length ? prevRecs[prevRecs.length-1] : null;
+        const prevCurSh = prevLast ? prevLast.plusSh : 0;
+        row.carryover[ticker] = Math.max(0, prevCurSh - (exSh || 0));
+      } else if (isKodex) {
+        const curSh = last.kodexSh;
+        row.carryover[ticker] = Math.max(0, curSh - (exSh || 0));
+      } else {
+        const curSh = last.divDetail?.[ticker]?.sh || 0;
+        row.carryover[ticker] = Math.max(0, curSh - (exSh || 0));
+      }
+
+      // ── 실제 배당금 ──
+      let actualRate = storedEx?.actual ?? null;
+      if (actualRate == null && last.divDetail?.[ticker]?.rate != null) {
+        actualRate = last.divDetail[ticker].rate;
+      }
+      if (actualRate != null && row.exSh[ticker] > 0) {
+        row.actual[ticker] = Math.round(row.exSh[ticker] * actualRate);
+      }
+
+      // ── 예상 배당금 ──
+      // estimated rate: DIV:: 저장값 → DB fallback
+      let estRate = storedEx?.estimated ?? null;
+      if (estRate == null) { estRate = isPlus ? 156 : isKodex ? 244 : null; }
+      if (estRate != null && row.exSh[ticker] > 0) {
+        row.estimated[ticker] = Math.round(row.exSh[ticker] * estRate);
+      }
+    });
+
+    // 기타+@ 합산
+    row.actual['기타+@']    = otherTickers.reduce((s,t)=>s+(row.actual[t]||0), 0) || null;
+    row.estimated['기타+@'] = otherTickers.reduce((s,t)=>s+(row.estimated[t]||0), 0) || null;
+    if (!row.actual['기타+@'])    delete row.actual['기타+@'];
+    if (!row.estimated['기타+@']) delete row.estimated['기타+@'];
+
+    return row;
+  }).filter(Boolean);
+
+  // ━━━━ v3: 이월은 matrix 내부에서 이미 처리됨 (별도 후처리 불필요) ━━━━
+
+  wrap.innerHTML = '';
+
+  // 배당락일 안내 박스
+  const infoBox = document.createElement('div');
+  infoBox.className = 'div-chart-box';
+  infoBox.innerHTML = `
+<div class="div-chart-title">📆 배당금 계산 구조 안내</div>
+<div class="div-chart-sub">차트의 각 월 = 그 달에 실제 입금된 배당금</div>
+<div class="exdate-info-box">
+  <b>🌅 PLUS</b> — 배당락: <b>전월 말</b>(예: 3월 28일) · 배당지급: <b>당월 초</b>(예: 4월 초)<br>
+  &nbsp;&nbsp;&nbsp;→ 4월 배당금 = 3월 배당락일 직전 보유 수량 × 주당배당금<br>
+  <b>📅 KODEX</b> — 배당락: <b>당월 중순</b>(예: 4월 13일) · 배당지급: <b>당월 중순 이후</b><br>
+  &nbsp;&nbsp;&nbsp;→ 4월 배당금 = 4월 배당락일 직전 보유 수량 × 주당배당금<br>
+  ⚠️ DIV:: 코드의 <b>ym = 배당금 입금월</b>, <b>exDay = 배당락일</b>(PLUS는 전월 기준, KODEX는 당월 기준)<br>
+  📌 락일 이후 매수분(이월)은 이월 현황 테이블에서 확인
+</div>
+<div class="div-timing-row">
+  <div class="div-timing-badge early">🌅 PLUS — 전월 말 락일 기준 수량 × 주당배당</div>
+  <div class="div-timing-badge mid">📅 KODEX — 당월 중순 락일 기준 수량 × 주당배당</div>
+  ${otherTickers.length?'<div class="div-timing-badge other-t">➕ 기타 종목 → +@ 합산 표시</div>':''}
+</div>`;
+  wrap.appendChild(infoBox);
+
+  // 차트 표시 종목
+  const chartTickers   = ['PLUS','KODEX',...(otherTickers.length?['기타+@']:[])];
+  const activeTickers  = chartTickers.filter(t => matrix.some(m=>m.actual[t]||m.estimated[t]));
+
+  const legendHtml = activeTickers.map(t => {
+    if (t === '기타+@') return `<div class="div-legend-item other"><div class="div-legend-dot"></div>기타 (+@)</div>`;
+    const col = tickerColor(t);
+    const timing = divTimingLabel(t);
+    return `<div class="div-legend-item"><div class="div-legend-dot" style="background:${col.fill};border:1px solid ${col.border};"></div>${timing.icon} ${t} (락일 기준)</div>`;
+  }).join('') + `<div class="div-legend-item est"><div class="div-legend-dot"></div>예상 합계</div>`;
+
+  const c1 = document.createElement('div'); c1.className='div-chart-box';
+  c1.innerHTML = `
+<div class="div-chart-title">💰 종목별 월 배당금 실적 vs 예상 (배당락일 기준)</div>
+<div class="div-chart-sub">배당락일 기준 수량(exSh) × 주당배당금 · 락일 이후 매수분 제외 · 이월분은 다음 달 예상에 반영</div>
+<div class="div-legend">${legendHtml}</div>
+<canvas id="div-bar-chart" height="160"></canvas>`;
+  wrap.appendChild(c1);
+
+  const labels = matrix.map(m=>m.label);
+  const barDatasets = activeTickers.map(ticker => {
+    if (ticker === '기타+@') return {
+      label:'기타+@', data:matrix.map(m=>m.actual['기타+@']!=null?+(m.actual['기타+@']/10000).toFixed(2):null),
+      backgroundColor:'rgba(156,163,175,.55)', borderColor:'#9ca3af', borderWidth:1, borderRadius:3, stack:'actual'
+    };
+    const col = tickerColor(ticker);
+    return { label:ticker, data:matrix.map(m=>m.actual[ticker]!=null?+(m.actual[ticker]/10000).toFixed(2):null),
+      backgroundColor:col.fill, borderColor:col.border, borderWidth:1, borderRadius:3, stack:'actual' };
+  });
+
+  const estLineDataset = {
+    label:'예상 합계', type:'line',
+    data: matrix.map(m => {
+      const sum = activeTickers.reduce((s,t)=>s+(m.estimated[t]||0),0);
+      return sum>0?+(sum/10000).toFixed(2):null;
+    }),
+    borderColor:'#fbbf24', borderWidth:2, borderDash:[5,4], pointBackgroundColor:'#fbbf24', pointRadius:4,
+    fill:false, tension:0.3, yAxisID:'y', order:0
+  };
+
+  charts['div-bar'] = new Chart(document.getElementById('div-bar-chart').getContext('2d'), {
+    type:'bar', data:{ labels, datasets:[...barDatasets, estLineDataset] },
+    options:{ responsive:true, interaction:{mode:'index',intersect:false},
+      plugins:{ legend:{display:false},
+        tooltip:{ backgroundColor:'#0c1525', titleColor:'#e2e8f0', bodyColor:'#e2e8f0',
+          callbacks:{
+            label: ctx => {
+              if (ctx.parsed.y==null) return null;
+              if (ctx.dataset.label==='예상 합계') return ` 📍예상: ${ctx.parsed.y.toFixed(2)}만원`;
+              const lbl = ctx.dataset.label==='기타+@'?'기타(+@)':ctx.dataset.label;
+              const mi = matrix[ctx.dataIndex];
+              const exSh    = mi?.exSh?.[ctx.dataset.label] ?? '-';
+              const exYmStr = mi?.exYm?.[ctx.dataset.label];
+              const exDay   = mi?.exDay?.[ctx.dataset.label];
+              const exInfo  = ctx.dataset.label==='PLUS' && exYmStr
+                ? ` (${exYmStr.slice(5)}월 ${exDay}일 락)`
+                : ctx.dataset.label==='KODEX' && exDay
+                ? ` (${exDay}일 락)`
+                : '';
+              return ` ${lbl}: ${ctx.parsed.y.toFixed(2)}만원 · ${exSh}주${exInfo}`;
+            },
+            afterBody: ctx => {
+              const actualSum = ctx.filter(c=>c.dataset.label!=='예상 합계').reduce((s,c)=>s+(c.parsed.y||0),0);
+              if (actualSum>0) return ['─',` 실제 합계: ${actualSum.toFixed(2)}만원`];
+              return [];
+            }
+          }
+        }
+      },
+      scales:{ x:{grid:{color:'#182a40'},ticks:{color:'#4a6080',font:{size:10}},stacked:true},
+        y:{grid:{color:'#182a40'},ticks:{color:'#4a6080',font:{size:9},callback:v=>v+'만'},stacked:true} }
+    }
+  });
+
+  // 달성률 차트 (exSh 기준)
+  const corePctTickers = ['PLUS','KODEX'].filter(t=>matrix.some(m=>m.actual[t]!=null));
+  if (corePctTickers.length) {
+    const c2 = document.createElement('div'); c2.className='div-chart-box';
+    c2.innerHTML = `
+<div class="div-chart-title">📊 종목별 배당금 달성률 (배당락일 기준)</div>
+<div class="div-chart-sub">실제 ÷ 예상 × 100% · 기준: 락일 직전 보유 수량 · 100%선 = 예상과 동일</div>
+<canvas id="div-pct-chart" height="140"></canvas>`;
+    wrap.appendChild(c2);
+
+    const pctDatasets = corePctTickers.map(ticker => {
+      const col = tickerColor(ticker);
+      const timing = ticker==='PLUS'?' [월초]':' [월중]';
+      return { label:ticker+timing, data:matrix.map(m=>{
+        const act=m.actual[ticker], est=m.estimated[ticker];
+        if (act==null||!est) return null;
+        return Math.round(act/est*100);
+      }), backgroundColor:col.fill, borderColor:col.border, borderWidth:1, borderRadius:3 };
+    });
+
+    charts['div-pct'] = new Chart(document.getElementById('div-pct-chart').getContext('2d'), {
+      type:'bar', data:{ labels, datasets:pctDatasets },
+      options:{ responsive:true, interaction:{mode:'index',intersect:false},
+        plugins:{ legend:{display:true,labels:{color:'#e2e8f0',font:{size:10},boxWidth:10}},
+          tooltip:{ backgroundColor:'#0c1525', titleColor:'#e2e8f0', bodyColor:'#e2e8f0',
+            callbacks:{label:ctx=>ctx.parsed.y!=null?` ${ctx.dataset.label}: ${ctx.parsed.y}%`:null} } },
+        scales:{ x:{grid:{color:'#182a40'},ticks:{color:'#4a6080',font:{size:10}}},
+          y:{grid:{color:'#182a40'},ticks:{color:'#4a6080',font:{size:9},callback:v=>v+'%'},min:0} }
+      },
+      plugins:[{ id:'baseline100',
+        afterDraw(chart) {
+          const {ctx, chartArea:{left,right}, scales:{y}} = chart;
+          if (!y||y.getPixelForValue(100)==null) return;
+          const yPos=y.getPixelForValue(100);
+          if (yPos<chart.chartArea.top||yPos>chart.chartArea.bottom) return;
+          ctx.save(); ctx.beginPath(); ctx.setLineDash([6,4]);
+          ctx.strokeStyle='#fbbf24'; ctx.lineWidth=1.5;
+          ctx.moveTo(left,yPos); ctx.lineTo(right,yPos); ctx.stroke(); ctx.restore();
+        }
+      }]
+    });
+  }
+
+  // 이월 현황 표 (이월분이 있는 월이 하나라도 있으면 표시 / 최근 1개월 노출, 나머지 접기)
+  const hasCarry = matrix.some(m => allTickers.some(t=>(m.carryover[t]||0)>0));
+  if (hasCarry) {
+    const c3 = document.createElement('div'); c3.className='div-chart-box';
+    const carryUid = 'carry-hist-' + Date.now();
+
+    function buildCarryRow(m) {
+      let row = `<tr style="border-bottom:1px solid #0d1e30;"><td style="padding:6px 8px;color:#e2e8f0;">${m.label}</td>`;
+      ['PLUS','KODEX'].forEach(t => {
+        const exYmStr  = m.exYm?.[t] ?? m.ym;
+        const exD      = m.exDay[t] ?? '-';
+        const exS      = m.exSh[t]  ?? '-';
+        const carry    = m.carryover[t] || 0;
+        const exLabel  = t === 'PLUS' ? `${exYmStr.slice(5)}월 ${exD}일` : `${exD}일`;
+        row += `<td style="text-align:right;padding:6px 8px;color:#4a6080;">${exLabel}</td>
+<td style="text-align:right;padding:6px 8px;color:#4a6080;">${exS}주</td>
+<td style="text-align:right;padding:6px 8px;color:${carry>0?'#fb923c':'#4a6080'};">${carry>0?'+'+carry+'주':'-'}</td>`;
+      });
+      return row + '</tr>';
+    }
+
+    const sortedMatrix = [...matrix];
+    const latest = sortedMatrix[sortedMatrix.length - 1];
+    const older  = sortedMatrix.slice(0, sortedMatrix.length - 1).reverse();
+
+    const thead = `<thead><tr>
+<th style="text-align:left;padding:6px 8px;border-bottom:1px solid #182a40;color:#4a6080;">지급월</th>
+${ ['PLUS','KODEX'].map(t=>`<th style="text-align:right;padding:6px 8px;border-bottom:1px solid #182a40;color:${t==='PLUS'?'#00e5ff':'#a78bfa'};">${t} 배당락일</th><th style="text-align:right;padding:6px 8px;border-bottom:1px solid #182a40;color:${t==='PLUS'?'#00e5ff':'#a78bfa'};">${t} 락일기준 수량</th><th style="text-align:right;padding:6px 8px;border-bottom:1px solid #182a40;color:${t==='PLUS'?'#00e5ff':'#a78bfa'};">${t} 이월(주)</th>`).join('') }
+</tr></thead>`;
+
+    const olderHtml = older.length ? `
+<tbody id="${carryUid}-hidden" style="display:none;">
+  ${older.map(buildCarryRow).join('')}
+</tbody>` : '';
+
+    const toggleBtn = older.length ? `
+<div style="text-align:right;margin-top:8px;">
+  <button id="${carryUid}-btn" onclick="toggleCarryHist('${carryUid}',${older.length})"
+    style="background:transparent;border:1px dashed #182a40;border-radius:6px;color:#4a6080;font-size:10px;font-family:'Space Mono',monospace;padding:4px 12px;cursor:pointer;">
+    ▼ 이전 기록 ${older.length}개월 더 보기
+  </button>
+</div>` : '';
+
+    c3.innerHTML = `<div class="div-chart-title">📦 배당락일 이후 매수분 이월 현황</div>
+<div class="div-chart-sub">PLUS: 전월 말 배당락 기준 · KODEX: 당월 중순 배당락 기준 · 최근 1개월 표시</div>
+<div style="overflow-x:auto;">
+<table style="width:100%;font-size:10px;font-family:'Space Mono',monospace;border-collapse:collapse;">
+${thead}
+<tbody>${buildCarryRow(latest)}</tbody>
+${olderHtml}
+</table>
+</div>
+${toggleBtn}`;
+    wrap.appendChild(c3);
+  }
+}
+
+// ── 기록 카드 ──
 function buildLogCard(r) {
   const globalIdx = records.indexOf(r);
-  const prev      = globalIdx > 0 ? records[globalIdx - 1] : null;
-  const md        = r.plusSh * 156 + r.kodexSh * 244;
-  const isLatest  = globalIdx === records.length - 1;
+  const prev      = globalIdx > 0 ? records[globalIdx-1] : null;
+  const md        = r.plusSh*156 + r.kodexSh*244;
+  const isLatest  = globalIdx === records.length-1;
   let delta = '';
   if (prev) {
-    const dp = r.plusSh  - prev.plusSh;
-    const dk = r.kodexSh - prev.kodexSh;
-    const dd = md - (prev.plusSh*156 + prev.kodexSh*244);
-    const dt = r.total - prev.total;
-    delta = `<div class="log-delta">
+    const dp=r.plusSh-prev.plusSh, dk=r.kodexSh-prev.kodexSh;
+    const dd=md-(prev.plusSh*156+prev.kodexSh*244), dt=r.total-prev.total;
+    delta=`<div class="log-delta">
 <span class="ld ${dp>0?'ld-plus-up':dp<0?'ld-plus-dn':'ld-plus-neu'}">PLUS ${dp>=0?'+':''}${dp}주</span>
 <span class="ld ${dk>0?'ld-kodex-up':dk<0?'ld-kodex-dn':'ld-kodex-neu'}">KODEX ${dk>=0?'+':''}${dk}주</span>
 <span class="ld ${dd>0?'ld-div-up':dd<0?'ld-div-dn':'ld-div-neu'}">배당 ${dd>=0?'+':''}${(dd/10000).toFixed(2)}만</span>
@@ -1183,195 +1489,216 @@ function buildLogCard(r) {
   }
   return `<div class="log-item ${isLatest?'latest':''}">
 <button class="log-del" onclick="delRec('${r.date}')">✕</button>
-<div class="log-top">
-  <span class="log-date">${r.date}</span>
-  ${isLatest ? '<span class="log-badge">LATEST</span>' : ''}
-</div>
+<div class="log-top"><span class="log-date">${r.date}</span>${isLatest?'<span class="log-badge">LATEST</span>':''}</div>
 <div class="log-nums">
-  <div><div class="ln-l">PLUS</div><div class="ln-v" style="color:#00e5ff">${r.plusSh}주</div></div>
-  <div><div class="ln-l">KODEX</div><div class="ln-v" style="color:#a78bfa">${r.kodexSh}주</div></div>
-  <div><div class="ln-l">월배당</div><div class="ln-v" style="color:#fb923c">${(md/10000).toFixed(2)}만</div></div>
-  <div><div class="ln-l">총자산</div><div class="ln-v" style="color:#fbbf24">${r.total?(r.total/10000).toFixed(0):'-'}만</div></div>
+<div><div class="ln-l">PLUS</div><div class="ln-v" style="color:#00e5ff">${r.plusSh}주</div></div>
+<div><div class="ln-l">KODEX</div><div class="ln-v" style="color:#a78bfa">${r.kodexSh}주</div></div>
+<div><div class="ln-l">월배당</div><div class="ln-v" style="color:#fb923c">${(md/10000).toFixed(2)}만</div></div>
+<div><div class="ln-l">총자산</div><div class="ln-v" style="color:#fbbf24">${r.total?(r.total/10000).toFixed(0):'-'}만</div></div>
 </div>
 <div class="log-detail">@${r.plusP?r.plusP.toLocaleString():'-'} · @${r.kodexP?r.kodexP.toLocaleString():'-'} · 주문 ${r.orders}건</div>
-${delta}
-</div>`;
+${delta}</div>`;
 }
 
-// ── 기록 목록 (최근 3개 + 펼치기) ──
 const LOG_PREVIEW = 3;
-
 function renderLogList(listEl, emptyEl, filterPrefix) {
-  let filtered = filterPrefix
-    ? records.filter(r => r.date.startsWith(filterPrefix))
-    : [...records];
-
-  if (!filtered.length) { listEl.innerHTML = ''; emptyEl.style.display = 'block'; return; }
-  emptyEl.style.display = 'none';
-
-  const reversed  = [...filtered].reverse();
-  const visible   = reversed.slice(0, LOG_PREVIEW);
-  const hidden    = reversed.slice(LOG_PREVIEW);
-  const hiddenCnt = hidden.length;
-
-  // 고유 ID (같은 페이지에 여러 목록이 공존할 수 있으므로 prefix 기반)
-  const uid = 'log-more-' + (filterPrefix || 'all').replace(/[^a-z0-9]/gi, '_');
-
+  let filtered = filterPrefix ? records.filter(r=>r.date.startsWith(filterPrefix)) : [...records];
+  if (!filtered.length) { listEl.innerHTML=''; emptyEl.style.display='block'; return; }
+  emptyEl.style.display='none';
+  const reversed = [...filtered].reverse();
+  const visible  = reversed.slice(0, LOG_PREVIEW);
+  const hidden   = reversed.slice(LOG_PREVIEW);
+  const uid = 'log-more-'+(filterPrefix||'all').replace(/[^a-z0-9]/gi,'_');
   let html = visible.map(buildLogCard).join('');
-
-  if (hiddenCnt > 0) {
-    html += `
-<div class="log-hidden-wrap" id="${uid}-wrap">
-  ${hidden.map(buildLogCard).join('')}
-</div>
+  if (hidden.length) {
+    html+=`<div class="log-hidden-wrap" id="${uid}-wrap">${hidden.map(buildLogCard).join('')}</div>
 <button class="log-show-more" id="${uid}-btn" onclick="toggleLogMore('${uid}')">
-  <span id="${uid}-label">▼ 이전 기록 ${hiddenCnt}개 더 보기</span>
-</button>`;
+<span id="${uid}-label">▼ 이전 기록 ${hidden.length}개 더 보기</span></button>`;
   }
-
-  listEl.innerHTML = html;
+  listEl.innerHTML=html;
 }
 
 function toggleLogMore(uid) {
-  const wrap  = document.getElementById(uid + '-wrap');
-  const btn   = document.getElementById(uid + '-btn');
-  const label = document.getElementById(uid + '-label');
+  const wrap=document.getElementById(uid+'-wrap'), btn=document.getElementById(uid+'-btn'), label=document.getElementById(uid+'-label');
   if (!wrap) return;
-  const open = wrap.classList.toggle('open');
-  label.textContent = open
-    ? '▲ 접기'
-    : `▼ 이전 기록 ${wrap.querySelectorAll('.log-item').length}개 더 보기`;
-  if (btn) btn.style.borderStyle = open ? 'solid' : 'dashed';
+  const open=wrap.classList.toggle('open');
+  label.textContent=open?'▲ 접기':`▼ 이전 기록 ${wrap.querySelectorAll('.log-item').length}개 더 보기`;
+  if (btn) btn.style.borderStyle=open?'solid':'dashed';
 }
 
-// ── 통계 ──
 function renderStats() {
-  const n = records.length;
-  document.getElementById('s-cnt').textContent = n + '회';
-  if (n >= 2) {
-    const f = records[0], l = records[n-1];
-    document.getElementById('s-plus').textContent  = '+' + (l.plusSh  - f.plusSh)  + '주';
-    document.getElementById('s-kodex').textContent = '+' + (l.kodexSh - f.kodexSh) + '주';
-    const dd = (l.plusSh*156+l.kodexSh*244) - (f.plusSh*156+f.kodexSh*244);
-    document.getElementById('s-div').textContent = '+' + (dd/10000).toFixed(2) + '만';
-  } else {
-    document.getElementById('s-plus').textContent  = '-';
-    document.getElementById('s-kodex').textContent = '-';
-    document.getElementById('s-div').textContent   = '-';
-  }
+  const n=records.length;
+  document.getElementById('s-cnt').textContent=n+'회';
+  if (n>=2) {
+    const f=records[0],l=records[n-1];
+    document.getElementById('s-plus').textContent  ='+' +(l.plusSh -f.plusSh )+'주';
+    document.getElementById('s-kodex').textContent ='+' +(l.kodexSh-f.kodexSh)+'주';
+    const dd=(l.plusSh*156+l.kodexSh*244)-(f.plusSh*156+f.kodexSh*244);
+    document.getElementById('s-div').textContent   ='+'+(dd/10000).toFixed(2)+'만';
+  } else { document.getElementById('s-plus').textContent='-'; document.getElementById('s-kodex').textContent='-'; document.getElementById('s-div').textContent='-'; }
 }
 
-// ── 전체 렌더 ──
 function renderAll() {
-  renderStats();
-  renderMonthNav();
-  if (nav.type === 'month' && nav.ym) {
-    showSection('month');
-    renderMonthSection(nav.ym);
-  } else {
-    showSection('all');
-    renderAllContent();
-  }
+  renderStats(); renderMonthNav();
+  if (nav.type==='month'&&nav.ym) { showSection('month'); renderMonthSection(nav.ym); }
+  else { showSection('all'); renderAllContent(); }
 }
 
-// ── 토글 ──
 function toggleGoals() {
-  const list = document.getElementById('hiddenGoals');
-  const btn  = document.getElementById('goal-expand-btn');
+  const list=document.getElementById('hiddenGoals'), btn=document.getElementById('goal-expand-btn');
   if (!list) return;
-  const open = list.classList.toggle('open');
-  if (btn) {
-    btn.classList.toggle('open', open);
-    btn.querySelector('span:first-child').textContent = open ? '접기' : '다른 시점 보기';
-  }
+  const open=list.classList.toggle('open');
+  if (btn) { btn.classList.toggle('open',open); btn.querySelector('span:first-child').textContent=open?'접기':'다른 시점 보기'; }
 }
-
 function toggleMilestones() {
-  const list = document.getElementById('ms-hidden-list');
-  const btn  = document.getElementById('ms-expand-btn');
+  const list=document.getElementById('ms-hidden-list'), btn=document.getElementById('ms-expand-btn');
   if (!list) return;
-  const open = list.classList.toggle('open');
-  if (btn) {
-    btn.classList.toggle('open', open);
-    btn.querySelector('span:first-child').textContent = open ? '접기' : '다른 시점 보기';
-  }
+  const open=list.classList.toggle('open');
+  if (btn) { btn.classList.toggle('open',open); btn.querySelector('span:first-child').textContent=open?'접기':'다른 시점 보기'; }
 }
 
 // ── CRUD / 백업 ──
-function delRec(date) { records = records.filter(r => r.date !== date); persist(); renderAll(); }
-
+function delRec(date) { records=records.filter(r=>r.date!==date); persist(); renderAll(); }
 function clearAll() {
   if (!confirm('전체 삭제할까요?')) return;
-  records = [];
-  goals   = null;
-  localStorage.removeItem(GKEY);
-  persist();
-  renderAll();
+  records=[]; goals=null; divRates={};
+  localStorage.removeItem(GKEY); localStorage.removeItem(DKEY);
+  persist(); renderAll();
 }
-
 function exportData() {
-  const json = JSON.stringify(records, null, 2);
-  navigator.clipboard.writeText(json)
-    .then(() => toast('클립보드에 복사됐어요!'))
-    .catch(() => { document.getElementById('paste-area').value = json; toast('아래 텍스트를 복사하세요'); });
+  const json=JSON.stringify({records,divRates},null,2);
+  navigator.clipboard.writeText(json).then(()=>toast('클립보드에 복사됐어요!')).catch(()=>{ document.getElementById('paste-area').value=json; toast('아래 텍스트를 복사하세요'); });
 }
-
 function importFile(e) {
-  const f = e.target.files[0];
-  if (!f) return;
-  const r = new FileReader();
-  r.onload = ev => { try { doImport(JSON.parse(ev.target.result)); } catch { toast('형식 오류', true); } };
+  const f=e.target.files[0]; if (!f) return;
+  const r=new FileReader();
+  r.onload=ev=>{ try{doImport(JSON.parse(ev.target.result));}catch{toast('형식 오류',true);} };
   r.readAsText(f);
 }
-
 function importText() {
-  const t = document.getElementById('paste-area').value.trim();
-  if (!t) { toast('텍스트를 붙여넣어 주세요', true); return; }
-  try { doImport(JSON.parse(t)); document.getElementById('paste-area').value = ''; }
-  catch { toast('형식 오류', true); }
+  const t=document.getElementById('paste-area').value.trim();
+  if (!t) { toast('텍스트를 붙여넣어 주세요',true); return; }
+  try{doImport(JSON.parse(t)); document.getElementById('paste-area').value='';}catch{toast('형식 오류',true);}
 }
-
-function doImport(arr) {
-  if (!Array.isArray(arr)) { toast('올바른 형식이 아니에요', true); return; }
-  const merged = [...records];
-  for (const r of arr) {
-    const i = merged.findIndex(m => m.date === r.date);
-    if (i >= 0) merged[i] = r; else merged.push(r);
-  }
-  merged.sort((a, b) => a.date.localeCompare(b.date));
-  records = merged;
-  persist();
-  renderAll();
-  toast(arr.length + '개 기록 복원 완료!');
+function doImport(data) {
+  const arr  = Array.isArray(data)?data:(data.records||[]);
+  const dRaw = Array.isArray(data)?{}:(data.divRates||{});
+  if (!Array.isArray(arr)) { toast('올바른 형식이 아니에요',true); return; }
+  const merged=[...records];
+  for (const r of arr) { const i=merged.findIndex(m=>m.date===r.date); if (i>=0) merged[i]=r; else merged.push(r); }
+  merged.sort((a,b)=>a.date.localeCompare(b.date));
+  records=merged;
+  Object.entries(dRaw).forEach(([ticker,months])=>{
+    if (!divRates[ticker]) divRates[ticker]={};
+    Object.entries(months).forEach(([ym,val])=>{ divRates[ticker][ym]={...divRates[ticker][ym],...val}; });
+  });
+  persist(); persistDivRates(); renderAll(); toast(arr.length+'개 기록 복원 완료!');
 }
 
 // ── 유틸 ──
 function formatDateDiff(dateStr) {
-  const today  = new Date(); today.setHours(0,0,0,0);
-  const target = new Date(dateStr); target.setHours(0,0,0,0);
-  const diff   = Math.floor((today - target) / (1000*60*60*24));
-  if (diff === 0) return `${dateStr} 기준 (오늘)`;
-  if (diff > 0)   return `${dateStr} 기준 (${diff}일 전)`;
+  const today=new Date(); today.setHours(0,0,0,0);
+  const target=new Date(dateStr); target.setHours(0,0,0,0);
+  const diff=Math.floor((today-target)/(1000*60*60*24));
+  if (diff===0) return `${dateStr} 기준 (오늘)`;
+  if (diff>0)   return `${dateStr} 기준 (${diff}일 전)`;
   return `${dateStr} 기준 (${Math.abs(diff)}일 후)`;
 }
-
-function toast(msg, isErr = false) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.style.background = isErr ? '#fb7185' : '#fb923c';
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2400);
+function toast(msg, isErr=false) {
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.style.background=isErr?'#fb7185':'#fb923c';
+  t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2400);
 }
 
-// ── 초기화 ──
-loadData();
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 스킬 코드 생성기 — DIV:: v2 스키마 (exDay, exSh 포함)
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function sgTab(t) {
+  document.getElementById('sg-div-panel').style.display  = t==='div' ?'block':'none';
+  document.getElementById('sg-save-panel').style.display = t==='save'?'block':'none';
+  document.querySelectorAll('.sgt').forEach((b,i)=>b.classList.toggle('active',['div','save'][i]===t));
+}
+
+function genDivCode() {
+  const ym      = document.getElementById('sg-ym').value;
+  const pa      = document.getElementById('sg-plus-actual').value;
+  const pe      = document.getElementById('sg-plus-est').value;
+  const pexSh   = document.getElementById('sg-plus-exsh').value;
+  const pexDay  = document.getElementById('sg-plus-exday').value   || DEFAULT_EX_DAY.PLUS;
+  const ka      = document.getElementById('sg-kodex-actual').value;
+  const ke      = document.getElementById('sg-kodex-est').value;
+  const kexSh   = document.getElementById('sg-kodex-exsh').value;
+  const kexDay  = document.getElementById('sg-kodex-exday').value  || DEFAULT_EX_DAY.KODEX;
+  const out     = document.getElementById('sg-div-out');
+
+  if (!ym) { out.textContent='← 연월을 먼저 입력하세요'; return; }
+
+  const rates = {};
+  if (pa || pexSh) {
+    rates['PLUS'] = {};
+    if (pa)    rates['PLUS'].actual = parseInt(pa,10);
+    if (pexSh) rates['PLUS'].exSh   = parseInt(pexSh,10);
+    rates['PLUS'].exDay = parseInt(pexDay,10);
+  }
+  if (ka || kexSh) {
+    rates['KODEX'] = {};
+    if (ka)    rates['KODEX'].actual = parseInt(ka,10);
+    if (kexSh) rates['KODEX'].exSh   = parseInt(kexSh,10);
+    rates['KODEX'].exDay = parseInt(kexDay,10);
+  }
+
+  const est = {};
+  if (pe) est['PLUS']  = parseInt(pe,10);
+  if (ke) est['KODEX'] = parseInt(ke,10);
+
+  const obj = { ym, rates, estimated: est };
+  out.textContent = 'DIV::' + JSON.stringify(obj);
+}
+
+function genSaveCode() {
+  const date=document.getElementById('sg-date').value;
+  const psh=document.getElementById('sg-psh').value, pp=document.getElementById('sg-pp').value;
+  const ksh=document.getElementById('sg-ksh').value, kp=document.getElementById('sg-kp').value;
+  const div=document.getElementById('sg-div').value, orders=document.getElementById('sg-orders').value;
+  const total=document.getElementById('sg-total').value;
+  const pr=document.getElementById('sg-plus-rate').value, kr=document.getElementById('sg-kodex-rate').value;
+  const out=document.getElementById('sg-save-out');
+  if (!date||!psh) { out.textContent='← 날짜와 PLUS 수량은 필수입니다'; return; }
+  const obj={ date, total:+total||0, plusSh:+psh||0, plusP:+pp||0, kodexSh:+ksh||0, kodexP:+kp||0,
+    div:+div||0, orders:+orders||0,
+    divDetail:{ ...(pr?{PLUS:{rate:+pr}}:{}), ...(kr?{KODEX:{rate:+kr}}:{}) } };
+  out.textContent='SAVE::'+JSON.stringify(obj);
+}
+
+function copySkillCode(type) {
+  const el=document.getElementById('sg-'+type+'-out');
+  const txt=el.textContent.trim();
+  if (!txt||txt.startsWith('←')) { toast('먼저 값을 입력하세요',true); return; }
+  navigator.clipboard.writeText(txt).then(()=>toast('코드 복사 완료! 앱 클립보드 버튼으로 저장하세요 ✅')).catch(()=>toast('수동으로 복사해주세요',true));
+}
+
+function toggleCarryHist(uid, cnt) {
+  const tbody = document.getElementById(uid+'-hidden');
+  const btn   = document.getElementById(uid+'-btn');
+  if (!tbody || !btn) return;
+  const open = tbody.style.display === 'table-row-group' || tbody.style.display === '';
+  if (open) {
+    tbody.style.display = 'none';
+    btn.textContent = '▼ 이전 기록 '+cnt+'개월 더 보기';
+    btn.style.borderStyle = 'dashed';
+  } else {
+    tbody.style.display = 'table-row-group';
+    btn.textContent = '▲ 접기';
+    btn.style.borderStyle = 'solid';
+    btn.style.color = '#00e5ff';
+    btn.style.borderColor = 'rgba(0,229,255,.4)';
+  }
+}
 
 if (records.length) {
-  const years = [...new Set(records.map(r => r.date.slice(0,4)))].sort();
-  const latestYear = years[years.length - 1];
-  nav = { type: 'year', year: latestYear, ym: null };
+  const years=[...new Set(records.map(r=>r.date.slice(0,4)))].sort();
+  nav={type:'year',year:years[years.length-1],ym:null};
 }
-
 renderAll();
 </script>
 </body>
