@@ -1695,11 +1695,13 @@ function toggleCarryHist(uid, cnt) {
   }
 }
 
+loadData();
 if (records.length) {
   const years=[...new Set(records.map(r=>r.date.slice(0,4)))].sort();
   nav={type:'year',year:years[years.length-1],ym:null};
 }
 renderAll();
+
 </script>
 </body>
 </html>
