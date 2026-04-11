@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>투자 체크 로그 v14</title>
+<title>투자 체크 로그 v16</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 .ok{color:#22c55e;font-weight:600;}
@@ -64,6 +64,28 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .clip-divider{display:flex;align-items:center;gap:10px;margin:14px 0;}
 .clip-divider-line{flex:1;height:1px;background:#182a40;}
 .clip-divider-txt{font-size:10px;color:#4a6080;font-family:'Space Mono',monospace;white-space:nowrap;}
+
+/* ── 총 수익률 카드 ── */
+.total-return-card{background:linear-gradient(135deg,#0a1428,#0c1f2e);border:1px solid rgba(251,191,36,.3);border-radius:14px;padding:16px;margin-bottom:16px;}
+.tr-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.tr-title{font-size:13px;font-weight:700;color:#fbbf24;font-family:'Space Mono',monospace;}
+.tr-badge{font-size:9px;padding:2px 8px;border-radius:4px;background:rgba(251,191,36,.12);color:#fbbf24;font-weight:700;font-family:'Space Mono',monospace;}
+.tr-main{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+.tr-big{background:#112035;border-radius:10px;padding:12px;text-align:center;}
+.tr-big-label{font-size:9px;color:#4a6080;font-family:'Space Mono',monospace;margin-bottom:4px;}
+.tr-big-val{font-size:22px;font-weight:900;font-family:'Space Mono',monospace;}
+.tr-big-sub{font-size:9px;color:#4a6080;margin-top:2px;}
+.tr-detail-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.tr-detail-item{background:#0c1525;border-radius:8px;padding:10px;}
+.tr-detail-label{font-size:8px;color:#4a6080;font-family:'Space Mono',monospace;margin-bottom:4px;}
+.tr-detail-val{font-size:13px;font-weight:700;font-family:'Space Mono',monospace;}
+.tr-detail-sub{font-size:9px;color:#4a6080;margin-top:2px;}
+.tr-ticker-row{display:flex;gap:8px;margin-top:10px;}
+.tr-ticker-card{flex:1;background:#0c1525;border-radius:8px;padding:10px;border:1px solid #182a40;}
+.tr-ticker-name{font-size:9px;font-family:'Space Mono',monospace;margin-bottom:4px;}
+.tr-ticker-val{font-size:12px;font-weight:700;font-family:'Space Mono',monospace;}
+.tr-ticker-sub{font-size:9px;color:#4a6080;margin-top:2px;}
+.tr-no-cost{font-size:11px;color:#4a6080;text-align:center;padding:12px;font-family:'Space Mono',monospace;}
 
 .month-nav{margin-bottom:16px;display:flex;flex-direction:column;gap:0;}
 .mn-all-btn{display:inline-flex;align-items:center;gap:6px;padding:6px 16px;border-radius:20px;border:1px solid #182a40;background:transparent;color:#4a6080;font-size:11px;font-weight:700;cursor:pointer;font-family:'Space Mono',monospace;transition:all .15s;margin-bottom:10px;align-self:flex-start;}
@@ -146,12 +168,18 @@ textarea.paste-area{width:100%;background:#112035;border:1px solid #182a40;borde
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 .no-goal{font-size:11px;color:#4a6080;text-align:center;padding:12px;font-family:'Space Mono',monospace;}
 
+/* 과거 달성도 카드 - 흐리게 */
 .goal-card{background:#112035;border-radius:10px;padding:12px;border:1px solid rgba(0,229,255,.15);font-size:11px;font-family:'Space Mono',monospace;position:relative;}
 .goal-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:10px 0 0 10px;}
 .goal-card.ok::before{background:#00e5ff;}
 .goal-card.bad::before{background:#ef4444;}
 .goal-card.done::before{background:#a78bfa;}
 .goal-card.fail::before{background:#6b7280;}
+/* 과거(past) 카드 — 흐리게 */
+.goal-card.past-done{opacity:.45;border-color:rgba(167,139,250,.12);}
+.goal-card.past-done::before{background:#a78bfa;}
+.goal-card.past-fail{opacity:.35;border-color:rgba(107,114,128,.12);}
+.goal-card.past-fail::before{background:#6b7280;}
 .goal-title{font-size:12px;font-weight:700;margin-bottom:4px;color:#e6f1ff;}
 .goal-status{font-size:11px;margin-bottom:4px;}
 .goal-sub{font-size:10px;color:#4a6080;}
@@ -173,6 +201,43 @@ textarea.paste-area{width:100%;background:#112035;border:1px solid #182a40;borde
 @keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .fade-in{animation:fadeUp .3s ease;}
 
+/* ── 시급 불로소득 카드 ── */
+.wage-card{background:#0a0f1e;border:1px solid rgba(52,211,153,.3);border-radius:16px;padding:18px;margin-bottom:12px;position:relative;overflow:hidden;}
+.wage-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 0% 0%,rgba(52,211,153,.07) 0%,transparent 60%),radial-gradient(ellipse 50% 50% at 100% 100%,rgba(251,191,36,.05) 0%,transparent 60%);pointer-events:none;}
+.wage-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;position:relative;}
+.wage-title{font-size:12px;font-weight:700;color:#34d399;font-family:'Space Mono',monospace;display:flex;align-items:center;gap:6px;letter-spacing:.5px;}
+.wage-badge{font-size:8px;padding:3px 9px;border-radius:12px;background:rgba(52,211,153,.1);color:#34d399;font-weight:700;font-family:'Space Mono',monospace;border:1px solid rgba(52,211,153,.25);}
+.wage-hero{background:linear-gradient(135deg,rgba(52,211,153,.1),rgba(0,229,255,.06));border:1px solid rgba(52,211,153,.2);border-radius:12px;padding:16px;text-align:center;margin-bottom:12px;position:relative;}
+.wage-hero-label{font-size:9px;color:#4a8a70;font-family:'Space Mono',monospace;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;}
+.wage-hero-val{font-size:36px;font-weight:900;font-family:'Space Mono',monospace;color:#34d399;line-height:1;margin-bottom:4px;}
+.wage-hero-unit{font-size:11px;color:#4a8a70;font-family:'Space Mono',monospace;}
+.wage-hero-tag{display:inline-block;margin-top:8px;font-size:9px;padding:2px 10px;border-radius:8px;background:rgba(52,211,153,.15);color:#34d399;border:1px solid rgba(52,211,153,.3);}
+.wage-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px;}
+.wage-stat{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:10px;text-align:center;}
+.wage-stat-label{font-size:8px;color:#4a6080;font-family:'Space Mono',monospace;margin-bottom:5px;line-height:1.4;}
+.wage-stat-val{font-size:13px;font-weight:700;font-family:'Space Mono',monospace;}
+.wage-monthly{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
+.wage-monthly-item{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:10px;}
+.wage-monthly-label{font-size:8px;color:#4a6080;font-family:'Space Mono',monospace;margin-bottom:4px;}
+.wage-monthly-val{font-size:16px;font-weight:900;font-family:'Space Mono',monospace;}
+.wage-monthly-sub{font-size:9px;color:#4a6080;margin-top:2px;}
+.wage-carry-section{background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.15);border-radius:12px;padding:12px;margin-bottom:12px;}
+.wage-carry-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.wage-carry-title{font-size:9px;color:#fbbf24;font-family:'Space Mono',monospace;font-weight:700;letter-spacing:.5px;}
+.wage-carry-total{font-size:13px;font-weight:900;font-family:'Space Mono',monospace;color:#fbbf24;}
+.wage-carry-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+.wage-carry-item{background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.12);border-radius:8px;padding:8px;}
+.wage-carry-ticker{font-size:8px;color:#4a6080;font-family:'Space Mono',monospace;margin-bottom:3px;}
+.wage-carry-sh{font-size:10px;color:#fbbf24;font-family:'Space Mono',monospace;font-weight:700;}
+.wage-carry-wage{font-size:11px;font-weight:900;font-family:'Space Mono',monospace;color:#fbbf24;}
+.wage-motivate{background:linear-gradient(135deg,rgba(52,211,153,.08),rgba(0,229,255,.04));border:1px solid rgba(52,211,153,.15);border-radius:10px;padding:12px;text-align:center;font-size:12px;color:#34d399;line-height:1.7;}
+.wage-motivate-sub{font-size:10px;color:#2d6a55;margin-top:4px;}
+.wage-no-data{font-size:11px;color:#4a6080;text-align:center;padding:16px;font-family:'Space Mono',monospace;}
+.wage-delta-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;font-family:'Space Mono',monospace;padding:2px 8px;border-radius:6px;}
+.wage-delta-badge.up{background:rgba(52,211,153,.12);color:#34d399;border:1px solid rgba(52,211,153,.25);}
+.wage-delta-badge.dn{background:rgba(251,113,133,.1);color:#fb7185;border:1px solid rgba(251,113,133,.2);}
+.wage-delta-badge.neu{background:rgba(74,96,128,.1);color:#4a6080;border:1px solid rgba(74,96,128,.2);}
+
 /* 배당 차트 */
 .div-chart-box{background:#0c1525;border:1px solid rgba(251,146,60,.25);border-radius:14px;padding:14px;margin-bottom:10px;}
 .div-chart-title{font-size:11px;font-weight:700;font-family:'Space Mono',monospace;margin-bottom:4px;letter-spacing:1px;color:#fb923c;}
@@ -183,16 +248,23 @@ textarea.paste-area{width:100%;background:#112035;border:1px solid #182a40;borde
 .div-legend-item.est .div-legend-dot{background:repeating-linear-gradient(45deg,#fbbf24 0px,#fbbf24 2px,transparent 2px,transparent 4px);border:1px solid #fbbf24;}
 .div-legend-item.other .div-legend-dot{background:repeating-linear-gradient(45deg,#9ca3af 0px,#9ca3af 2px,transparent 2px,transparent 4px);border:1px solid #9ca3af;}
 
-/* 배당 입금 시점 뱃지 */
 .div-timing-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
 .div-timing-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:6px;font-size:9px;font-family:'Space Mono',monospace;font-weight:700;border:1px solid;}
 .div-timing-badge.early{background:rgba(0,229,255,.08);border-color:rgba(0,229,255,.3);color:#00e5ff;}
 .div-timing-badge.mid{background:rgba(167,139,250,.08);border-color:rgba(167,139,250,.3);color:#a78bfa;}
 .div-timing-badge.other-t{background:rgba(156,163,175,.08);border-color:rgba(156,163,175,.3);color:#9ca3af;}
 
-/* 배당락일 안내 박스 */
 .exdate-info-box{background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.25);border-radius:10px;padding:10px 12px;margin-bottom:12px;font-size:10px;font-family:'Space Mono',monospace;color:#fbbf24;line-height:1.7;}
 .exdate-info-box b{color:#fbbf24;}
+
+/* 이월 현황 표 — 모바일 최적화 */
+.carry-table{width:100%;font-size:10px;font-family:'Space Mono',monospace;border-collapse:collapse;}
+.carry-table th{padding:5px 6px;border-bottom:1px solid #182a40;color:#4a6080;font-weight:700;white-space:nowrap;}
+.carry-table td{padding:5px 6px;border-bottom:1px solid #0d1e30;white-space:nowrap;}
+.carry-table .col-ym{text-align:left;color:#e2e8f0;}
+.carry-table .col-num{text-align:right;}
+.carry-table .carry-plus-hdr{color:#00e5ff;}
+.carry-table .carry-kodex-hdr{color:#a78bfa;}
 
 /* 스킬 코드 생성기 패널 */
 .skill-gen-panel{background:#0c1525;border:1px solid rgba(52,211,153,.25);border-radius:14px;padding:16px;margin-bottom:16px;}
@@ -204,15 +276,15 @@ textarea.paste-area{width:100%;background:#112035;border:1px solid #182a40;borde
 .skill-gen-item.span2{grid-column:1/-1;}
 .skill-gen-out{background:#0a1a0f;border:1px solid rgba(52,211,153,.2);border-radius:8px;padding:10px 12px;font-size:10px;font-family:'Space Mono',monospace;color:#34d399;word-break:break-all;line-height:1.6;min-height:56px;margin-bottom:8px;white-space:pre-wrap;}
 .btn-skill-copy{width:100%;padding:11px;border-radius:8px;border:none;cursor:pointer;font-size:12px;font-weight:700;font-family:'Noto Sans KR',sans-serif;background:linear-gradient(135deg,#065f46,#34d399);color:#000;}
-.skill-gen-tabs{display:flex;gap:6px;margin-bottom:12px;}
-.sgt{flex:1;padding:7px;border-radius:7px;border:1px solid #182a40;background:transparent;color:#4a6080;font-size:10px;font-weight:700;cursor:pointer;font-family:'Space Mono',monospace;}
+.skill-gen-tabs{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;}
+.sgt{flex:1;padding:7px;border-radius:7px;border:1px solid #182a40;background:transparent;color:#4a6080;font-size:10px;font-weight:700;cursor:pointer;font-family:'Space Mono',monospace;min-width:70px;}
 .sgt.active{background:#112035;border-color:#34d399;color:#34d399;}
 </style>
 </head>
 <body>
 <div class="wrap">
 <div class="hdr">
-  <div class="hdr-pill"><div class="dot"></div><span>투자 체크 로그</span></div>
+  <div class="hdr-pill"><div class="dot"></div><span>투자 체크 로그 v16</span></div>
   <h1>체크 기록<br><em>자동 저장소</em></h1>
 </div>
 <div class="tabs">
@@ -225,7 +297,7 @@ textarea.paste-area{width:100%;background:#112035;border:1px solid #182a40;borde
   <div class="sec">사용법</div>
   <div class="guide-box">
     <div class="guide-step"><div class="guide-num">1</div><div class="guide-txt">Claude 채팅에 <b>스크린샷 + "체크"</b> 전송</div></div>
-    <div class="guide-step"><div class="guide-num">2</div><div class="guide-txt">결과 맨 아래 <b>SAVE:: / GOAL:: / DIV::</b> 코드 전체 복사</div></div>
+    <div class="guide-step"><div class="guide-num">2</div><div class="guide-txt">결과 맨 아래 <b>SAVE:: / GOAL:: / DIV:: / PERF::</b> 코드 전체 복사</div></div>
     <div class="guide-step"><div class="guide-num">3</div><div class="guide-txt">아래 버튼 하나만 누르면 <b>클립보드에서 바로 저장!</b></div></div>
   </div>
 
@@ -235,7 +307,7 @@ textarea.paste-area{width:100%;background:#112035;border:1px solid #182a40;borde
       <span class="cb-icon">📋</span>
       <div style="display:flex;flex-direction:column;align-items:flex-start;">
         <span>클립보드에서 바로 저장</span>
-        <span class="cb-sub">SAVE:: / GOAL:: / DIV:: 복사 후 이 버튼만 누르세요</span>
+        <span class="cb-sub">SAVE:: / GOAL:: / DIV:: / PERF:: 복사 후 이 버튼만 누르세요</span>
       </div>
     </button>
     <div id="clip-result" class="clip-result"></div>
@@ -254,10 +326,8 @@ textarea.paste-area{width:100%;background:#112035;border:1px solid #182a40;borde
         <span class="clip-divider-txt">클립보드 권한 없음 — 직접 붙여넣기</span>
         <div class="clip-divider-line"></div>
       </div>
-      <div class="qs-label">SAVE:: / GOAL:: / DIV:: 코드 붙여넣기</div>
-      <textarea id="qs-input" class="qs-textarea" placeholder="SAVE::{...}
-GOAL::{...}
-DIV::{...}" oninput="onQSInput()"></textarea>
+      <div class="qs-label">SAVE:: / GOAL:: / DIV:: / PERF:: 코드 붙여넣기</div>
+      <textarea id="qs-input" class="qs-textarea" placeholder="SAVE::{...}&#10;GOAL::{...}&#10;DIV::{...}&#10;PERF::{...}" oninput="onQSInput()"></textarea>
       <button class="btn-qs" id="btn-qs" onclick="quickSave()" disabled>⚡ 바로 저장</button>
     </div>
   </div>
@@ -270,10 +340,11 @@ DIV::{...}" oninput="onQSInput()"></textarea>
 
   <div class="sec">🧬 스킬 코드 생성기</div>
   <div class="skill-gen-panel">
-    <div class="skill-gen-title">DIV:: / SAVE:: 코드 직접 생성 → 복사</div>
+    <div class="skill-gen-title">DIV:: / SAVE:: / PERF:: 코드 직접 생성 → 복사</div>
     <div class="skill-gen-tabs">
-      <button class="sgt active" onclick="sgTab('div')">💰 DIV:: 생성</button>
-      <button class="sgt" onclick="sgTab('save')">💾 SAVE:: 생성</button>
+      <button class="sgt active" onclick="sgTab('div')">💰 DIV::</button>
+      <button class="sgt" onclick="sgTab('save')">💾 SAVE::</button>
+      <button class="sgt" onclick="sgTab('perf')">📊 PERF::</button>
     </div>
 
     <!-- DIV:: 탭 -->
@@ -297,7 +368,7 @@ DIV::{...}" oninput="onQSInput()"></textarea>
         </div>
         <div class="skill-gen-item">
           <label>PLUS 배당락일 (DD)</label>
-          <input type="number" id="sg-plus-exday" placeholder="3" min="1" max="31" oninput="genDivCode()">
+          <input type="number" id="sg-plus-exday" placeholder="27" min="1" max="31" oninput="genDivCode()">
         </div>
         <div class="skill-gen-item">
           <label>KODEX 실제배당 (주당·원)</label>
@@ -313,7 +384,7 @@ DIV::{...}" oninput="onQSInput()"></textarea>
         </div>
         <div class="skill-gen-item">
           <label>KODEX 배당락일 (DD)</label>
-          <input type="number" id="sg-kodex-exday" placeholder="12" min="1" max="31" oninput="genDivCode()">
+          <input type="number" id="sg-kodex-exday" placeholder="13" min="1" max="31" oninput="genDivCode()">
         </div>
       </div>
       <div class="skill-gen-out" id="sg-div-out">← 위 값 입력 시 코드 자동 생성</div>
@@ -336,6 +407,22 @@ DIV::{...}" oninput="onQSInput()"></textarea>
       </div>
       <div class="skill-gen-out" id="sg-save-out">← 위 값 입력 시 코드 자동 생성</div>
       <button class="btn-skill-copy" onclick="copySkillCode('save')">📋 SAVE:: 코드 복사</button>
+    </div>
+
+    <!-- PERF:: 탭 -->
+    <div id="sg-perf-panel" style="display:none">
+      <div style="font-size:10px;color:#4a6080;font-family:'Space Mono',monospace;margin-bottom:10px;line-height:1.6;">
+        평균매입단가를 입력하면 수익률 계산에 사용됩니다.<br>
+        Claude 체크 결과에서 PERF:: 코드를 복사해 원터치 저장하거나, 직접 입력 후 복사하세요.
+      </div>
+      <div class="skill-gen-grid">
+        <div class="skill-gen-item"><label>PLUS 평균매입단가(원)</label><input type="number" id="sg-plus-cost" placeholder="8700" oninput="genPerfCode()"></div>
+        <div class="skill-gen-item"><label>PLUS 총 매수금액(원)</label><input type="number" id="sg-plus-invested" placeholder="2262000" oninput="genPerfCode()"></div>
+        <div class="skill-gen-item"><label>KODEX 평균매입단가(원)</label><input type="number" id="sg-kodex-cost" placeholder="16900" oninput="genPerfCode()"></div>
+        <div class="skill-gen-item"><label>KODEX 총 매수금액(원)</label><input type="number" id="sg-kodex-invested" placeholder="793400" oninput="genPerfCode()"></div>
+      </div>
+      <div class="skill-gen-out" id="sg-perf-out">← 위 값 입력 시 코드 자동 생성</div>
+      <button class="btn-skill-copy" onclick="copySkillCode('perf')">📋 PERF:: 코드 복사</button>
     </div>
   </div>
 
@@ -373,6 +460,9 @@ DIV::{...}" oninput="onQSInput()"></textarea>
     <div class="stat-c"><div class="stat-v" style="color:#a78bfa" id="s-kodex">-</div><div class="stat-l">KODEX 증가</div></div>
     <div class="stat-c"><div class="stat-v" style="color:#fb923c" id="s-div">-</div><div class="stat-l">배당 증가</div></div>
   </div>
+
+  <!-- 총 수익률 카드 -->
+  <div id="total-return-section"></div>
 
   <div class="sec">월별 보기</div>
   <div class="month-nav" id="month-nav"></div>
@@ -423,91 +513,61 @@ DIV::{...}" oninput="onQSInput()"></textarea>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script>
-const SKEY = 'invest-logs-v6';
-const GKEY = 'invest-goals-v1';
-const DKEY = 'invest-divrates-v2'; // v2: exDay / exSh 필드 포함
-let records = [];
-let goals = null;
+const SKEY  = 'invest-logs-v6';
+const GKEY  = 'invest-goals-v1';
+const DKEY  = 'invest-divrates-v2';
+const PKEY  = 'invest-perf-v1'; // 수익률 데이터 (PERF::)
+let records  = [];
+let goals    = null;
 let divRates = {};
-let charts = {};
+let perfData = {}; // { PLUS:{avgCost,invested}, KODEX:{avgCost,invested}, cumDiv:숫자 }
+let charts   = {};
 let qsParsed = null;
-let nav = { type:'all', year:null, ym:null };
+let nav      = { type:'all', year:null, ym:null };
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// 배당락일 DB (연도·월별 실제 날짜)
-// DIV::에 exDay가 있으면 해당 값 우선, 없으면 아래 DB 조회 → 없으면 fallback 사용
+// 배당락일 DB
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 const EX_DAY_DB = {
-  PLUS: {
-    // 2025
-    '2025-01': 24, '2025-02': 27, '2025-03': 28, '2025-04': 29,
-    '2025-05': 29, '2025-06': 27, '2025-07': 30, '2025-08': 28,
-    '2025-09': 29, '2025-10': 30, '2025-11': 27, '2025-12': 29,
-    // 2026 (추정 — stockanalysis 조회값으로 업데이트)
-    '2026-01': 28, '2026-02': 26, '2026-03': 27, '2026-04': 29,
-    '2026-05': 28, '2026-06': 29, '2026-07': 30, '2026-08': 28,
-    '2026-09': 29, '2026-10': 29, '2026-11': 27, '2026-12': 29,
-    // 2027 (추정)
-    '2027-01': 28, '2027-02': 26, '2027-03': 30, '2027-04': 28,
+  PLUS:{
+    '2025-01':24,'2025-02':27,'2025-03':28,'2025-04':29,'2025-05':29,'2025-06':27,
+    '2025-07':30,'2025-08':28,'2025-09':29,'2025-10':30,'2025-11':27,'2025-12':29,
+    '2026-01':28,'2026-02':26,'2026-03':27,'2026-04':29,'2026-05':28,'2026-06':29,
+    '2026-07':30,'2026-08':28,'2026-09':29,'2026-10':29,'2026-11':27,'2026-12':29,
+    '2027-01':28,'2027-02':26,'2027-03':30,'2027-04':28,
   },
-  KODEX: {
-    // 2025
-    '2025-01': 14, '2025-02': 13, '2025-03': 13, '2025-04': 14,
-    '2025-05': 14, '2025-06': 12, '2025-07': 14, '2025-08': 13,
-    '2025-09': 12, '2025-10': 14, '2025-11': 13, '2025-12': 12,
-    // 2026 (추정 — stockanalysis 조회값으로 업데이트)
-    '2026-01': 13, '2026-02': 12, '2026-03': 13, '2026-04': 13,
-    '2026-05': 13, '2026-06': 12, '2026-07': 13, '2026-08': 13,
-    '2026-09': 14, '2026-10': 13, '2026-11': 12, '2026-12': 14,
-    // 2027 (추정)
-    '2027-01': 13, '2027-02': 12, '2027-03': 12, '2027-04': 13,
+  KODEX:{
+    '2025-01':14,'2025-02':13,'2025-03':13,'2025-04':14,'2025-05':14,'2025-06':12,
+    '2025-07':14,'2025-08':13,'2025-09':12,'2025-10':14,'2025-11':13,'2025-12':12,
+    '2026-01':13,'2026-02':12,'2026-03':13,'2026-04':13,'2026-05':13,'2026-06':12,
+    '2026-07':13,'2026-08':13,'2026-09':14,'2026-10':13,'2026-11':12,'2026-12':14,
+    '2027-01':13,'2027-02':12,'2027-03':12,'2027-04':13,
   }
 };
-// DB에 없는 연월의 fallback
-const DEFAULT_EX_DAY_FALLBACK = { PLUS: 29, KODEX: 13 };
+const DEFAULT_EX_DAY_FALLBACK = { PLUS:29, KODEX:13 };
+const DEFAULT_EX_DAY = DEFAULT_EX_DAY_FALLBACK;
 
 function getDefaultExDay(ticker, ym) {
   return EX_DAY_DB[ticker]?.[ym] ?? DEFAULT_EX_DAY_FALLBACK[ticker] ?? null;
 }
-// 하위 호환: 기존 DEFAULT_EX_DAY 참조 제거용 alias (info box 등에서 사용)
-const DEFAULT_EX_DAY = DEFAULT_EX_DAY_FALLBACK;
-
-// 배당락일 이전 마지막 체크 수량을 구하는 함수
-// ym: "2026-04", ticker: "PLUS"|"KODEX"
-// exDay: 해당 월의 배당락일 (일, 1~31)
-// 반환: 배당락일 직전 마지막 체크 기록의 수량 (없으면 null)
 function getExDateSh(ym, ticker, exDay) {
-  const exDateStr = ym + '-' + String(exDay).padStart(2, '0');
-  // 배당락일 이전(당일 포함) 기록 중 가장 마지막
-  const candidates = records.filter(r => r.date.startsWith(ym) && r.date <= exDateStr);
+  const exDateStr = ym + '-' + String(exDay).padStart(2,'0');
+  const candidates = records.filter(r=>r.date.startsWith(ym)&&r.date<=exDateStr);
   if (!candidates.length) {
-    // 해당 월 이전 기록에서 가장 마지막
-    const before = records.filter(r => r.date < ym + '-01');
+    const before = records.filter(r=>r.date < ym+'-01');
     if (!before.length) return null;
-    const prev = before[before.length - 1];
-    return ticker === 'PLUS' ? prev.plusSh : prev.kodexSh;
+    const prev = before[before.length-1];
+    return ticker==='PLUS'?prev.plusSh:prev.kodexSh;
   }
-  const last = candidates[candidates.length - 1];
-  return ticker === 'PLUS' ? last.plusSh : last.kodexSh;
+  const last = candidates[candidates.length-1];
+  return ticker==='PLUS'?last.plusSh:last.kodexSh;
 }
-
-// 다음 달 ym 문자열 반환 ("2026-04" → "2026-05")
-function nextYm(ym) {
-  const [y, m] = ym.split('-').map(Number);
-  if (m === 12) return (y + 1) + '-01';
-  return y + '-' + String(m + 1).padStart(2, '0');
-}
-
-// 전달 ym 문자열 반환 ("2026-04" → "2026-03")
-function prevYm(ym) {
-  const [y, m] = ym.split('-').map(Number);
-  if (m === 1) return (y - 1) + '-12';
-  return y + '-' + String(m - 1).padStart(2, '0');
-}
+function nextYm(ym){const[y,m]=ym.split('-').map(Number);return m===12?(y+1)+'-01':y+'-'+String(m+1).padStart(2,'0');}
+function prevYm(ym){const[y,m]=ym.split('-').map(Number);return m===1?(y-1)+'-12':y+'-'+String(m-1).padStart(2,'0');}
 
 document.getElementById('inp-date').value = new Date().toISOString().slice(0,10);
 
-// ── 한국 주식시장 공휴일 ──
+// 한국 거래일 계산
 const KR_HOLIDAYS = new Set([
   '2025-01-01','2025-01-27','2025-01-28','2025-01-29','2025-01-30',
   '2025-03-01','2025-05-01','2025-05-05','2025-05-06',
@@ -527,357 +587,543 @@ const KR_HOLIDAYS = new Set([
   '2027-10-03','2027-10-04','2027-10-09',
   '2027-12-25','2027-12-27'
 ]);
-
 function countTradingDays(fromDate, toDate) {
-  const start = new Date(fromDate); start.setHours(0,0,0,0);
-  const end   = new Date(toDate);   end.setHours(0,0,0,0);
-  if (start >= end) return 0;
-  let count = 0;
-  const cur = new Date(start);
-  cur.setDate(cur.getDate() + 1);
-  while (cur < end) {
-    const dow = cur.getDay();
-    if (dow !== 0 && dow !== 6) {
-      const ymd = cur.toISOString().slice(0, 10);
-      if (!KR_HOLIDAYS.has(ymd)) count++;
-    }
-    cur.setDate(cur.getDate() + 1);
-  }
+  const start=new Date(fromDate);start.setHours(0,0,0,0);
+  const end=new Date(toDate);end.setHours(0,0,0,0);
+  if(start>=end)return 0;
+  let count=0,cur=new Date(start);cur.setDate(cur.getDate()+1);
+  while(cur<end){const dow=cur.getDay();if(dow!==0&&dow!==6){const ymd=cur.toISOString().slice(0,10);if(!KR_HOLIDAYS.has(ymd))count++;}cur.setDate(cur.getDate()+1);}
   return count;
 }
+function tradingDaySpan(f,t){return Math.max(1,countTradingDays(f,t));}
 
-function tradingDaySpan(fromDate, toDate) { return Math.max(1, countTradingDays(fromDate, toDate)); }
-
-function pctColor(pct, isFuture) {
-  if (isFuture) { if (pct >= 80) return '#00e5ff'; if (pct >= 50) return '#a78bfa'; return '#4a6080'; }
-  if (pct >= 105) return '#ef4444';
-  if (pct >= 95)  return '#00e5ff';
-  if (pct >= 85)  return '#fbbf24';
-  return '#6b7280';
+function pctColor(pct,isFuture){
+  if(isFuture){if(pct>=80)return'#00e5ff';if(pct>=50)return'#a78bfa';return'#4a6080';}
+  if(pct>=105)return'#ef4444';if(pct>=95)return'#00e5ff';if(pct>=85)return'#fbbf24';return'#6b7280';
 }
-
-function pctLabel(pct, isFuture) {
-  if (isFuture) return '';
-  if (pct >= 105) return '초과 달성 🚀';
-  if (pct >= 95)  return '정상 궤도 ✅';
-  if (pct >= 85)  return '소폭 미달 ⚠️';
-  return '계획 수정 필요 ❗';
+function pctLabel(pct,isFuture){
+  if(isFuture)return'';
+  if(pct>=105)return'초과 달성 🚀';if(pct>=95)return'정상 궤도 ✅';if(pct>=85)return'소폭 미달 ⚠️';return'계획 수정 필요 ❗';
 }
-
-function todayYM() { return new Date().toISOString().slice(0, 7); }
-
-function getMonthGoal(goals, ym) {
-  if (!goals || !goals.monthGoal) return null;
-  const mg = goals.monthGoal;
-  if (mg[ym]) return mg[ym];
-  if (mg.plusSh != null) return mg;
+function todayYM(){return new Date().toISOString().slice(0,7);}
+function getMonthGoal(goals,ym){
+  if(!goals||!goals.monthGoal)return null;
+  const mg=goals.monthGoal;
+  if(mg[ym])return mg[ym];
+  if(mg.plusSh!=null)return mg;
   return null;
 }
 
-// ── DIV:: 파싱 — v2 스키마 (exDay, exSh 포함) ──
-// DIV::{"ym":"2026-04",
-//   "rates":{
-//     "PLUS":{"actual":158,"exDay":3,"exSh":260},
-//     "KODEX":{"actual":246,"exDay":12,"exSh":47}
-//   },
-//   "estimated":{"PLUS":158,"KODEX":246}
-// }
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 시급 불로소득 카드 렌더
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function renderPassiveWage(src) {
+  // 기존 카드 제거
+  const old = document.getElementById('passive-wage-card');
+  if(old) old.remove();
+
+  const container = document.createElement('div');
+  container.id = 'passive-wage-card';
+  container.className = 'wage-card';
+
+  const months = [...new Set((src||records).map(r=>r.date.slice(0,7)))].sort();
+  if(!months.length){ container.innerHTML='<div class="wage-title">⏰ 불로소득 시급</div><div class="wage-no-data">기록이 없으면 계산할 수 없어요</div>'; document.getElementById('monthly-charts').appendChild(container); return; }
+
+  // 최신 달 기준 배당 실적/예상 계산
+  const curYm = months[months.length-1];
+  const prevYmStr = months.length>1 ? months[months.length-2] : null;
+  const HOURS_PER_MONTH = 8 * 30.44; // 8시간 × 평균 30.44일
+
+  function calcMonthDiv(ym) {
+    const recs3 = records.filter(r=>r.date.startsWith(ym));
+    if(!recs3.length) return {actual:null, est:0, plusCarry:0, kodexCarry:0};
+    const lastR3 = recs3[recs3.length-1];
+
+    // PLUS
+    const plusStored = divRates['PLUS']?.[ym];
+    const plusExYm2 = prevYm(ym);
+    const plusExDay2 = plusStored?.exDay ?? getDefaultExDay('PLUS', plusExYm2);
+    let plusExSh2 = plusStored?.exSh ?? null;
+    if(plusExSh2==null && plusExDay2!=null) plusExSh2 = getExDateSh(plusExYm2,'PLUS',plusExDay2);
+    if(plusExSh2==null) plusExSh2 = lastR3.plusSh;
+    const plusActRate = plusStored?.actual ?? null;
+    const plusEstRate2 = plusStored?.estimated ?? 156;
+    const plusAct = plusActRate!=null && plusExSh2>0 ? plusExSh2*plusActRate : null;
+    const plusEstAmt = plusExSh2>0 ? plusExSh2*plusEstRate2 : lastR3.plusSh*plusEstRate2;
+    // PLUS 이월 = 현재 달(ym) 마지막 보유수량 - 전월 락일 기준 수량(exSh)
+    // = 전월 락일 이후 ~ 현재까지 추가 매수한 수량 → 이번 달 배당 미반영 → 다음 달 배당에 포함
+    const plusCarry = Math.max(0, lastR3.plusSh - (plusExSh2||0));
+
+    // KODEX
+    const kodexStored = divRates['KODEX']?.[ym];
+    const kodexExDay2 = kodexStored?.exDay ?? getDefaultExDay('KODEX', ym);
+    let kodexExSh2 = kodexStored?.exSh ?? null;
+    if(kodexExSh2==null && kodexExDay2!=null) kodexExSh2 = getExDateSh(ym,'KODEX',kodexExDay2);
+    if(kodexExSh2==null) kodexExSh2 = lastR3.kodexSh;
+    const kodexActRate = kodexStored?.actual ?? null;
+    const kodexEstRate2 = kodexStored?.estimated ?? 244;
+    const kodexAct = kodexActRate!=null && kodexExSh2>0 ? kodexExSh2*kodexActRate : null;
+    const kodexEstAmt = kodexExSh2>0 ? kodexExSh2*kodexEstRate2 : lastR3.kodexSh*kodexEstRate2;
+    // KODEX 이월
+    const kodexCarry = Math.max(0, lastR3.kodexSh - (kodexExSh2||0));
+
+    const actualTotal = (plusAct!=null || kodexAct!=null) ? (plusAct||0)+(kodexAct||0) : null;
+    const estTotal = plusEstAmt + kodexEstAmt;
+    return {actual:actualTotal, est:estTotal, plusCarry, kodexCarry, plusExSh:plusExSh2, kodexExSh:kodexExSh2, plusEstRate:plusEstRate2, kodexEstRate:kodexEstRate2};
+  }
+
+  const cur = calcMonthDiv(curYm);
+  const prev = prevYmStr ? calcMonthDiv(prevYmStr) : null;
+
+  const curActWage = cur.actual!=null ? Math.round(cur.actual/HOURS_PER_MONTH) : null;
+  const curEstWage = Math.round(cur.est/HOURS_PER_MONTH);
+  const prevEstWage = prev ? Math.round(prev.est/HOURS_PER_MONTH) : null;
+  const wageGain = (prevEstWage!=null) ? (curEstWage - prevEstWage) : null;
+
+  // 이월 = 현재 달 배당락 이후 추가 매수분 → 다음달 배당에 포함될 수량
+  // PLUS: plusCarry는 "전월 배당락 이후 전월 말까지 모은 수량" → 이번달 배당 미포함 → 다음달에 포함
+  // KODEX: kodexCarry는 "당월 배당락 이후 당월 말까지 모은 수량" → 이번달 배당 미포함 → 다음달에 포함
+  const nextYmStr = nextYm(curYm);
+  // 다음달 예상 배당률
+  const nextPlusEstRate = divRates['PLUS']?.[nextYmStr]?.estimated ?? divRates['PLUS']?.[curYm]?.estimated ?? 156;
+  const nextKodexEstRate = divRates['KODEX']?.[nextYmStr]?.estimated ?? divRates['KODEX']?.[curYm]?.estimated ?? 244;
+  const plusCarryWageAdd = cur.plusCarry>0 ? Math.round(cur.plusCarry * nextPlusEstRate / HOURS_PER_MONTH) : 0;
+  const kodexCarryWageAdd = cur.kodexCarry>0 ? Math.round(cur.kodexCarry * nextKodexEstRate / HOURS_PER_MONTH) : 0;
+  const totalCarryWageAdd = plusCarryWageAdd + kodexCarryWageAdd;
+
+  const displayWage = curActWage!=null ? curActWage : curEstWage;
+  const isActual = curActWage!=null;
+  const deltaClass = wageGain==null?'neu':wageGain>0?'up':'dn';
+  const deltaStr = wageGain==null?'-':(wageGain>0?'▲ +':wageGain<0?'▼ ':'=')+Math.abs(wageGain).toLocaleString()+'원';
+
+  // 동기부여 메시지
+  function motivateMsg(w) {
+    if(w>=2000) return {msg:`시급 ${w.toLocaleString()}원으로 투자가 일하는 중 💪`, sub:'이 속도면 최저임금도 넘어설 수 있어요!'};
+    if(w>=1500) return {msg:`시급 ${w.toLocaleString()}원! 최저임금을 향해 🚀`, sub:'꾸준히 매수하면 반드시 달성 가능해요'};
+    if(w>=1000) return {msg:`시급 ${w.toLocaleString()}원! 돈이 돈을 버는 중 🌱`, sub:'복리의 힘이 시작됐어요. 계속 심어요'};
+    if(w>=500) return {msg:`시급 ${w.toLocaleString()}원! 씨앗이 자라고 있어요 🌿`, sub:'지금 심는 한 주 한 주가 미래의 시급이에요'};
+    return {msg:`시급 ${w.toLocaleString()}원! 훌륭한 시작이에요 ✨`, sub:'군복무 중에 이런 투자를 하다니, 대단해요!'};
+  }
+  const {msg, sub} = motivateMsg(displayWage);
+
+  const carrySection = (cur.plusCarry>0 || cur.kodexCarry>0) ? `
+<div class="wage-carry-section">
+  <div class="wage-carry-header">
+    <div class="wage-carry-title">📦 락일 이후 이월 → ${nextYmStr.slice(5)}월 시급 추가 예상</div>
+    ${totalCarryWageAdd>0?`<div class="wage-carry-total">+${totalCarryWageAdd.toLocaleString()}원/h</div>`:''}
+  </div>
+  <div class="wage-carry-grid">
+    <div class="wage-carry-item">
+      <div class="wage-carry-ticker">🌅 PLUS (전월락 이후 이월)</div>
+      <div class="wage-carry-sh">+${cur.plusCarry}주 이월</div>
+      <div class="wage-carry-wage">${plusCarryWageAdd>0?'+'+plusCarryWageAdd.toLocaleString()+'원/h':'-'}</div>
+    </div>
+    <div class="wage-carry-item">
+      <div class="wage-carry-ticker">📅 KODEX (당월락 이후 이월)</div>
+      <div class="wage-carry-sh">+${cur.kodexCarry}주 이월</div>
+      <div class="wage-carry-wage">${kodexCarryWageAdd>0?'+'+kodexCarryWageAdd.toLocaleString()+'원/h':'-'}</div>
+    </div>
+  </div>
+</div>` : '';
+
+  container.innerHTML = `
+<div class="wage-header">
+  <div class="wage-title">⏰ 불로소득 시급 계산기</div>
+  <div class="wage-badge">${curYm} · 8h/day</div>
+</div>
+<div class="wage-hero">
+  <div class="wage-hero-label">${isActual ? 'ACTUAL HOURLY WAGE' : 'ESTIMATED HOURLY WAGE'}</div>
+  <div class="wage-hero-val">${displayWage.toLocaleString()}<span style="font-size:16px;color:#2d6a55;">원</span></div>
+  <div class="wage-hero-unit">/ 시간 · ${isActual?'✅ 실적 확정':'📍 예상치'}</div>
+  ${wageGain!=null?`<div class="wage-delta-badge ${deltaClass}" style="margin-top:8px;">${deltaStr} 전월 대비</div>`:''}
+</div>
+<div class="wage-monthly">
+  <div class="wage-monthly-item">
+    <div class="wage-monthly-label">💰 이번 달 배당 (${isActual?'실적':'예상'})</div>
+    <div class="wage-monthly-val" style="color:#fb923c">${((isActual?cur.actual:cur.est)/10000).toFixed(2)}<span style="font-size:11px;">만</span></div>
+    <div class="wage-monthly-sub">${isActual?'실제 입금 확인됨':'락일 기준 예상액'}</div>
+  </div>
+  <div class="wage-monthly-item">
+    <div class="wage-monthly-label">📊 예상 시급 vs 전월</div>
+    <div class="wage-monthly-val" style="color:#fbbf24">${curEstWage.toLocaleString()}<span style="font-size:11px;">원</span></div>
+    <div class="wage-monthly-sub">전월 ${prevEstWage!=null?prevEstWage.toLocaleString()+'원':'-'}</div>
+  </div>
+</div>
+${carrySection}
+<div class="wage-motivate">${msg}<div class="wage-motivate-sub">${sub}</div></div>`;
+
+  document.getElementById('monthly-charts').appendChild(container);
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 총 수익률(Total Return) 계산
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function calcCumDiv() {
+  // divRates에서 실제 입금된 배당금 합산 (actual × exSh 기준)
+  // 이미 matrix로 계산된 actual 배당금을 합산하는 방식
+  let total = 0;
+  const months = [...new Set(records.map(r=>r.date.slice(0,7)))].sort();
+  months.forEach(ym=>{
+    const recs = records.filter(r=>r.date.startsWith(ym));
+    if(!recs.length) return;
+    const last = recs[recs.length-1];
+    // PLUS
+    const plusStored = divRates['PLUS']?.[ym];
+    const plusExYm = prevYm(ym);
+    const plusExDay = plusStored?.exDay ?? getDefaultExDay('PLUS', plusExYm);
+    let plusExSh = plusStored?.exSh ?? null;
+    if(plusExSh==null && plusExDay!=null) plusExSh = getExDateSh(plusExYm,'PLUS',plusExDay);
+    if(plusExSh==null) plusExSh = last.plusSh;
+    const plusActual = plusStored?.actual ?? null;
+    if(plusActual!=null && plusExSh>0) total += plusExSh * plusActual;
+    // KODEX
+    const kodexStored = divRates['KODEX']?.[ym];
+    const kodexExDay = kodexStored?.exDay ?? getDefaultExDay('KODEX', ym);
+    let kodexExSh = kodexStored?.exSh ?? null;
+    if(kodexExSh==null && kodexExDay!=null) kodexExSh = getExDateSh(ym,'KODEX',kodexExDay);
+    if(kodexExSh==null) kodexExSh = last.kodexSh;
+    const kodexActual = kodexStored?.actual ?? null;
+    if(kodexActual!=null && kodexExSh>0) total += kodexExSh * kodexActual;
+  });
+  return total; // 원 단위
+}
+
+function renderTotalReturn() {
+  const sec = document.getElementById('total-return-section');
+  if(!records.length){ sec.innerHTML=''; return; }
+  const latest = records[records.length-1];
+  const cumDiv = calcCumDiv(); // 원
+
+  // 투자원금 정보 (perfData 또는 records 역산)
+  const hasCost = perfData && (perfData.PLUS?.avgCost || perfData.PLUS?.invested || perfData.KODEX?.avgCost || perfData.KODEX?.invested);
+
+  if(!hasCost) {
+    sec.innerHTML = `<div class="sec">💹 총 수익률 (Total Return)</div>
+<div class="total-return-card">
+  <div class="tr-header">
+    <div class="tr-title">💹 Total Return</div>
+    <div class="tr-badge">배당 ${cumDiv>0?'실적 반영':'집계중'}</div>
+  </div>
+  <div style="padding:12px;">
+    <div class="tr-no-cost">📊 평균매입단가 정보가 없어요.<br>Claude 체크 결과의 <b>PERF::</b> 코드를 저장하거나<br>스킬 코드 생성기 → PERF:: 탭에서 직접 입력하세요.</div>
+    ${cumDiv>0?`<div style="margin-top:10px;background:#112035;border-radius:8px;padding:10px;text-align:center;">
+      <div style="font-size:9px;color:#fb923c;font-family:'Space Mono',monospace;margin-bottom:4px;">누적 실수령 배당금</div>
+      <div style="font-size:20px;font-weight:900;font-family:'Space Mono',monospace;color:#fb923c;">+${(cumDiv/10000).toFixed(2)}만원</div>
+    </div>`:''}
+  </div>
+</div>`;
+    return;
+  }
+
+  // 투자원금 계산
+  let plusInvested=0, kodexInvested=0;
+  if(perfData.PLUS?.invested) plusInvested = perfData.PLUS.invested;
+  else if(perfData.PLUS?.avgCost) plusInvested = perfData.PLUS.avgCost * latest.plusSh;
+  if(perfData.KODEX?.invested) kodexInvested = perfData.KODEX.invested;
+  else if(perfData.KODEX?.avgCost) kodexInvested = perfData.KODEX.avgCost * latest.kodexSh;
+  const totalInvested = plusInvested + kodexInvested;
+
+  // 평가액
+  const plusVal  = latest.plusSh  * (latest.plusP  || 0);
+  const kodexVal = latest.kodexSh * (latest.kodexP || 0);
+  const totalVal = latest.total || (plusVal + kodexVal);
+
+  // 평가 손익
+  const capitalGain = totalVal - totalInvested;
+  const totalReturn = capitalGain + cumDiv;
+  const totalReturnPct = totalInvested>0 ? (totalReturn/totalInvested*100) : 0;
+  const capGainPct     = totalInvested>0 ? (capitalGain/totalInvested*100) : 0;
+  const divReturnPct   = totalInvested>0 ? (cumDiv/totalInvested*100) : 0;
+
+  // 종목별 수익률
+  const plusAvgCost  = perfData.PLUS?.avgCost  || (plusInvested/Math.max(1,latest.plusSh));
+  const kodexAvgCost = perfData.KODEX?.avgCost || (kodexInvested/Math.max(1,latest.kodexSh));
+  const plusCapPct   = plusAvgCost>0 ? ((latest.plusP  - plusAvgCost) /plusAvgCost *100) : 0;
+  const kodexCapPct  = kodexAvgCost>0? ((latest.kodexP - kodexAvgCost)/kodexAvgCost*100) : 0;
+
+  const trColor = totalReturn>=0?'#34d399':'#fb7185';
+  const cgColor = capitalGain>=0?'#00e5ff':'#fb7185';
+
+  sec.innerHTML = `<div class="sec">💹 총 수익률 (Total Return)</div>
+<div class="total-return-card">
+  <div class="tr-header">
+    <div class="tr-title">💹 Total Return</div>
+    <div class="tr-badge">${latest.date} 기준</div>
+  </div>
+  <div class="tr-main">
+    <div class="tr-big">
+      <div class="tr-big-label">총 수익률</div>
+      <div class="tr-big-val" style="color:${trColor}">${totalReturn>=0?'+':''}${totalReturnPct.toFixed(2)}%</div>
+      <div class="tr-big-sub">${totalReturn>=0?'+':''}${(totalReturn/10000).toFixed(2)}만원</div>
+    </div>
+    <div class="tr-big">
+      <div class="tr-big-label">누적 실수령 배당</div>
+      <div class="tr-big-val" style="color:#fb923c">${cumDiv>0?'+':''}${(cumDiv/10000).toFixed(2)}만</div>
+      <div class="tr-big-sub">배당수익률 ${divReturnPct.toFixed(2)}%</div>
+    </div>
+  </div>
+  <div class="tr-detail-grid">
+    <div class="tr-detail-item">
+      <div class="tr-detail-label">투자원금</div>
+      <div class="tr-detail-val" style="color:#e2e8f0">${(totalInvested/10000).toFixed(0)}만</div>
+      <div class="tr-detail-sub">PLUS+KODEX</div>
+    </div>
+    <div class="tr-detail-item">
+      <div class="tr-detail-label">현재 평가액</div>
+      <div class="tr-detail-val" style="color:#fbbf24">${(totalVal/10000).toFixed(0)}만</div>
+      <div class="tr-detail-sub">최신 기록 기준</div>
+    </div>
+    <div class="tr-detail-item">
+      <div class="tr-detail-label">평가 손익</div>
+      <div class="tr-detail-val" style="color:${cgColor}">${capitalGain>=0?'+':''}${(capitalGain/10000).toFixed(1)}만</div>
+      <div class="tr-detail-sub">${capGainPct>=0?'+':''}${capGainPct.toFixed(2)}%</div>
+    </div>
+  </div>
+  <div class="tr-ticker-row">
+    <div class="tr-ticker-card">
+      <div class="tr-ticker-name" style="color:#00e5ff">🔵 PLUS</div>
+      <div class="tr-ticker-val" style="color:${plusCapPct>=0?'#00e5ff':'#fb7185'}">${plusCapPct>=0?'+':''}${plusCapPct.toFixed(2)}%</div>
+      <div class="tr-ticker-sub">평단 ${plusAvgCost.toLocaleString()}원 → 현재 ${(latest.plusP||0).toLocaleString()}원</div>
+    </div>
+    <div class="tr-ticker-card">
+      <div class="tr-ticker-name" style="color:#a78bfa">🟣 KODEX</div>
+      <div class="tr-ticker-val" style="color:${kodexCapPct>=0?'#a78bfa':'#fb7185'}">${kodexCapPct>=0?'+':''}${kodexCapPct.toFixed(2)}%</div>
+      <div class="tr-ticker-sub">평단 ${kodexAvgCost.toLocaleString()}원 → 현재 ${(latest.kodexP||0).toLocaleString()}원</div>
+    </div>
+  </div>
+</div>`;
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 파싱 — SAVE:: / GOAL:: / DIV:: / PERF::
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 function parseAndSave(raw) {
   const result = {};
   function extractJSON(str, prefix) {
     const idx = str.indexOf(prefix);
-    if (idx === -1) return null;
-    let i = idx + prefix.length, depth = 0;
-    while (i < str.length) {
-      if (str[i] === '{') depth++;
-      else if (str[i] === '}') { depth--; if (depth === 0) return str.slice(idx + prefix.length, i + 1); }
-      i++;
-    }
+    if(idx===-1)return null;
+    let i=idx+prefix.length,depth=0;
+    while(i<str.length){if(str[i]==='{')depth++;else if(str[i]==='}'){depth--;if(depth===0)return str.slice(idx+prefix.length,i+1);}i++;}
     return null;
   }
-
-  const saveJson = extractJSON(raw, 'SAVE::');
-  if (saveJson) {
-    try { const d = JSON.parse(saveJson); if (d.date && d.plusSh != null) result.save = d; } catch(e) {}
-  }
-  const goalJson = extractJSON(raw, 'GOAL::');
-  if (goalJson) {
-    try { const d = JSON.parse(goalJson); if (d.discharge) result.goal = d; } catch(e) {}
-  }
-  const divJson = extractJSON(raw, 'DIV::');
-  if (divJson) {
-    try { const d = JSON.parse(divJson); if (d.ym && d.rates) result.div = d; } catch(e) {}
-  }
-  return (result.save || result.goal || result.div) ? result : null;
+  const saveJson=extractJSON(raw,'SAVE::');
+  if(saveJson){try{const d=JSON.parse(saveJson);if(d.date&&d.plusSh!=null)result.save=d;}catch(e){}}
+  const goalJson=extractJSON(raw,'GOAL::');
+  if(goalJson){try{const d=JSON.parse(goalJson);if(d.discharge)result.goal=d;}catch(e){}}
+  const divJson=extractJSON(raw,'DIV::');
+  if(divJson){try{const d=JSON.parse(divJson);if(d.ym&&d.rates)result.div=d;}catch(e){}}
+  const perfJson=extractJSON(raw,'PERF::');
+  if(perfJson){try{const d=JSON.parse(perfJson);if(d.PLUS||d.KODEX)result.perf=d;}catch(e){}}
+  return(result.save||result.goal||result.div||result.perf)?result:null;
 }
 
 function applyParsed(parsed) {
-  const msg = [];
-  if (parsed.save) {
-    const d = parsed.save;
-    upsertRecord({ date:d.date, total:d.total||0, plusSh:d.plusSh||0, plusP:d.plusP||0,
-      kodexSh:d.kodexSh||0, kodexP:d.kodexP||0, div:d.div||0, orders:d.orders||0, divDetail:d.divDetail||null });
-    persist();
-    msg.push('기록 저장 ✅');
+  const msg=[];
+  if(parsed.save){
+    const d=parsed.save;
+    upsertRecord({date:d.date,total:d.total||0,plusSh:d.plusSh||0,plusP:d.plusP||0,kodexSh:d.kodexSh||0,kodexP:d.kodexP||0,div:d.div||0,orders:d.orders||0,divDetail:d.divDetail||null});
+    persist();msg.push('기록 저장 ✅');
   }
-  if (parsed.goal) {
-    goals = parsed.goal;
-    goals.updatedAt = new Date().toISOString().slice(0,10);
-    localStorage.setItem(GKEY, JSON.stringify(goals));
-    msg.push('목표 업데이트 🎯');
+  if(parsed.goal){goals=parsed.goal;goals.updatedAt=new Date().toISOString().slice(0,10);localStorage.setItem(GKEY,JSON.stringify(goals));msg.push('목표 업데이트 🎯');}
+  if(parsed.div){
+    const{ym,rates,estimated}=parsed.div;
+    Object.entries(rates).forEach(([ticker,data])=>{if(!divRates[ticker])divRates[ticker]={};divRates[ticker][ym]={...divRates[ticker][ym],...data};});
+    if(estimated){Object.entries(estimated).forEach(([ticker,rate])=>{if(!divRates[ticker])divRates[ticker]={};if(!divRates[ticker][ym])divRates[ticker][ym]={};if(divRates[ticker][ym].estimated==null)divRates[ticker][ym].estimated=rate;});}
+    persistDivRates();msg.push('배당금 업데이트 💰');
   }
-  if (parsed.div) {
-    const { ym, rates, estimated } = parsed.div;
-    // 종목별 데이터 머지 — exDay, exSh 포함
-    Object.entries(rates).forEach(([ticker, data]) => {
-      if (!divRates[ticker]) divRates[ticker] = {};
-      divRates[ticker][ym] = { ...divRates[ticker][ym], ...data };
-    });
-    // estimated 저장
-    if (estimated) {
-      Object.entries(estimated).forEach(([ticker, rate]) => {
-        if (!divRates[ticker]) divRates[ticker] = {};
-        if (!divRates[ticker][ym]) divRates[ticker][ym] = {};
-        if (divRates[ticker][ym].estimated == null) divRates[ticker][ym].estimated = rate;
-      });
-    }
-    persistDivRates();
-    msg.push('배당금 업데이트 💰');
+  if(parsed.perf){
+    // PERF:: 머지 — cumDiv는 앱이 자체 계산하므로 무시
+    if(parsed.perf.PLUS){perfData.PLUS={...perfData.PLUS,...parsed.perf.PLUS};}
+    if(parsed.perf.KODEX){perfData.KODEX={...perfData.KODEX,...parsed.perf.KODEX};}
+    persistPerf();msg.push('수익률 정보 업데이트 📊');
   }
   renderAll();
   return msg.join(' · ');
 }
 
 function showParsedPreview(parsed) {
-  if (parsed && parsed.save) {
-    const d = parsed.save;
-    document.getElementById('qp-date').textContent  = d.date;
-    document.getElementById('qp-plus').textContent  = (d.plusSh||0) + '주';
-    document.getElementById('qp-kodex').textContent = (d.kodexSh||0) + '주';
-    const curYM = todayYM();
-    const mg = parsed.goal ? getMonthGoal(parsed.goal, curYM) : null;
-    document.getElementById('qp-monthgoal').textContent = mg ? mg.plusSh + '주' : '-';
-    document.getElementById('qs-preview').style.display = 'grid';
+  if(parsed&&parsed.save){
+    const d=parsed.save;
+    document.getElementById('qp-date').textContent=d.date;
+    document.getElementById('qp-plus').textContent=(d.plusSh||0)+'주';
+    document.getElementById('qp-kodex').textContent=(d.kodexSh||0)+'주';
+    const curYM=todayYM();
+    const mg=parsed.goal?getMonthGoal(parsed.goal,curYM):null;
+    document.getElementById('qp-monthgoal').textContent=mg?mg.plusSh+'주':'-';
+    document.getElementById('qs-preview').style.display='grid';
   }
-  if (parsed && parsed.goal) {
-    const d = parsed.goal;
-    const curYM = todayYM();
-    const mg = getMonthGoal(d, curYM);
-    const mgTxt = mg ? `PLUS ${mg.plusSh}주 / KODEX ${mg.kodexSh}주 / 배당 ${mg.div}만` : '월 목표 없음';
-    const gp = document.getElementById('qs-goal-preview');
-    gp.innerHTML = `🎯 전역: PLUS ${d.discharge.plusSh}주 / 배당 ${d.discharge.div}만 · ${curYM} 목표: ${mgTxt}`;
-    gp.style.display = 'block';
+  if(parsed&&parsed.goal){
+    const d=parsed.goal,curYM=todayYM(),mg=getMonthGoal(d,curYM);
+    const mgTxt=mg?`PLUS ${mg.plusSh}주 / KODEX ${mg.kodexSh}주 / 배당 ${mg.div}만`:'월 목표 없음';
+    const gp=document.getElementById('qs-goal-preview');
+    gp.innerHTML=`🎯 전역: PLUS ${d.discharge.plusSh}주 / 배당 ${d.discharge.div}만 · ${curYM} 목표: ${mgTxt}`;
+    gp.style.display='block';
   }
 }
 
-// ── 클립보드 원터치 저장 ──
 async function clipboardSave() {
-  const resultEl = document.getElementById('clip-result');
-  const fallback = document.getElementById('manual-fallback');
-  document.getElementById('qs-preview').style.display = 'none';
-  document.getElementById('qs-goal-preview').style.display = 'none';
-  resultEl.style.display = 'none';
-  try {
-    const text = await navigator.clipboard.readText();
-    if (!text || (!text.includes('SAVE::') && !text.includes('GOAL::') && !text.includes('DIV::'))) {
-      resultEl.className = 'clip-result err';
-      resultEl.textContent = '❌ 클립보드에 SAVE:: / GOAL:: / DIV:: 코드가 없어요. 코드를 먼저 복사해주세요.';
-      resultEl.style.display = 'block'; return;
+  const resultEl=document.getElementById('clip-result'),fallback=document.getElementById('manual-fallback');
+  document.getElementById('qs-preview').style.display='none';
+  document.getElementById('qs-goal-preview').style.display='none';
+  resultEl.style.display='none';
+  try{
+    const text=await navigator.clipboard.readText();
+    if(!text||(!text.includes('SAVE::')&&!text.includes('GOAL::')&&!text.includes('DIV::')&&!text.includes('PERF::'))){
+      resultEl.className='clip-result err';resultEl.textContent='❌ 클립보드에 SAVE:: / GOAL:: / DIV:: / PERF:: 코드가 없어요.';resultEl.style.display='block';return;
     }
-    const parsed = parseAndSave(text);
-    if (!parsed) {
-      resultEl.className = 'clip-result err';
-      resultEl.textContent = '❌ 코드 파싱 실패. 올바르게 복사했는지 확인해주세요.';
-      resultEl.style.display = 'block'; return;
-    }
+    const parsed=parseAndSave(text);
+    if(!parsed){resultEl.className='clip-result err';resultEl.textContent='❌ 코드 파싱 실패. 올바르게 복사했는지 확인해주세요.';resultEl.style.display='block';return;}
     showParsedPreview(parsed);
-    const msg = applyParsed(parsed);
-    resultEl.className = 'clip-result ok';
-    resultEl.textContent = '✅ ' + msg;
-    resultEl.style.display = 'block';
-    toast(msg);
-    setTimeout(() => { resultEl.style.display = 'none'; }, 3000);
-  } catch(e) {
-    resultEl.className = 'clip-result err';
-    resultEl.textContent = '⚠️ 클립보드 접근 권한이 없어요. 아래 텍스트 박스에 직접 붙여넣기 해주세요.';
-    resultEl.style.display = 'block';
-    fallback.style.display = 'block';
-    fallback.scrollIntoView({ behavior:'smooth', block:'nearest' });
+    const msg=applyParsed(parsed);
+    resultEl.className='clip-result ok';resultEl.textContent='✅ '+msg;resultEl.style.display='block';
+    toast(msg);setTimeout(()=>{resultEl.style.display='none';},3000);
+  }catch(e){
+    resultEl.className='clip-result err';resultEl.textContent='⚠️ 클립보드 접근 권한이 없어요. 아래 텍스트 박스에 직접 붙여넣기 해주세요.';resultEl.style.display='block';
+    fallback.style.display='block';fallback.scrollIntoView({behavior:'smooth',block:'nearest'});
   }
 }
 
-function onQSInput() {
-  const raw = document.getElementById('qs-input').value.trim();
-  const btn = document.getElementById('btn-qs');
-  qsParsed = null; btn.disabled = true;
-  document.getElementById('qs-preview').style.display = 'none';
-  document.getElementById('qs-goal-preview').style.display = 'none';
-  const parsed = parseAndSave(raw);
-  if (parsed) {
-    qsParsed = parsed; showParsedPreview(parsed); btn.disabled = false;
-    if (parsed.save && parsed.goal && parsed.div) btn.textContent = '⚡ 기록 + 목표 + 배당 저장';
-    else if (parsed.save && parsed.goal) btn.textContent = '⚡ 기록 + 목표 동시 저장';
-    else if (parsed.save && parsed.div)  btn.textContent = '⚡ 기록 + 배당 저장';
-    else if (parsed.save)  btn.textContent = '⚡ 기록 저장';
-    else if (parsed.div)   btn.textContent = '💰 배당금 업데이트';
-    else btn.textContent = '🎯 목표 업데이트';
+function onQSInput(){
+  const raw=document.getElementById('qs-input').value.trim(),btn=document.getElementById('btn-qs');
+  qsParsed=null;btn.disabled=true;
+  document.getElementById('qs-preview').style.display='none';
+  document.getElementById('qs-goal-preview').style.display='none';
+  const parsed=parseAndSave(raw);
+  if(parsed){
+    qsParsed=parsed;showParsedPreview(parsed);btn.disabled=false;
+    const parts=[];
+    if(parsed.save)parts.push('기록');if(parsed.goal)parts.push('목표');if(parsed.div)parts.push('배당');if(parsed.perf)parts.push('수익률');
+    btn.textContent='⚡ '+parts.join('+')+(parts.length>1?' 동시':'')+' 저장';
   }
 }
 
-function quickSave() {
-  if (!qsParsed) return;
-  const msg = applyParsed(qsParsed);
-  toast(msg);
-  document.getElementById('qs-input').value = '';
-  document.getElementById('qs-preview').style.display = 'none';
-  document.getElementById('qs-goal-preview').style.display = 'none';
-  document.getElementById('btn-qs').disabled = true;
-  document.getElementById('btn-qs').textContent = '⚡ 바로 저장';
-  qsParsed = null;
+function quickSave(){
+  if(!qsParsed)return;
+  const msg=applyParsed(qsParsed);toast(msg);
+  document.getElementById('qs-input').value='';
+  document.getElementById('qs-preview').style.display='none';
+  document.getElementById('qs-goal-preview').style.display='none';
+  document.getElementById('btn-qs').disabled=true;
+  document.getElementById('btn-qs').textContent='⚡ 바로 저장';
+  qsParsed=null;
 }
 
-function switchTab(t) {
-  document.getElementById('tab-input').style.display   = t === 'input'   ? 'block' : 'none';
-  document.getElementById('tab-records').style.display = t === 'records' ? 'block' : 'none';
-  document.querySelectorAll('.tab').forEach((b,i) => b.classList.toggle('active', ['input','records'][i] === t));
-  if (t === 'records') renderAll();
+function switchTab(t){
+  document.getElementById('tab-input').style.display=t==='input'?'block':'none';
+  document.getElementById('tab-records').style.display=t==='records'?'block':'none';
+  document.querySelectorAll('.tab').forEach((b,i)=>b.classList.toggle('active',['input','records'][i]===t));
+  if(t==='records')renderAll();
 }
 
-function updatePreview() {
-  const ps  = +document.getElementById('inp-plus-sh').value  || 0;
-  const ks  = +document.getElementById('inp-kodex-sh').value || 0;
-  const tot = +document.getElementById('inp-total').value    || 0;
-  if (ps || ks) {
+function updatePreview(){
+  const ps=+document.getElementById('inp-plus-sh').value||0,ks=+document.getElementById('inp-kodex-sh').value||0,tot=+document.getElementById('inp-total').value||0;
+  if(ps||ks){
     document.getElementById('preview-card').classList.add('show');
-    document.getElementById('pv-plus').textContent  = ps  ? ps  + '주' : '-';
-    document.getElementById('pv-kodex').textContent = ks  ? ks  + '주' : '-';
-    document.getElementById('pv-div').textContent   = ((ps * 156 + ks * 244) / 10000).toFixed(2) + '만';
-    document.getElementById('pv-total').textContent = tot ? (tot / 10000).toFixed(0) + '만' : '-';
+    document.getElementById('pv-plus').textContent=ps?ps+'주':'-';
+    document.getElementById('pv-kodex').textContent=ks?ks+'주':'-';
+    document.getElementById('pv-div').textContent=((ps*156+ks*244)/10000).toFixed(2)+'만';
+    document.getElementById('pv-total').textContent=tot?(tot/10000).toFixed(0)+'만':'-';
   }
 }
 
-function saveRecord() {
-  const rec = {
-    date:    document.getElementById('inp-date').value,
-    total:   +document.getElementById('inp-total').value    || 0,
-    plusSh:  +document.getElementById('inp-plus-sh').value  || 0,
-    plusP:   +document.getElementById('inp-plus-p').value   || 0,
-    kodexSh: +document.getElementById('inp-kodex-sh').value || 0,
-    kodexP:  +document.getElementById('inp-kodex-p').value  || 0,
-    div:     +document.getElementById('inp-div').value      || 0,
-    orders:  +document.getElementById('inp-orders').value   || 0
-  };
-  if (!rec.date || !rec.plusSh) { toast('날짜와 PLUS 수량은 필수예요!', true); return; }
-  upsertRecord(rec); persist(); toast('저장 완료!'); clearForm();
+function saveRecord(){
+  const rec={date:document.getElementById('inp-date').value,total:+document.getElementById('inp-total').value||0,plusSh:+document.getElementById('inp-plus-sh').value||0,plusP:+document.getElementById('inp-plus-p').value||0,kodexSh:+document.getElementById('inp-kodex-sh').value||0,kodexP:+document.getElementById('inp-kodex-p').value||0,div:+document.getElementById('inp-div').value||0,orders:+document.getElementById('inp-orders').value||0};
+  if(!rec.date||!rec.plusSh){toast('날짜와 PLUS 수량은 필수예요!',true);return;}
+  upsertRecord(rec);persist();toast('저장 완료!');clearForm();
 }
 
-function upsertRecord(rec) {
-  const idx = records.findIndex(r => r.date === rec.date);
-  if (idx >= 0) records[idx] = rec; else records.push(rec);
-  records.sort((a, b) => a.date.localeCompare(b.date));
+function upsertRecord(rec){
+  const idx=records.findIndex(r=>r.date===rec.date);
+  if(idx>=0)records[idx]=rec;else records.push(rec);
+  records.sort((a,b)=>a.date.localeCompare(b.date));
 }
 
-function clearForm() {
-  ['inp-total','inp-plus-sh','inp-plus-p','inp-kodex-sh','inp-kodex-p','inp-div','inp-orders']
-    .forEach(id => document.getElementById(id).value = '');
-  document.getElementById('inp-date').value = new Date().toISOString().slice(0, 10);
+function clearForm(){
+  ['inp-total','inp-plus-sh','inp-plus-p','inp-kodex-sh','inp-kodex-p','inp-div','inp-orders'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('inp-date').value=new Date().toISOString().slice(0,10);
   document.getElementById('preview-card').classList.remove('show');
 }
 
-function persist() { try { localStorage.setItem(SKEY, JSON.stringify(records)); } catch(e) {} }
-function persistDivRates() { try { localStorage.setItem(DKEY, JSON.stringify(divRates)); } catch(e) {} }
+function persist(){try{localStorage.setItem(SKEY,JSON.stringify(records));}catch(e){}}
+function persistDivRates(){try{localStorage.setItem(DKEY,JSON.stringify(divRates));}catch(e){}}
+function persistPerf(){try{localStorage.setItem(PKEY,JSON.stringify(perfData));}catch(e){}}
 
-function loadData() {
-  try { const r = localStorage.getItem(SKEY); if (r) records = JSON.parse(r); } catch(e) { records = []; }
-  try { const g = localStorage.getItem(GKEY); if (g) goals   = JSON.parse(g); } catch(e) { goals   = null; }
-  try { const d = localStorage.getItem(DKEY); if (d) divRates = JSON.parse(d); } catch(e) { divRates = {}; }
+function loadData(){
+  try{const r=localStorage.getItem(SKEY);if(r)records=JSON.parse(r);}catch(e){records=[];}
+  try{const g=localStorage.getItem(GKEY);if(g)goals=JSON.parse(g);}catch(e){goals=null;}
+  try{const d=localStorage.getItem(DKEY);if(d)divRates=JSON.parse(d);}catch(e){divRates={};}
+  try{const p=localStorage.getItem(PKEY);if(p)perfData=JSON.parse(p);}catch(e){perfData={};}
 }
 
 // ── 월별 네비게이터 ──
-function getYears()  { return [...new Set(records.map(r => r.date.slice(0,4)))].sort(); }
-function getMonths() { return [...new Set(records.map(r => r.date.slice(0,7)))].sort(); }
+function getYears(){return[...new Set(records.map(r=>r.date.slice(0,4)))].sort();}
+function getMonths(){return[...new Set(records.map(r=>r.date.slice(0,7)))].sort();}
 
-function renderMonthNav() {
-  const container = document.getElementById('month-nav');
-  container.innerHTML = '';
-  const years  = getYears();
-  const months = getMonths();
-  if (!years.length) return;
-  const latestYear = years[years.length - 1];
-  const expandedYear = nav.type === 'all' ? latestYear : (nav.year || latestYear);
-
-  const allBtn = document.createElement('button');
-  allBtn.className = 'mn-all-btn' + (nav.type === 'all' ? ' active' : '');
-  allBtn.textContent = '전체';
-  allBtn.onclick = () => { nav = { type:'all', year:null, ym:null }; renderMonthNav(); showSection('all'); renderAllContent(); };
+function renderMonthNav(){
+  const container=document.getElementById('month-nav');container.innerHTML='';
+  const years=getYears(),months=getMonths();
+  if(!years.length)return;
+  const latestYear=years[years.length-1];
+  const expandedYear=nav.type==='all'?latestYear:(nav.year||latestYear);
+  const allBtn=document.createElement('button');
+  allBtn.className='mn-all-btn'+(nav.type==='all'?' active':'');
+  allBtn.textContent='전체';
+  allBtn.onclick=()=>{nav={type:'all',year:null,ym:null};renderMonthNav();showSection('all');renderAllContent();};
   container.appendChild(allBtn);
-
-  [...years].reverse().forEach(yr => {
-    const isExpanded = yr === expandedYear;
-    const monthsInYear = months.filter(m => m.startsWith(yr));
-    const group = document.createElement('div'); group.className = 'mn-year-group';
-    const header = document.createElement('div'); header.className = 'mn-year-header';
-    header.innerHTML = `<span class="mn-year-label${isExpanded?'':' inactive'}">${yr}</span><span class="mn-year-arrow${isExpanded?'':' inactive collapsed'}">▲</span>`;
-    header.onclick = () => {
-      if (isExpanded && nav.year === yr) nav = { type:'all', year:null, ym:null };
-      else { nav = { type:'year', year:yr, ym:null }; showSection('all'); renderAllContent(); }
-      renderMonthNav();
-    };
-    const wrap = document.createElement('div'); wrap.className = 'mn-months-wrap' + (isExpanded?' open':'');
-    const row  = document.createElement('div'); row.className = 'mn-months-row';
-    monthsInYear.forEach(ym => {
-      const mNum = parseInt(ym.slice(5), 10);
-      const btn = document.createElement('button');
-      btn.className = 'mn-month-btn' + (nav.ym === ym ? ' active-month' : '');
-      btn.textContent = String(mNum).padStart(2,'0') + '월';
-      btn.onclick = e => { e.stopPropagation(); nav = { type:'month', year:yr, ym }; renderMonthNav(); showSection('month'); renderMonthSection(ym); };
+  [...years].reverse().forEach(yr=>{
+    const isExpanded=yr===expandedYear;
+    const monthsInYear=months.filter(m=>m.startsWith(yr));
+    const group=document.createElement('div');group.className='mn-year-group';
+    const header=document.createElement('div');header.className='mn-year-header';
+    header.innerHTML=`<span class="mn-year-label${isExpanded?'':' inactive'}">${yr}</span><span class="mn-year-arrow${isExpanded?'':' inactive collapsed'}">▲</span>`;
+    header.onclick=()=>{if(isExpanded&&nav.year===yr)nav={type:'all',year:null,ym:null};else{nav={type:'year',year:yr,ym:null};showSection('all');renderAllContent();}renderMonthNav();};
+    const wrap=document.createElement('div');wrap.className='mn-months-wrap'+(isExpanded?' open':'');
+    const row=document.createElement('div');row.className='mn-months-row';
+    monthsInYear.forEach(ym=>{
+      const mNum=parseInt(ym.slice(5),10);
+      const btn=document.createElement('button');
+      btn.className='mn-month-btn'+(nav.ym===ym?' active-month':'');
+      btn.textContent=String(mNum).padStart(2,'0')+'월';
+      btn.onclick=e=>{e.stopPropagation();nav={type:'month',year:yr,ym};renderMonthNav();showSection('month');renderMonthSection(ym);};
       row.appendChild(btn);
     });
-    wrap.appendChild(row); group.appendChild(header); group.appendChild(wrap);
-    container.appendChild(group);
+    wrap.appendChild(row);group.appendChild(header);group.appendChild(wrap);container.appendChild(group);
   });
 }
 
-function showSection(which) {
-  document.getElementById('section-all').style.display   = which === 'all'   ? 'block' : 'none';
-  document.getElementById('section-month').style.display = which === 'month' ? 'block' : 'none';
+function showSection(which){
+  document.getElementById('section-all').style.display=which==='all'?'block':'none';
+  document.getElementById('section-month').style.display=which==='month'?'block':'none';
 }
 
-function renderAllContent() {
-  let filtered = records;
-  if (nav.type === 'year' && nav.year) filtered = records.filter(r => r.date.startsWith(nav.year));
-  renderDischarge();
-  renderMonthlyCharts(filtered);
-  renderDivDetailCharts(filtered);
-  renderLogList(document.getElementById('log-list-all'), document.getElementById('empty-all'),
-    nav.type === 'year' ? nav.year + '-' : null);
+function renderAllContent(){
+  let filtered=records;
+  if(nav.type==='year'&&nav.year)filtered=records.filter(r=>r.date.startsWith(nav.year));
+  renderDischarge();renderMonthlyCharts(filtered);renderDivDetailCharts(filtered);
+  renderLogList(document.getElementById('log-list-all'),document.getElementById('empty-all'),nav.type==='year'?nav.year+'-':null);
 }
 
-function renderMonthSection(ym) {
-  document.getElementById('month-section-title').textContent = ym.slice(5) + '월';
-  renderMonthGoal(ym);
-  renderMonthInnerChart(ym);
-  renderLogList(document.getElementById('log-list-month'), document.getElementById('empty-month'), ym);
+function renderMonthSection(ym){
+  document.getElementById('month-section-title').textContent=ym.slice(5)+'월';
+  renderMonthGoal(ym);renderMonthInnerChart(ym);
+  renderLogList(document.getElementById('log-list-month'),document.getElementById('empty-month'),ym);
 }
 
-// ── 전역 달성도 ──
-function renderDischarge() {
-  const sec = document.getElementById('discharge-section');
-  const latest = records.length ? records[records.length - 1] : null;
-  if (!goals || !latest) {
-    sec.innerHTML = '<div class="no-goal">체크 후 🎯 GOAL:: 코드를 붙여넣으면 달성도가 표시돼요</div>'; return;
-  }
-  const d = goals.discharge;
-  if (!d) { sec.innerHTML = '<div class="no-goal">🎯 GOAL:: 코드를 붙여넣으면 달성도가 표시돼요</div>'; return; }
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 전역 달성도 (과거 시점 카드 — 흐리게, 맨 아래)
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function renderDischarge(){
+  const sec=document.getElementById('discharge-section');
+  const latest=records.length?records[records.length-1]:null;
+  if(!goals||!latest){sec.innerHTML='<div class="no-goal">체크 후 🎯 GOAL:: 코드를 붙여넣으면 달성도가 표시돼요</div>';return;}
+  const d=goals.discharge;
+  if(!d){sec.innerHTML='<div class="no-goal">🎯 GOAL:: 코드를 붙여넣으면 달성도가 표시돼요</div>';return;}
+  const curDiv=(latest.plusSh*156+latest.kodexSh*244)/10000;
 
-  const curDiv = (latest.plusSh * 156 + latest.kodexSh * 244) / 10000;
-
-  function msCard(label, plusGoal, kodexGoal, divGoal, borderColor) {
-    const pPct = Math.round(latest.plusSh  / plusGoal  * 100);
-    const kPct = Math.round(latest.kodexSh / kodexGoal * 100);
-    const dPct = Math.round(curDiv         / divGoal   * 100);
-    const avg  = Math.round((pPct + kPct + dPct) / 3);
-    return `<div class="milestone-card" style="border-color:${borderColor||'rgba(0,229,255,.08)'};">
+  function msCard(label,plusGoal,kodexGoal,divGoal,borderColor){
+    const pPct=Math.round(latest.plusSh/plusGoal*100),kPct=Math.round(latest.kodexSh/kodexGoal*100),dPct=Math.round(curDiv/divGoal*100);
+    const avg=Math.round((pPct+kPct+dPct)/3);
+    return`<div class="milestone-card" style="border-color:${borderColor||'rgba(0,229,255,.08)'};">
 <div class="milestone-card-hdr"><span class="milestone-card-title">${label}</span><span class="milestone-card-pct">${avg}% 진행</span></div>
 <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
   ${mkMini('PLUS','#00e5ff',latest.plusSh,plusGoal,'주',pPct,true)}
@@ -886,17 +1132,14 @@ function renderDischarge() {
 </div></div>`;
   }
 
-  const allCards = [];
-  if (goals.milestones && goals.milestones.length) {
-    goals.milestones.forEach(ms => allCards.push(msCard(ms.label, ms.plusSh, ms.kodexSh, ms.div, 'rgba(0,229,255,.08)')));
-  } else {
-    allCards.push(msCard('일병 종료', Math.round(d.plusSh*.4), Math.round(d.kodexSh*.4), +(d.div*.4).toFixed(1), 'rgba(0,229,255,.08)'));
-    allCards.push(msCard('상병 종료', Math.round(d.plusSh*.7), Math.round(d.kodexSh*.7), +(d.div*.7).toFixed(1), 'rgba(167,139,250,.12)'));
+  const allCards=[];
+  if(goals.milestones&&goals.milestones.length){
+    goals.milestones.forEach(ms=>allCards.push(msCard(ms.label,ms.plusSh,ms.kodexSh,ms.div,'rgba(0,229,255,.08)')));
+  }else{
+    allCards.push(msCard('일병 종료',Math.round(d.plusSh*.4),Math.round(d.kodexSh*.4),+(d.div*.4).toFixed(1),'rgba(0,229,255,.08)'));
+    allCards.push(msCard('상병 종료',Math.round(d.plusSh*.7),Math.round(d.kodexSh*.7),+(d.div*.7).toFixed(1),'rgba(167,139,250,.12)'));
   }
-
-  const plusPct  = Math.round(latest.plusSh  / d.plusSh  * 100);
-  const kodexPct = Math.round(latest.kodexSh / d.kodexSh * 100);
-  const divPct   = Math.round(curDiv         / d.div     * 100);
+  const plusPct=Math.round(latest.plusSh/d.plusSh*100),kodexPct=Math.round(latest.kodexSh/d.kodexSh*100),divPct=Math.round(curDiv/d.div*100);
   allCards.push(`<div class="milestone-card" style="border-color:rgba(0,229,255,.25);">
 <div class="milestone-card-hdr"><span class="milestone-card-title" style="color:#00e5ff;">🏁 전역 최종 목표</span><span class="milestone-card-pct">${Math.round((plusPct+kodexPct+divPct)/3)}% 진행</span></div>
 <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
@@ -905,29 +1148,26 @@ function renderDischarge() {
   ${mkMini('배당','#fb923c',curDiv.toFixed(1),d.div,'만',divPct,true)}
 </div></div>`);
 
-  const topCard   = allCards[0];
-  const hiddenHtml = allCards.slice(1).join('');
-  const hasHidden  = allCards.length > 1;
+  const topCard=allCards[allCards.length-1]; // 전역 목표를 항상 최상단
+  const hiddenHtml=allCards.slice(0,-1).join('');
+  const hasHidden=allCards.length>1;
 
-  sec.innerHTML = `<div class="ds-header">
+  sec.innerHTML=`<div class="ds-header">
 <div class="ds-title">🎖️ 전역 목표</div>
 <div class="ds-date">${formatDateDiff(goals.updatedAt||new Date().toISOString().slice(0,10))}</div>
 </div>
 <div id="goal-analysis" style="margin-bottom:10px;"></div>
 <div>${topCard}
 ${hasHidden?`<div style="display:flex;justify-content:flex-end;margin-top:6px;">
-<button class="expand-btn" id="ms-expand-btn" onclick="toggleMilestones()"><span>다른 시점 보기</span><span class="arr">▼</span></button></div>
+<button class="expand-btn" id="ms-expand-btn" onclick="toggleMilestones()"><span>중간 시점 보기</span><span class="arr">▼</span></button></div>
 <div id="ms-hidden-list" class="goal-hidden-list">${hiddenHtml}</div>`:''}
 </div>`;
-
-  try { document.getElementById('goal-analysis').innerHTML = analyzeGoal(); } catch(e) {}
+  try{document.getElementById('goal-analysis').innerHTML=analyzeGoal();}catch(e){}
 }
 
-function mkMini(label, color, cur, goal, unit, pct, isFuture) {
-  const c = pctColor(pct, isFuture);
-  const lbl = pctLabel(pct, isFuture);
-  const w = Math.min(pct, 100);
-  return `<div style="background:#0c1525;border-radius:8px;padding:8px;">
+function mkMini(label,color,cur,goal,unit,pct,isFuture){
+  const c=pctColor(pct,isFuture),lbl=pctLabel(pct,isFuture),w=Math.min(pct,100);
+  return`<div style="background:#0c1525;border-radius:8px;padding:8px;">
 <div style="font-size:8px;color:#4a6080;font-family:'Space Mono',monospace;margin-bottom:4px;">${label}</div>
 <div style="font-size:14px;font-weight:900;font-family:'Space Mono',monospace;color:${color};">${cur}${unit}</div>
 <div style="font-size:9px;color:#4a6080;margin:2px 0;">목표 ${goal}${unit}</div>
@@ -938,85 +1178,79 @@ function mkMini(label, color, cur, goal, unit, pct, isFuture) {
 </div>`;
 }
 
-function analyzeGoal() {
-  if (!goals || !goals.discharge || records.length < 2) return '';
-  const enlistDate    = new Date(goals.enlistDate    || '2025-08-17');
-  const dischargeDate = new Date(goals.dischargeDate || '2027-04-17');
-  function addMonths(date, m) { const d=new Date(date); d.setMonth(d.getMonth()+m); return d; }
-  function endOfMonth(date) { const d=new Date(date); return new Date(d.getFullYear(),d.getMonth()+1,0); }
-  const privateDate  = endOfMonth(addMonths(enlistDate, 8));
-  const corporalDate = endOfMonth(addMonths(enlistDate, 14));
-  const d = goals.discharge;
+function analyzeGoal(){
+  if(!goals||!goals.discharge||records.length<2)return'';
+  const enlistDate=new Date(goals.enlistDate||'2025-08-17');
+  const dischargeDate=new Date(goals.dischargeDate||'2027-04-17');
+  function addMonths(date,m){const d=new Date(date);d.setMonth(d.getMonth()+m);return d;}
+  function endOfMonth(date){const d=new Date(date);return new Date(d.getFullYear(),d.getMonth()+1,0);}
+  const privateDate=endOfMonth(addMonths(enlistDate,8));
+  const corporalDate=endOfMonth(addMonths(enlistDate,14));
+  const d=goals.discharge;
 
-  function msDateToEndOfMonth(dateStr) {
-    if (!dateStr) return null;
-    if (dateStr.length === 7) { const [y,m]=dateStr.split('-').map(Number); return new Date(y,m,0); }
+  function msDateToEndOfMonth(dateStr){
+    if(!dateStr)return null;
+    if(dateStr.length===7){const[y,m]=dateStr.split('-').map(Number);return new Date(y,m,0);}
     return new Date(dateStr);
   }
 
-  let targets = [
-    { name:'일병', date:privateDate,   plusGoal:Math.round(d.plusSh*.4), kodexGoal:Math.round(d.kodexSh*.4), divGoal:+(d.div*.4).toFixed(1) },
-    { name:'상병', date:corporalDate,  plusGoal:Math.round(d.plusSh*.7), kodexGoal:Math.round(d.kodexSh*.7), divGoal:+(d.div*.7).toFixed(1) },
-    { name:'전역', date:dischargeDate, plusGoal:d.plusSh, kodexGoal:d.kodexSh, divGoal:d.div }
+  let targets=[
+    {name:'일병',date:privateDate,plusGoal:Math.round(d.plusSh*.4),kodexGoal:Math.round(d.kodexSh*.4),divGoal:+(d.div*.4).toFixed(1)},
+    {name:'상병',date:corporalDate,plusGoal:Math.round(d.plusSh*.7),kodexGoal:Math.round(d.kodexSh*.7),divGoal:+(d.div*.7).toFixed(1)},
+    {name:'전역',date:dischargeDate,plusGoal:d.plusSh,kodexGoal:d.kodexSh,divGoal:d.div}
   ];
-  if (goals.milestones && goals.milestones.length) {
-    goals.milestones.forEach((ms,i) => {
-      if (targets[i]) {
-        targets[i].plusGoal  = ms.plusSh; targets[i].kodexGoal = ms.kodexSh; targets[i].divGoal = ms.div;
-        targets[i].date = msDateToEndOfMonth(ms.date) || targets[i].date;
+  if(goals.milestones&&goals.milestones.length){
+    goals.milestones.forEach((ms,i)=>{
+      if(targets[i]){
+        targets[i].plusGoal=ms.plusSh;targets[i].kodexGoal=ms.kodexSh;targets[i].divGoal=ms.div;
+        targets[i].date=msDateToEndOfMonth(ms.date)||targets[i].date;
       }
     });
   }
+  const first=records[0],last=records[records.length-1];
+  const tradingSpan=tradingDaySpan(first.date,last.date);
+  const plusSpeed=(last.plusSh-first.plusSh)/tradingSpan;
+  const kodexSpeed=(last.kodexSh-first.kodexSh)/tradingSpan;
+  const lastDiv=(last.plusSh*156+last.kodexSh*244)/10000;
+  const firstDiv=(first.plusSh*156+first.kodexSh*244)/10000;
+  const divSpeed=(lastDiv-firstDiv)/tradingSpan;
+  const today=new Date();today.setHours(0,0,0,0);
 
-  const first = records[0], last = records[records.length-1];
-  const tradingSpan = tradingDaySpan(first.date, last.date);
-  const plusSpeed  = (last.plusSh  - first.plusSh)  / tradingSpan;
-  const kodexSpeed = (last.kodexSh - first.kodexSh) / tradingSpan;
-  const lastDiv    = (last.plusSh*156  + last.kodexSh*244)  / 10000;
-  const firstDiv   = (first.plusSh*156 + first.kodexSh*244) / 10000;
-  const divSpeed   = (lastDiv - firstDiv) / tradingSpan;
-  const today = new Date(); today.setHours(0,0,0,0);
-
-  function calcTarget(t) {
-    const goalDate = new Date(t.date); goalDate.setHours(0,0,0,0);
-    const isPast = goalDate <= today;
-    const remainTD = isPast ? 0 : countTradingDays(today, goalDate);
-    const remainCalDays = Math.round((goalDate-today)/(1000*60*60*24));
-    const projPlus  = last.plusSh  + plusSpeed  * remainTD;
-    const projKodex = last.kodexSh + kodexSpeed * remainTD;
-    const projDiv   = lastDiv      + divSpeed   * remainTD;
-    const isOkPlus=projPlus>=t.plusGoal, isOkKodex=projKodex>=t.kodexGoal, isOkDiv=projDiv>=t.divGoal;
+  function calcTarget(t){
+    const goalDate=new Date(t.date);goalDate.setHours(0,0,0,0);
+    const isPast=goalDate<=today;
+    const remainTD=isPast?0:countTradingDays(today,goalDate);
+    const remainCalDays=Math.round((goalDate-today)/(1000*60*60*24));
+    const projPlus=last.plusSh+plusSpeed*remainTD;
+    const projKodex=last.kodexSh+kodexSpeed*remainTD;
+    const projDiv=lastDiv+divSpeed*remainTD;
+    const isOkPlus=projPlus>=t.plusGoal,isOkKodex=projKodex>=t.kodexGoal,isOkDiv=projDiv>=t.divGoal;
     const allOk=isOkPlus&&isOkKodex&&isOkDiv;
-    const plusPct=Math.round(last.plusSh/t.plusGoal*100), kodexPct=Math.round(last.kodexSh/t.kodexGoal*100), divPct=Math.round(lastDiv/t.divGoal*100);
+    const plusPct=Math.round(last.plusSh/t.plusGoal*100),kodexPct=Math.round(last.kodexSh/t.kodexGoal*100),divPct=Math.round(lastDiv/t.divGoal*100);
     const needPlus=remainTD>0?(t.plusGoal-last.plusSh)/remainTD:null;
-    const needKodex=remainTD>0?(t.kodexGoal-last.kodexSh)/remainTD:null;
     const needDiv=remainTD>0?(t.divGoal-lastDiv)/remainTD:null;
-    return { ...t, isPast, remainTD, remainCalDays, allOk, isOkPlus, isOkKodex, isOkDiv,
-      plusPct, kodexPct, divPct, projPlus:Math.round(projPlus), projKodex:Math.round(projKodex),
-      projDiv:projDiv.toFixed(1), needPlus, needKodex, needDiv, plusSpeed, kodexSpeed, divSpeed };
+    return{...t,isPast,remainTD,remainCalDays,allOk,isOkPlus,isOkKodex,isOkDiv,plusPct,kodexPct,divPct,projPlus:Math.round(projPlus),projKodex:Math.round(projKodex),projDiv:projDiv.toFixed(1),needPlus,needDiv,plusSpeed,kodexSpeed,divSpeed};
   }
 
-  const results = targets.map(calcTarget);
+  const results=targets.map(calcTarget);
 
-  function makeCard(r) {
-    const goalDate = r.date instanceof Date ? r.date : new Date(r.date);
-    const dateStr  = goalDate.toISOString().slice(0,10);
-    if (r.isPast) {
-      const rP=last.plusSh>=r.plusGoal, rK=last.kodexSh>=r.kodexGoal, rD=lastDiv>=r.divGoal;
+  function makeCard(r,forceCollapsed){
+    const goalDate=r.date instanceof Date?r.date:new Date(r.date);
+    const dateStr=goalDate.toISOString().slice(0,10);
+    if(r.isPast){
+      const rP=last.plusSh>=r.plusGoal,rK=last.kodexSh>=r.kodexGoal,rD=lastDiv>=r.divGoal;
       const allR=rP&&rK&&rD;
-      return `<div class="goal-card ${allR?'done':'fail'}">
-<div class="goal-title">${r.name} (${dateStr})</div>
+      // 과거 카드 — 흐리게 표시 (달성/미달만 표시, 상세 숨김)
+      return`<div class="goal-card ${allR?'past-done':'past-fail'}">
+<div class="goal-title">${r.name} (${dateStr}) <span style="font-size:9px;color:#4a6080;">[지난 시점]</span></div>
 <div class="goal-status ${allR?'goal-done':'goal-fail'}">${allR?'✅ 목표 달성':'❌ 목표 미달'}</div>
-<div class="goal-sub">PLUS ${last.plusSh}주 / 목표 ${r.plusGoal}주 <span class="${rP?'goal-done':'goal-warn'}">${rP?'✓':'✗'}</span></div>
-<div class="goal-sub">KODEX ${last.kodexSh}주 / 목표 ${r.kodexGoal}주 <span class="${rK?'goal-done':'goal-warn'}">${rK?'✓':'✗'}</span></div>
-<div class="goal-sub">배당 ${lastDiv.toFixed(1)}만 / 목표 ${r.divGoal}만 <span class="${rD?'goal-done':'goal-warn'}">${rD?'✓':'✗'}</span></div>
+<div class="goal-sub" style="opacity:.6;">PLUS ${last.plusSh}주 / 목표 ${r.plusGoal}주 <span class="${rP?'goal-done':'goal-warn'}">${rP?'✓':'✗'}</span> · KODEX ${last.kodexSh}주 / 목표 ${r.kodexGoal}주 <span class="${rK?'goal-done':'goal-warn'}">${rK?'✓':'✗'}</span></div>
 </div>`;
     }
     const diffP=r.needPlus!=null?(r.plusSpeed-r.needPlus).toFixed(2):'∞';
-    const diffK=r.needKodex!=null?(r.kodexSpeed-r.needKodex).toFixed(2):'∞';
     const diffD=r.needDiv!=null?(r.divSpeed-r.needDiv).toFixed(3):'∞';
-    const isExceedP=r.plusPct>=105, isExceedK=r.kodexPct>=105, isExceedD=r.divPct>=105;
-    return `<div class="goal-card ${r.allOk?'ok':'bad'}">
+    const isExceedP=r.plusPct>=105,isExceedK=r.kodexPct>=105,isExceedD=r.divPct>=105;
+    return`<div class="goal-card ${r.allOk?'ok':'bad'}">
 <div class="goal-title">${r.name} (${dateStr}, D-${Math.max(0,r.remainCalDays)} / 거래일 ${r.remainTD}일)</div>
 <div class="goal-status ${r.allOk?'goal-good':'goal-warn'}">${r.allOk?'🟢 달성 가능':'🔴 속도 부족'}</div>
 <div class="goal-sub">PLUS 현재 ${last.plusSh}주 → 예상 ${r.projPlus}주 / 목표 ${r.plusGoal}주 <span class="${r.isOkPlus?(isExceedP?'goal-exceed':'goal-good'):'goal-warn'}">${r.isOkPlus?'✓':'✗'}</span></div>
@@ -1031,437 +1265,435 @@ function analyzeGoal() {
 </div>`;
   }
 
-  const htmlCards = results.map(makeCard);
-  if (!htmlCards.length) return '';
-  let topIdx = results.findIndex(r => !r.isPast);
-  if (topIdx === -1) topIdx = results.length - 1;
-  const topCard  = htmlCards[topIdx];
-  const restHtml = htmlCards.filter((_,i) => i !== topIdx).join('');
-  return `<div class="goal-accordion">${topCard}
-${restHtml?`<div style="overflow:hidden;"><button class="expand-btn" id="goal-expand-btn" onclick="toggleGoals()"><span>다른 시점 보기</span><span class="arr">▼</span></button></div>
-<div id="hiddenGoals" class="goal-hidden-list">${restHtml}</div>`:''}
+  const htmlCards=results.map(r=>makeCard(r));
+  if(!htmlCards.length)return'';
+
+  // 미래 시점 중 가장 빠른 것을 최상단, 과거 카드는 모두 맨 아래 접힘 처리
+  const futureIdxs=results.map((r,i)=>({r,i})).filter(x=>!x.r.isPast);
+  const pastIdxs=results.map((r,i)=>({r,i})).filter(x=>x.r.isPast);
+
+  // 현재 진행 중인 최초 미래 카드를 상단에
+  const topIdx=futureIdxs.length?futureIdxs[0].i:results.length-1;
+  const topCard=htmlCards[topIdx];
+
+  // 나머지 미래 카드 (있다면)
+  const otherFutureHtml=futureIdxs.filter(x=>x.i!==topIdx).map(x=>htmlCards[x.i]).join('');
+  // 과거 카드 (흐리게, 맨 아래)
+  const pastHtml=pastIdxs.map(x=>htmlCards[x.i]).join('');
+
+  const hiddenHtml=[otherFutureHtml,pastHtml].filter(Boolean).join('');
+  const hiddenLabel=pastIdxs.length?`다른 시점·지난 목표 보기`:'다른 시점 보기';
+
+  return`<div class="goal-accordion">${topCard}
+${hiddenHtml?`<div style="overflow:hidden;"><button class="expand-btn" id="goal-expand-btn" onclick="toggleGoals()"><span>${hiddenLabel}</span><span class="arr">▼</span></button></div>
+<div id="hiddenGoals" class="goal-hidden-list">${hiddenHtml}</div>`:''}
 </div>`;
 }
 
 // ── 이번 달 목표 달성도 ──
-function renderMonthGoal(ym) {
-  const card = document.getElementById('month-goal-card');
-  const monthRecs = records.filter(r => r.date.startsWith(ym));
-  if (!monthRecs.length) { card.innerHTML = '<div class="no-goal">이 달 기록이 없어요.</div>'; return; }
-  const latest = monthRecs[monthRecs.length - 1];
-  const curDiv = (latest.plusSh * 156 + latest.kodexSh * 244) / 10000;
-  const mg = getMonthGoal(goals, ym);
-  if (!mg) { card.innerHTML = '<div class="no-goal">🎯 GOAL:: 코드를 붙여넣으면 이 달 목표 달성도가 표시돼요</div>'; return; }
-  const plusPct  = Math.round(latest.plusSh  / mg.plusSh  * 100);
-  const kodexPct = Math.round(latest.kodexSh / mg.kodexSh * 100);
-  const divPct   = Math.round(curDiv         / mg.div     * 100);
-  card.innerHTML = `<div class="mg-header"><div class="mg-title">📅 ${ym.slice(5)}월 목표</div><div style="font-size:10px;color:#4a6080;font-family:'Space Mono',monospace;">${ym} 기준</div></div>
+function renderMonthGoal(ym){
+  const card=document.getElementById('month-goal-card');
+  const monthRecs=records.filter(r=>r.date.startsWith(ym));
+  if(!monthRecs.length){card.innerHTML='<div class="no-goal">이 달 기록이 없어요.</div>';return;}
+  const latest=monthRecs[monthRecs.length-1];
+  const curDiv=(latest.plusSh*156+latest.kodexSh*244)/10000;
+  const mg=getMonthGoal(goals,ym);
+  if(!mg){card.innerHTML='<div class="no-goal">🎯 GOAL:: 코드를 붙여넣으면 이 달 목표 달성도가 표시돼요</div>';return;}
+  const plusPct=Math.round(latest.plusSh/mg.plusSh*100),kodexPct=Math.round(latest.kodexSh/mg.kodexSh*100),divPct=Math.round(curDiv/mg.div*100);
+  card.innerHTML=`<div class="mg-header"><div class="mg-title">📅 ${ym.slice(5)}월 목표</div><div style="font-size:10px;color:#4a6080;font-family:'Space Mono',monospace;">${ym} 기준</div></div>
 <div class="mg-grid">
-  ${mkMonthItem('PLUS',   '#00e5ff', latest.plusSh,     mg.plusSh,  '주', plusPct)}
-  ${mkMonthItem('KODEX',  '#a78bfa', latest.kodexSh,    mg.kodexSh, '주', kodexPct)}
-  ${mkMonthItem('월배당', '#fb923c', curDiv.toFixed(2), mg.div,     '만', divPct)}
+  ${mkMonthItem('PLUS','#00e5ff',latest.plusSh,mg.plusSh,'주',plusPct)}
+  ${mkMonthItem('KODEX','#a78bfa',latest.kodexSh,mg.kodexSh,'주',kodexPct)}
+  ${mkMonthItem('월배당','#fb923c',curDiv.toFixed(2),mg.div,'만',divPct)}
 </div>`;
 }
 
-function mkMonthItem(label, color, cur, goal, unit, pct) {
-  const c = pctColor(pct, false);
-  const w = Math.min(pct, 100);
-  const lbl = pctLabel(pct, false);
-  return `<div class="mg-item"><div class="mg-l">${label}</div><div class="mg-cur" style="color:${color}">${cur}${unit}</div><div class="mg-goal">목표 ${goal}${unit}</div><div class="mg-bar-wrap"><div class="mg-bar" style="width:${w}%;background:${c};"></div></div><div class="mg-pct" style="color:${c}">${pct}% ${lbl}</div></div>`;
+function mkMonthItem(label,color,cur,goal,unit,pct){
+  const c=pctColor(pct,false),w=Math.min(pct,100),lbl=pctLabel(pct,false);
+  return`<div class="mg-item"><div class="mg-l">${label}</div><div class="mg-cur" style="color:${color}">${cur}${unit}</div><div class="mg-goal">목표 ${goal}${unit}</div><div class="mg-bar-wrap"><div class="mg-bar" style="width:${w}%;background:${c};"></div></div><div class="mg-pct" style="color:${c}">${pct}% ${lbl}</div></div>`;
 }
 
 // ── 차트 ──
-function renderMonthInnerChart(ym) {
-  const recs = records.filter(r => r.date.startsWith(ym));
-  const box  = document.getElementById('month-chart-box');
-  if (recs.length < 2) { box.style.display = 'none'; return; }
-  box.style.display = 'block';
-  if (charts['month-inner']) { charts['month-inner'].destroy(); charts['month-inner'] = null; }
-  charts['month-inner'] = new Chart(document.getElementById('month-inner-chart').getContext('2d'), {
-    type: 'line',
-    data: { labels: recs.map(r=>r.date.slice(5)),
-      datasets: [
-        { label:'PLUS',  data:recs.map(r=>r.plusSh),  borderColor:'#00e5ff', backgroundColor:'rgba(0,229,255,.1)',   borderWidth:2, pointRadius:3, fill:false, tension:0.4 },
-        { label:'KODEX', data:recs.map(r=>r.kodexSh), borderColor:'#a78bfa', backgroundColor:'rgba(167,139,250,.1)', borderWidth:2, pointRadius:3, fill:false, tension:0.4, yAxisID:'y2' }
-      ]},
-    options: { responsive:true,
-      plugins:{ legend:{display:true,labels:{color:'#e2e8f0',font:{size:10},boxWidth:12}}, tooltip:{backgroundColor:'#0c1525',titleColor:'#e2e8f0',bodyColor:'#e2e8f0'} },
-      scales:{ x:{grid:{color:'#182a40'},ticks:{color:'#4a6080',font:{size:9}}}, y:{grid:{color:'#182a40'},ticks:{color:'#00e5ff',font:{size:9}},position:'left'}, y2:{grid:{display:false},ticks:{color:'#a78bfa',font:{size:9}},position:'right'} }
-    }
+function renderMonthInnerChart(ym){
+  const recs=records.filter(r=>r.date.startsWith(ym));
+  const box=document.getElementById('month-chart-box');
+  if(recs.length<2){box.style.display='none';return;}
+  box.style.display='block';
+  if(charts['month-inner']){charts['month-inner'].destroy();charts['month-inner']=null;}
+  charts['month-inner']=new Chart(document.getElementById('month-inner-chart').getContext('2d'),{
+    type:'line',
+    data:{labels:recs.map(r=>r.date.slice(5)),datasets:[
+      {label:'PLUS',data:recs.map(r=>r.plusSh),borderColor:'#00e5ff',backgroundColor:'rgba(0,229,255,.1)',borderWidth:2,pointRadius:3,fill:false,tension:0.4},
+      {label:'KODEX',data:recs.map(r=>r.kodexSh),borderColor:'#a78bfa',backgroundColor:'rgba(167,139,250,.1)',borderWidth:2,pointRadius:3,fill:false,tension:0.4,yAxisID:'y2'}
+    ]},
+    options:{responsive:true,plugins:{legend:{display:true,labels:{color:'#e2e8f0',font:{size:10},boxWidth:12}},tooltip:{backgroundColor:'#0c1525',titleColor:'#e2e8f0',bodyColor:'#e2e8f0'}},scales:{x:{grid:{color:'#182a40'},ticks:{color:'#4a6080',font:{size:9}}},y:{grid:{color:'#182a40'},ticks:{color:'#00e5ff',font:{size:9}},position:'left'},y2:{grid:{display:false},ticks:{color:'#a78bfa',font:{size:9}},position:'right'}}}
   });
 }
 
-function renderMonthlyCharts(filtered) {
-  const wrap = document.getElementById('monthly-charts');
-  ['mc-shares','mc-div'].forEach(k => { try { if(charts[k]) charts[k].destroy(); } catch(e) {} charts[k]=null; });
-  const src    = filtered || records;
-  const months = [...new Set(src.map(r=>r.date.slice(0,7)))].sort();
-  if (!months.length) { wrap.innerHTML=''; return; }
-  const monthData = months.map(ym => {
-    const recs = src.filter(r=>r.date.startsWith(ym));
-    if (!recs.length) return null;
-    const lastR = recs[recs.length-1];
-    const allBefore = records.filter(r=>r.date < recs[0].date);
-    const prev  = allBefore.length ? allBefore[allBefore.length-1] : null;
-    return { label:ym.slice(5)+'월',
-      plusGain:  prev ? lastR.plusSh  - prev.plusSh  : lastR.plusSh  - recs[0].plusSh,
-      kodexGain: prev ? lastR.kodexSh - prev.kodexSh : lastR.kodexSh - recs[0].kodexSh,
-      divGain:   prev ? (lastR.plusSh*156+lastR.kodexSh*244-(prev.plusSh*156+prev.kodexSh*244))/10000
-                      : (lastR.plusSh*156+lastR.kodexSh*244-(recs[0].plusSh*156+recs[0].kodexSh*244))/10000 };
+function renderMonthlyCharts(filtered){
+  const wrap=document.getElementById('monthly-charts');
+  ['mc-shares','mc-div'].forEach(k=>{try{if(charts[k])charts[k].destroy();}catch(e){}charts[k]=null;});
+  const src=filtered||records,months=[...new Set(src.map(r=>r.date.slice(0,7)))].sort();
+  if(!months.length){wrap.innerHTML='';return;}
+
+  // 6개월 이상이면 라인 차트, 미만이면 막대 차트
+  const USE_LINE = months.length >= 6;
+
+  const monthData=months.map(ym=>{
+    const recs=src.filter(r=>r.date.startsWith(ym));
+    if(!recs.length)return null;
+    const lastR=recs[recs.length-1],allBefore=records.filter(r=>r.date<recs[0].date);
+    const prev=allBefore.length?allBefore[allBefore.length-1]:null;
+    return{label:ym.slice(5)+'월',
+      plusSh:lastR.plusSh,
+      kodexSh:lastR.kodexSh,
+      plusGain:prev?lastR.plusSh-prev.plusSh:lastR.plusSh-recs[0].plusSh,
+      kodexGain:prev?lastR.kodexSh-prev.kodexSh:lastR.kodexSh-recs[0].kodexSh,
+      divGain:prev?(lastR.plusSh*156+lastR.kodexSh*244-(prev.plusSh*156+prev.kodexSh*244))/10000:(lastR.plusSh*156+lastR.kodexSh*244-(recs[0].plusSh*156+recs[0].kodexSh*244))/10000};
   }).filter(Boolean);
-  wrap.innerHTML = '';
-  const r1 = document.createElement('div'); r1.className='chart-box';
-  r1.innerHTML='<div class="chart-title" style="color:#e2e8f0">📦 종목별 수량 증가 (월별)</div><canvas id="mc-shares" height="140"></canvas>';
-  wrap.appendChild(r1);
-  charts['mc-shares'] = new Chart(document.getElementById('mc-shares').getContext('2d'), {
-    type:'bar', data:{ labels:monthData.map(d=>d.label), datasets:[
-      { label:'PLUS',  data:monthData.map(d=>d.plusGain),  backgroundColor:'rgba(0,229,255,.7)',   borderColor:'#00e5ff', borderWidth:1, borderRadius:4 },
-      { label:'KODEX', data:monthData.map(d=>d.kodexGain), backgroundColor:'rgba(167,139,250,.7)', borderColor:'#a78bfa', borderWidth:1, borderRadius:4 }]},
-    options:{ responsive:true, plugins:{ legend:{display:true,labels:{color:'#e2e8f0',font:{size:10},boxWidth:12}}, tooltip:{backgroundColor:'#0c1525',titleColor:'#e2e8f0',bodyColor:'#e2e8f0', callbacks:{label:c=>` ${c.dataset.label} +${c.parsed.y}주`}} },
-      scales:{ x:{grid:{color:'#182a40'},ticks:{color:'#4a6080',font:{size:10}}}, y:{grid:{color:'#182a40'},ticks:{color:'#4a6080',font:{size:9}}} } }
-  });
-  const r2 = document.createElement('div'); r2.className='chart-box';
-  r2.innerHTML='<div class="chart-title" style="color:#e2e8f0">📈 월 배당 증가액 (월별)</div><canvas id="mc-div" height="120"></canvas>';
-  wrap.appendChild(r2);
-  charts['mc-div'] = new Chart(document.getElementById('mc-div').getContext('2d'), {
-    type:'bar', data:{ labels:monthData.map(d=>d.label), datasets:[{ label:'배당 증가', data:monthData.map(d=>+d.divGain.toFixed(2)), backgroundColor:'rgba(251,146,60,.7)', borderColor:'#fb923c', borderWidth:1, borderRadius:4 }]},
-    options:{ responsive:true, plugins:{ legend:{display:false}, tooltip:{backgroundColor:'#0c1525',borderColor:'#fb923c',borderWidth:1,titleColor:'#e2e8f0',bodyColor:'#fb923c', callbacks:{label:c=>` +${c.parsed.y.toFixed(2)}만원`}} },
-      scales:{ x:{grid:{color:'#182a40'},ticks:{color:'#4a6080',font:{size:10}}}, y:{grid:{color:'#182a40'},ticks:{color:'#4a6080',font:{size:9}}} } }
-  });
+
+  wrap.innerHTML='';
+
+  // ── 차트 1: 종목별 수량 ──
+  const r1=document.createElement('div');r1.className='chart-box';
+  if(USE_LINE){
+    r1.innerHTML='<div class="chart-title" style="color:#e2e8f0">📦 종목별 누적 수량 추이 (월별)</div><div style="font-size:9px;color:#4a6080;font-family:Space Mono,monospace;margin-bottom:6px;">월말 보유 수량 기준 · 6개월 이상 → 라인 차트</div><canvas id="mc-shares" height="140"></canvas>';
+    wrap.appendChild(r1);
+    charts['mc-shares']=new Chart(document.getElementById('mc-shares').getContext('2d'),{
+      type:'line',
+      data:{labels:monthData.map(d=>d.label),datasets:[
+        {label:'PLUS',data:monthData.map(d=>d.plusSh),borderColor:'#00e5ff',backgroundColor:'rgba(0,229,255,.08)',borderWidth:2,pointRadius:4,pointBackgroundColor:'#00e5ff',pointBorderColor:'#0a1525',pointBorderWidth:1.5,fill:true,tension:0.35,yAxisID:'y'},
+        {label:'KODEX',data:monthData.map(d=>d.kodexSh),borderColor:'#a78bfa',backgroundColor:'rgba(167,139,250,.08)',borderWidth:2,pointRadius:4,pointBackgroundColor:'#a78bfa',pointBorderColor:'#0a1525',pointBorderWidth:1.5,fill:true,tension:0.35,yAxisID:'y2'}
+      ]},
+      options:{responsive:true,interaction:{mode:'index',intersect:false},
+        plugins:{legend:{display:true,labels:{color:'#e2e8f0',font:{size:10},boxWidth:12}},
+          tooltip:{backgroundColor:'#0c1525',titleColor:'#e2e8f0',bodyColor:'#e2e8f0',borderColor:'#182a40',borderWidth:1,
+            callbacks:{label:c=>` ${c.dataset.label}: ${c.parsed.y}주`}}},
+        scales:{
+          x:{grid:{color:'#182a40'},ticks:{color:'#4a6080',font:{size:9},maxTicksLimit:8}},
+          y:{grid:{color:'#182a40'},ticks:{color:'#00e5ff',font:{size:9}},position:'left',title:{display:true,text:'PLUS',color:'#00e5ff',font:{size:8}}},
+          y2:{grid:{display:false},ticks:{color:'#a78bfa',font:{size:9}},position:'right',title:{display:true,text:'KODEX',color:'#a78bfa',font:{size:8}}}
+        }}
+    });
+  } else {
+    r1.innerHTML='<div class="chart-title" style="color:#e2e8f0">📦 종목별 수량 증가 (월별)</div><canvas id="mc-shares" height="140"></canvas>';
+    wrap.appendChild(r1);
+    charts['mc-shares']=new Chart(document.getElementById('mc-shares').getContext('2d'),{
+      type:'bar',data:{labels:monthData.map(d=>d.label),datasets:[
+        {label:'PLUS',data:monthData.map(d=>d.plusGain),backgroundColor:'rgba(0,229,255,.7)',borderColor:'#00e5ff',borderWidth:1,borderRadius:4},
+        {label:'KODEX',data:monthData.map(d=>d.kodexGain),backgroundColor:'rgba(167,139,250,.7)',borderColor:'#a78bfa',borderWidth:1,borderRadius:4}]},
+      options:{responsive:true,
+        plugins:{legend:{display:true,labels:{color:'#e2e8f0',font:{size:10},boxWidth:12}},
+          tooltip:{backgroundColor:'#0c1525',titleColor:'#e2e8f0',bodyColor:'#e2e8f0',
+            callbacks:{label:c=>` ${c.dataset.label}: ${c.parsed.y>=0?'+':''}${c.parsed.y}주`}}},
+        scales:{x:{grid:{color:'#182a40'},ticks:{color:'#4a6080',font:{size:10}}},
+          y:{grid:{color:'#182a40'},ticks:{color:'#4a6080',font:{size:9}}}}}
+    });
+  }
+
+  // ── 차트 2: 월 배당 실적 vs 예상 ──
+  const r2=document.createElement('div');r2.className='chart-box';
+  const divMonthData = months.map(ym=>{
+    const recs2=src.filter(r=>r.date.startsWith(ym));
+    if(!recs2.length) return null;
+    const lastR2=recs2[recs2.length-1];
+    const plusStored=divRates['PLUS']?.[ym];
+    const plusExYm=prevYm(ym);
+    const plusExDay=plusStored?.exDay??getDefaultExDay('PLUS',plusExYm);
+    let plusExSh=plusStored?.exSh??null;
+    if(plusExSh==null&&plusExDay!=null) plusExSh=getExDateSh(plusExYm,'PLUS',plusExDay);
+    if(plusExSh==null) plusExSh=lastR2.plusSh;
+    const plusActualRate=plusStored?.actual??null;
+    const plusEstRate=plusStored?.estimated??divRates['PLUS']?.[plusExYm]?.estimated??156;
+    const plusActual=plusActualRate!=null&&plusExSh>0?+(plusExSh*plusActualRate/10000).toFixed(2):null;
+    const plusEst=plusExSh>0?+(plusExSh*plusEstRate/10000).toFixed(2):+(lastR2.plusSh*plusEstRate/10000).toFixed(2);
+    const kodexStored=divRates['KODEX']?.[ym];
+    const kodexExDay=kodexStored?.exDay??getDefaultExDay('KODEX',ym);
+    let kodexExSh=kodexStored?.exSh??null;
+    if(kodexExSh==null&&kodexExDay!=null) kodexExSh=getExDateSh(ym,'KODEX',kodexExDay);
+    if(kodexExSh==null) kodexExSh=lastR2.kodexSh;
+    const kodexActualRate=kodexStored?.actual??null;
+    const kodexEstRate=kodexStored?.estimated??244;
+    const kodexActual=kodexActualRate!=null&&kodexExSh>0?+(kodexExSh*kodexActualRate/10000).toFixed(2):null;
+    const kodexEst=kodexExSh>0?+(kodexExSh*kodexEstRate/10000).toFixed(2):+(lastR2.kodexSh*kodexEstRate/10000).toFixed(2);
+    const totalActual=(plusActual!=null||kodexActual!=null)?+((plusActual||0)+(kodexActual||0)).toFixed(2):null;
+    const totalEst=+(plusEst+kodexEst).toFixed(2);
+    return{label:ym.slice(5)+'월',plusActual,plusEst,kodexActual,kodexEst,totalActual,totalEst};
+  }).filter(Boolean);
+
+  const divTooltipCallbacks={
+    label:ctx=>{
+      if(ctx.parsed.y==null) return null;
+      return` ${ctx.dataset.label}: ${ctx.parsed.y.toFixed(2)}만원`;
+    },
+    afterBody:ctx=>{
+      const idx=ctx[0]?.dataIndex;
+      const actualVal=divMonthData[idx]?.totalActual;
+      const estVal=divMonthData[idx]?.totalEst;
+      if(actualVal!=null&&estVal!=null){
+        const diff=actualVal-estVal;
+        return['─',` 예상 대비: ${diff>=0?'+':''}${diff.toFixed(2)}만원 ${diff>=0?'🟢':'🔴'}`];
+      }
+      return[];
+    }
+  };
+
+  if(USE_LINE){
+    r2.innerHTML='<div class="chart-title" style="color:#fb923c">💰 월 배당 실적 vs 예상 (라인)</div><div style="font-size:9px;color:#4a6080;font-family:Space Mono,monospace;margin-bottom:6px;">실선=실적 합계 · 점선=예상 합계 · 얇은선=종목별 실적</div><canvas id="mc-div" height="160"></canvas>';
+    wrap.appendChild(r2);
+    charts['mc-div']=new Chart(document.getElementById('mc-div').getContext('2d'),{
+      type:'line',
+      data:{
+        labels:divMonthData.map(d=>d.label),
+        datasets:[
+          {label:'실적 합계',data:divMonthData.map(d=>d.totalActual),borderColor:'#fb923c',backgroundColor:'rgba(251,146,60,.1)',borderWidth:2.5,pointRadius:5,pointBackgroundColor:'#fb923c',pointBorderColor:'#0a1525',pointBorderWidth:1.5,fill:true,tension:0.35,spanGaps:false},
+          {label:'예상 합계',data:divMonthData.map(d=>d.totalEst),borderColor:'#fbbf24',backgroundColor:'transparent',borderWidth:2,pointRadius:3,pointBackgroundColor:'#fbbf24',fill:false,tension:0.35,
+            segment:{borderDash:ctx=>ctx.p0DataIndex>=0?[5,4]:undefined}},
+          {label:'🌅 PLUS',data:divMonthData.map(d=>d.plusActual),borderColor:'rgba(0,229,255,.7)',backgroundColor:'transparent',borderWidth:1.5,pointRadius:3,pointBackgroundColor:'#00e5ff',fill:false,tension:0.35,spanGaps:false},
+          {label:'📅 KODEX',data:divMonthData.map(d=>d.kodexActual),borderColor:'rgba(167,139,250,.7)',backgroundColor:'transparent',borderWidth:1.5,pointRadius:3,pointBackgroundColor:'#a78bfa',fill:false,tension:0.35,spanGaps:false},
+        ]
+      },
+      options:{responsive:true,interaction:{mode:'index',intersect:false},
+        plugins:{legend:{display:true,labels:{color:'#e2e8f0',font:{size:10},boxWidth:12,padding:10}},
+          tooltip:{backgroundColor:'#0c1525',titleColor:'#e2e8f0',bodyColor:'#e2e8f0',borderColor:'#182a40',borderWidth:1,callbacks:divTooltipCallbacks}},
+        scales:{
+          x:{grid:{color:'#182a40'},ticks:{color:'#4a6080',font:{size:9},maxTicksLimit:8}},
+          y:{grid:{color:'#182a40'},ticks:{color:'#4a6080',font:{size:9},callback:v=>v+'만'},min:0}
+        }}
+    });
+  } else {
+    r2.innerHTML='<div class="chart-title" style="color:#fb923c">💰 월 배당 실적 vs 예상 (막대)</div><div style="font-size:9px;color:#4a6080;font-family:Space Mono,monospace;margin-bottom:6px;">🌅PLUS · 📅KODEX · 점선=예상</div><canvas id="mc-div" height="160"></canvas>';
+    wrap.appendChild(r2);
+    // 6개월 미만: 막대 + 예상 라인 혼합 (borderDash는 segment로 처리)
+    const barDs=(['PLUS','KODEX']).map(ticker=>{
+      const col=tickerColor(ticker);
+      return{label:ticker==='PLUS'?'🌅 PLUS':'📅 KODEX',
+        data:divMonthData.map(d=>ticker==='PLUS'?d.plusActual:d.kodexActual),
+        backgroundColor:col.fill,borderColor:col.border,borderWidth:1,borderRadius:4,stack:'actual'};
+    });
+    const estDs={label:'예상 합계',type:'line',
+      data:divMonthData.map(d=>d.totalEst),
+      borderColor:'#fbbf24',borderWidth:2,
+      segment:{borderDash:()=>[5,4]},
+      pointBackgroundColor:'#fbbf24',pointRadius:4,pointBorderColor:'#0a1525',pointBorderWidth:1.5,
+      fill:false,tension:0.35,order:0};
+    charts['mc-div']=new Chart(document.getElementById('mc-div').getContext('2d'),{
+      type:'bar',
+      data:{labels:divMonthData.map(d=>d.label),datasets:[...barDs,estDs]},
+      options:{responsive:true,interaction:{mode:'index',intersect:false},
+        plugins:{legend:{display:true,labels:{color:'#e2e8f0',font:{size:10},boxWidth:12,padding:8}},
+          tooltip:{backgroundColor:'#0c1525',titleColor:'#e2e8f0',bodyColor:'#e2e8f0',borderColor:'#182a40',borderWidth:1,callbacks:divTooltipCallbacks}},
+        scales:{
+          x:{grid:{color:'#182a40'},ticks:{color:'#4a6080',font:{size:10}},stacked:true},
+          y:{grid:{color:'#182a40'},ticks:{color:'#4a6080',font:{size:9},callback:v=>v+'만'},stacked:true}
+        }}
+    });
+  }
+
+  // 시급 불로소득 렌더 (차트 아래)
+  renderPassiveWage(src);
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// 종목별 배당금 실적 vs 예상 차트
-// [v2 핵심 변경] 배당락일 기준 수량(exSh)으로 예상/실제 배당금 계산
+// 배당 차트 + 이월 현황 (모바일 최적화)
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-const TICKER_COLORS = {
-  PLUS:  { fill:'rgba(0,229,255,.75)',   border:'#00e5ff' },
-  KODEX: { fill:'rgba(167,139,250,.75)', border:'#a78bfa' },
-  BITO:  { fill:'rgba(251,146,60,.75)',  border:'#fb923c' },
-  NVDA:  { fill:'rgba(52,211,153,.75)',  border:'#34d399' },
-  GOOGL: { fill:'rgba(251,191,36,.75)',  border:'#fbbf24' },
-};
-function tickerColor(ticker) { return TICKER_COLORS[ticker]||{fill:'rgba(156,163,175,.6)',border:'#9ca3af'}; }
+const TICKER_COLORS={PLUS:{fill:'rgba(0,229,255,.75)',border:'#00e5ff'},KODEX:{fill:'rgba(167,139,250,.75)',border:'#a78bfa'},BITO:{fill:'rgba(251,146,60,.75)',border:'#fb923c'},NVDA:{fill:'rgba(52,211,153,.75)',border:'#34d399'},GOOGL:{fill:'rgba(251,191,36,.75)',border:'#fbbf24'}};
+function tickerColor(ticker){return TICKER_COLORS[ticker]||{fill:'rgba(156,163,175,.6)',border:'#9ca3af'};}
+const DIV_TIMING={PLUS:{label:'PLUS (월초 입금)',cls:'early',icon:'🌅'},KODEX:{label:'KODEX (월중 입금)',cls:'mid',icon:'📅'}};
+function divTimingLabel(ticker){return DIV_TIMING[ticker]||{label:ticker+' (+@ 기타)',cls:'other-t',icon:'➕'};}
 
-const DIV_TIMING = {
-  PLUS:  { label:'PLUS (월초 입금)', cls:'early', icon:'🌅' },
-  KODEX: { label:'KODEX (월중 입금)', cls:'mid',   icon:'📅' },
-};
-function divTimingLabel(ticker) { return DIV_TIMING[ticker]||{label:ticker+' (+@ 기타)',cls:'other-t',icon:'➕'}; }
+function renderDivDetailCharts(filtered){
+  const wrap=document.getElementById('div-detail-charts');
+  Object.keys(charts).filter(k=>k.startsWith('div-')).forEach(k=>{try{if(charts[k])charts[k].destroy();}catch(e){}charts[k]=null;});
+  const src=filtered||records,months=[...new Set(src.map(r=>r.date.slice(0,7)))].sort();
+  if(!months.length){wrap.innerHTML='';return;}
+  const coreSet=new Set(['PLUS','KODEX']),otherSet=new Set();
+  Object.keys(divRates).forEach(t=>{if(!coreSet.has(t))otherSet.add(t);});
+  const coreTickers=['PLUS','KODEX'],otherTickers=[...otherSet],allTickers=[...coreTickers,...otherTickers];
 
-function renderDivDetailCharts(filtered) {
-  const wrap = document.getElementById('div-detail-charts');
-  Object.keys(charts).filter(k=>k.startsWith('div-')).forEach(k=>{ try{if(charts[k])charts[k].destroy();}catch(e){}charts[k]=null; });
-
-  const src    = filtered || records;
-  const months = [...new Set(src.map(r=>r.date.slice(0,7)))].sort();
-  if (!months.length) { wrap.innerHTML=''; return; }
-
-  // 기타 종목 수집
-  const coreSet  = new Set(['PLUS','KODEX']);
-  const otherSet = new Set();
-  Object.keys(divRates).forEach(t=>{ if(!coreSet.has(t)) otherSet.add(t); });
-
-  const coreTickers  = ['PLUS','KODEX'];
-  const otherTickers = [...otherSet];
-  const allTickers   = [...coreTickers, ...otherTickers];
-
-  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  // [v3 핵심] matrix 구성 — 배당금은 "지급 받는 달(payYm)" 기준으로 표시
-  //
-  // ┌─────────────────────────────────────────────────────────┐
-  // │ PLUS                                                    │
-  // │  배당락일: 전월(ym-1) 말 (예: 3월 28일)                    │
-  // │  배당지급: 당월(ym) 초  (예: 4월 초)                        │
-  // │  → 4월 차트 = 3월 배당락일 직전 보유 수량 × 주당배당           │
-  // │  exSh 기준월 = prevYm(ym),  exDay = PLUS의 전월 배당락일     │
-  // ├─────────────────────────────────────────────────────────┤
-  // │ KODEX                                                   │
-  // │  배당락일: 당월(ym) 중순 (예: 4월 13일)                      │
-  // │  배당지급: 당월(ym) 중순 이후                                │
-  // │  → 4월 차트 = 4월 배당락일 직전 보유 수량 × 주당배당           │
-  // │  exSh 기준월 = ym,  exDay = KODEX의 당월 배당락일             │
-  // └─────────────────────────────────────────────────────────┘
-  //
-  // DIV:: 저장 기준:
-  //   ym = 배당금이 입금되는 달 (PLUS도 KODEX도 동일)
-  //   actual = 해당 달에 실제 입금된 주당 배당금
-  //   exDay  = 배당락일 (PLUS는 전월의 배당락일자, KODEX는 당월 배당락일자)
-  //
-  // exSh 자동 계산:
-  //   PLUS:  getExDateSh(prevYm(ym), 'PLUS',  exDayNum)  ← 전월 배당락일 직전 수량
-  //   KODEX: getExDateSh(ym,         'KODEX', exDayNum)  ← 당월 배당락일 직전 수량
-  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  const matrix = months.map(ym => {
-    const recs = src.filter(r=>r.date.startsWith(ym));
-    if (!recs.length) return null;
-    const last = recs[recs.length-1];
-    const row  = { ym, label:ym.slice(5)+'월', actual:{}, estimated:{}, exSh:{}, exDay:{}, exYm:{}, carryover:{} };
-
-    allTickers.forEach(ticker => {
-      const storedEx = divRates[ticker]?.[ym]; // DIV::로 저장된 데이터 (ym = 지급월)
-
-      // ── 배당락 발생월과 배당락일 결정 ──
-      // PLUS: 배당락은 전월 말 → 기준월 = prevYm(ym)
-      // KODEX: 배당락은 당월 중순 → 기준월 = ym
-      const isPlus  = ticker === 'PLUS';
-      const isKodex = ticker === 'KODEX';
-      const exYm    = isPlus ? prevYm(ym) : ym; // 배당락 발생월
-      row.exYm[ticker] = exYm;
-
-      // exDay: DIV:: 저장값 우선, 없으면 DB에서 조회 (배당락 발생월 기준)
-      const exDayNum = storedEx?.exDay ?? getDefaultExDay(ticker, exYm);
-      row.exDay[ticker] = exDayNum;
-
-      // ── exSh 결정 ──
-      // 우선순위: 1) DIV::exSh 저장값  2) 배당락 발생월의 락일 직전 체크 수량  3) 폴백
-      let exSh = storedEx?.exSh ?? null;
-      if (exSh == null && exDayNum != null && (isPlus || isKodex)) {
-        exSh = getExDateSh(exYm, ticker, exDayNum);
+  const matrix=months.map(ym=>{
+    const recs=src.filter(r=>r.date.startsWith(ym));
+    if(!recs.length)return null;
+    const last=recs[recs.length-1];
+    const row={ym,label:ym.slice(5)+'월',actual:{},estimated:{},exSh:{},exDay:{},exYm:{},carryover:{}};
+    allTickers.forEach(ticker=>{
+      const storedEx=divRates[ticker]?.[ym];
+      const isPlus=ticker==='PLUS',isKodex=ticker==='KODEX';
+      const exYm=isPlus?prevYm(ym):ym;
+      row.exYm[ticker]=exYm;
+      const exDayNum=storedEx?.exDay??getDefaultExDay(ticker,exYm);
+      row.exDay[ticker]=exDayNum;
+      let exSh=storedEx?.exSh??null;
+      if(exSh==null&&exDayNum!=null&&(isPlus||isKodex))exSh=getExDateSh(exYm,ticker,exDayNum);
+      if(exSh==null)exSh=isPlus?last.plusSh:isKodex?last.kodexSh:(last.divDetail?.[ticker]?.sh||0);
+      row.exSh[ticker]=exSh||0;
+      // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+      // 이월 = 락일 이후 ~ 현재(당월 말)까지 추가 매수한 수량
+      //        → 이번 달 배당에 포함 안 된 수량 → 다음 달 배당에 포함
+      //
+      // PLUS 예시) 3월27일 락, 4월 배당입금
+      //   - 3월27일 기준 exSh주 → 4월 배당금에 반영됨
+      //   - 이월 = (현재 4월 말 보유수량) - exSh
+      //           = 3월27일 이후 ~ 4월 말까지 추가 매수분
+      //           → 5월 배당금에 포함될 수량
+      //
+      // KODEX 예시) 4월13일 락, 4월 배당입금
+      //   - 4월13일 기준 exSh주 → 4월 배당금에 반영됨
+      //   - 이월 = (현재 4월 말 보유수량) - exSh
+      //           = 4월13일 이후 ~ 4월 말까지 추가 매수분
+      //           → 5월 배당금에 포함될 수량
+      // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+      if(isPlus){
+        // last = 현재 달(ym)의 마지막 체크 기록
+        row.carryover[ticker]=Math.max(0, last.plusSh - (exSh||0));
       }
-      if (exSh == null) {
-        // 폴백: 해당 지급월 마지막 체크 수량
-        exSh = isPlus  ? last.plusSh
-             : isKodex ? last.kodexSh
-             : (last.divDetail?.[ticker]?.sh || 0);
+      else if(isKodex){
+        row.carryover[ticker]=Math.max(0, last.kodexSh - (exSh||0));
       }
-      row.exSh[ticker] = exSh || 0;
-
-      // ── 이월 수량 ──
-      // PLUS:  전월 락일 기준 수량 vs 전월 말 보유 수량
-      //        → 전월 말 마지막 체크에서 보유 수량 조회
-      // KODEX: 당월 락일 기준 수량 vs 당월 말 보유 수량
-      if (isPlus) {
-        const prevRecs = records.filter(r => r.date.startsWith(exYm));
-        const prevLast = prevRecs.length ? prevRecs[prevRecs.length-1] : null;
-        const prevCurSh = prevLast ? prevLast.plusSh : 0;
-        row.carryover[ticker] = Math.max(0, prevCurSh - (exSh || 0));
-      } else if (isKodex) {
-        const curSh = last.kodexSh;
-        row.carryover[ticker] = Math.max(0, curSh - (exSh || 0));
-      } else {
-        const curSh = last.divDetail?.[ticker]?.sh || 0;
-        row.carryover[ticker] = Math.max(0, curSh - (exSh || 0));
-      }
-
-      // ── 실제 배당금 ──
-      let actualRate = storedEx?.actual ?? null;
-      if (actualRate == null && last.divDetail?.[ticker]?.rate != null) {
-        actualRate = last.divDetail[ticker].rate;
-      }
-      if (actualRate != null && row.exSh[ticker] > 0) {
-        row.actual[ticker] = Math.round(row.exSh[ticker] * actualRate);
-      }
-
-      // ── 예상 배당금 ──
-      // estimated rate: DIV:: 저장값 → DB fallback
-      let estRate = storedEx?.estimated ?? null;
-      if (estRate == null) { estRate = isPlus ? 156 : isKodex ? 244 : null; }
-      if (estRate != null && row.exSh[ticker] > 0) {
-        row.estimated[ticker] = Math.round(row.exSh[ticker] * estRate);
-      }
+      else{row.carryover[ticker]=Math.max(0,(last.divDetail?.[ticker]?.sh||0)-(exSh||0));}
+      let actualRate=storedEx?.actual??null;
+      if(actualRate==null&&last.divDetail?.[ticker]?.rate!=null)actualRate=last.divDetail[ticker].rate;
+      if(actualRate!=null&&row.exSh[ticker]>0)row.actual[ticker]=Math.round(row.exSh[ticker]*actualRate);
+      let estRate=storedEx?.estimated??null;
+      if(estRate==null)estRate=isPlus?156:isKodex?244:null;
+      if(estRate!=null&&row.exSh[ticker]>0)row.estimated[ticker]=Math.round(row.exSh[ticker]*estRate);
     });
-
-    // 기타+@ 합산
-    row.actual['기타+@']    = otherTickers.reduce((s,t)=>s+(row.actual[t]||0), 0) || null;
-    row.estimated['기타+@'] = otherTickers.reduce((s,t)=>s+(row.estimated[t]||0), 0) || null;
-    if (!row.actual['기타+@'])    delete row.actual['기타+@'];
-    if (!row.estimated['기타+@']) delete row.estimated['기타+@'];
-
+    row.actual['기타+@']=otherTickers.reduce((s,t)=>s+(row.actual[t]||0),0)||null;
+    row.estimated['기타+@']=otherTickers.reduce((s,t)=>s+(row.estimated[t]||0),0)||null;
+    if(!row.actual['기타+@'])delete row.actual['기타+@'];
+    if(!row.estimated['기타+@'])delete row.estimated['기타+@'];
     return row;
   }).filter(Boolean);
 
-  // ━━━━ v3: 이월은 matrix 내부에서 이미 처리됨 (별도 후처리 불필요) ━━━━
+  wrap.innerHTML='';
 
-  wrap.innerHTML = '';
-
-  // 배당락일 안내 박스
-  const infoBox = document.createElement('div');
-  infoBox.className = 'div-chart-box';
-  infoBox.innerHTML = `
-<div class="div-chart-title">📆 배당금 계산 구조 안내</div>
+  // 안내 박스
+  const infoBox=document.createElement('div');infoBox.className='div-chart-box';
+  infoBox.innerHTML=`<div class="div-chart-title">📆 배당금 계산 구조 안내</div>
 <div class="div-chart-sub">차트의 각 월 = 그 달에 실제 입금된 배당금</div>
 <div class="exdate-info-box">
-  <b>🌅 PLUS</b> — 배당락: <b>전월 말</b>(예: 3월 28일) · 배당지급: <b>당월 초</b>(예: 4월 초)<br>
-  &nbsp;&nbsp;&nbsp;→ 4월 배당금 = 3월 배당락일 직전 보유 수량 × 주당배당금<br>
-  <b>📅 KODEX</b> — 배당락: <b>당월 중순</b>(예: 4월 13일) · 배당지급: <b>당월 중순 이후</b><br>
-  &nbsp;&nbsp;&nbsp;→ 4월 배당금 = 4월 배당락일 직전 보유 수량 × 주당배당금<br>
-  ⚠️ DIV:: 코드의 <b>ym = 배당금 입금월</b>, <b>exDay = 배당락일</b>(PLUS는 전월 기준, KODEX는 당월 기준)<br>
-  📌 락일 이후 매수분(이월)은 이월 현황 테이블에서 확인
+  <b>🌅 PLUS</b> — 배당락: <b>전월 말</b> · 배당지급: <b>당월 초</b><br>
+  &nbsp;&nbsp;&nbsp;→ 당월 배당 = 전월 락일 직전 수량 × 주당배당<br>
+  <b>📅 KODEX</b> — 배당락: <b>당월 중순</b> · 배당지급: <b>당월 중순 이후</b><br>
+  &nbsp;&nbsp;&nbsp;→ 당월 배당 = 당월 락일 직전 수량 × 주당배당
 </div>
 <div class="div-timing-row">
-  <div class="div-timing-badge early">🌅 PLUS — 전월 말 락일 기준 수량 × 주당배당</div>
-  <div class="div-timing-badge mid">📅 KODEX — 당월 중순 락일 기준 수량 × 주당배당</div>
-  ${otherTickers.length?'<div class="div-timing-badge other-t">➕ 기타 종목 → +@ 합산 표시</div>':''}
+  <div class="div-timing-badge early">🌅 PLUS — 전월말 락일 기준</div>
+  <div class="div-timing-badge mid">📅 KODEX — 당월 중순 락일 기준</div>
+  ${otherTickers.length?'<div class="div-timing-badge other-t">➕ 기타 → +@ 합산</div>':''}
 </div>`;
   wrap.appendChild(infoBox);
 
-  // 차트 표시 종목
-  const chartTickers   = ['PLUS','KODEX',...(otherTickers.length?['기타+@']:[])];
-  const activeTickers  = chartTickers.filter(t => matrix.some(m=>m.actual[t]||m.estimated[t]));
+  const chartTickers=['PLUS','KODEX',...(otherTickers.length?['기타+@']:[])];
+  const activeTickers=chartTickers.filter(t=>matrix.some(m=>m.actual[t]||m.estimated[t]));
+  const legendHtml=activeTickers.map(t=>{
+    if(t==='기타+@')return`<div class="div-legend-item other"><div class="div-legend-dot"></div>기타 (+@)</div>`;
+    const col=tickerColor(t),timing=divTimingLabel(t);
+    return`<div class="div-legend-item"><div class="div-legend-dot" style="background:${col.fill};border:1px solid ${col.border};"></div>${timing.icon} ${t}</div>`;
+  }).join('')+`<div class="div-legend-item est"><div class="div-legend-dot"></div>예상 합계</div>`;
 
-  const legendHtml = activeTickers.map(t => {
-    if (t === '기타+@') return `<div class="div-legend-item other"><div class="div-legend-dot"></div>기타 (+@)</div>`;
-    const col = tickerColor(t);
-    const timing = divTimingLabel(t);
-    return `<div class="div-legend-item"><div class="div-legend-dot" style="background:${col.fill};border:1px solid ${col.border};"></div>${timing.icon} ${t} (락일 기준)</div>`;
-  }).join('') + `<div class="div-legend-item est"><div class="div-legend-dot"></div>예상 합계</div>`;
-
-  const c1 = document.createElement('div'); c1.className='div-chart-box';
-  c1.innerHTML = `
-<div class="div-chart-title">💰 종목별 월 배당금 실적 vs 예상 (배당락일 기준)</div>
-<div class="div-chart-sub">배당락일 기준 수량(exSh) × 주당배당금 · 락일 이후 매수분 제외 · 이월분은 다음 달 예상에 반영</div>
+  const c1=document.createElement('div');c1.className='div-chart-box';
+  c1.innerHTML=`<div class="div-chart-title">💰 종목별 월 배당금 실적 vs 예상</div>
+<div class="div-chart-sub">배당락일 기준 수량 × 주당배당 · 락일 이후 매수분 제외</div>
 <div class="div-legend">${legendHtml}</div>
 <canvas id="div-bar-chart" height="160"></canvas>`;
   wrap.appendChild(c1);
 
-  const labels = matrix.map(m=>m.label);
-  const barDatasets = activeTickers.map(ticker => {
-    if (ticker === '기타+@') return {
-      label:'기타+@', data:matrix.map(m=>m.actual['기타+@']!=null?+(m.actual['기타+@']/10000).toFixed(2):null),
-      backgroundColor:'rgba(156,163,175,.55)', borderColor:'#9ca3af', borderWidth:1, borderRadius:3, stack:'actual'
-    };
-    const col = tickerColor(ticker);
-    return { label:ticker, data:matrix.map(m=>m.actual[ticker]!=null?+(m.actual[ticker]/10000).toFixed(2):null),
-      backgroundColor:col.fill, borderColor:col.border, borderWidth:1, borderRadius:3, stack:'actual' };
+  const labels=matrix.map(m=>m.label);
+  const barDatasets=activeTickers.map(ticker=>{
+    if(ticker==='기타+@')return{label:'기타+@',data:matrix.map(m=>m.actual['기타+@']!=null?+(m.actual['기타+@']/10000).toFixed(2):null),backgroundColor:'rgba(156,163,175,.55)',borderColor:'#9ca3af',borderWidth:1,borderRadius:3,stack:'actual'};
+    const col=tickerColor(ticker);
+    return{label:ticker,data:matrix.map(m=>m.actual[ticker]!=null?+(m.actual[ticker]/10000).toFixed(2):null),backgroundColor:col.fill,borderColor:col.border,borderWidth:1,borderRadius:3,stack:'actual'};
   });
-
-  const estLineDataset = {
-    label:'예상 합계', type:'line',
-    data: matrix.map(m => {
-      const sum = activeTickers.reduce((s,t)=>s+(m.estimated[t]||0),0);
-      return sum>0?+(sum/10000).toFixed(2):null;
-    }),
-    borderColor:'#fbbf24', borderWidth:2, borderDash:[5,4], pointBackgroundColor:'#fbbf24', pointRadius:4,
-    fill:false, tension:0.3, yAxisID:'y', order:0
-  };
-
-  charts['div-bar'] = new Chart(document.getElementById('div-bar-chart').getContext('2d'), {
-    type:'bar', data:{ labels, datasets:[...barDatasets, estLineDataset] },
-    options:{ responsive:true, interaction:{mode:'index',intersect:false},
-      plugins:{ legend:{display:false},
-        tooltip:{ backgroundColor:'#0c1525', titleColor:'#e2e8f0', bodyColor:'#e2e8f0',
-          callbacks:{
-            label: ctx => {
-              if (ctx.parsed.y==null) return null;
-              if (ctx.dataset.label==='예상 합계') return ` 📍예상: ${ctx.parsed.y.toFixed(2)}만원`;
-              const lbl = ctx.dataset.label==='기타+@'?'기타(+@)':ctx.dataset.label;
-              const mi = matrix[ctx.dataIndex];
-              const exSh    = mi?.exSh?.[ctx.dataset.label] ?? '-';
-              const exYmStr = mi?.exYm?.[ctx.dataset.label];
-              const exDay   = mi?.exDay?.[ctx.dataset.label];
-              const exInfo  = ctx.dataset.label==='PLUS' && exYmStr
-                ? ` (${exYmStr.slice(5)}월 ${exDay}일 락)`
-                : ctx.dataset.label==='KODEX' && exDay
-                ? ` (${exDay}일 락)`
-                : '';
-              return ` ${lbl}: ${ctx.parsed.y.toFixed(2)}만원 · ${exSh}주${exInfo}`;
-            },
-            afterBody: ctx => {
-              const actualSum = ctx.filter(c=>c.dataset.label!=='예상 합계').reduce((s,c)=>s+(c.parsed.y||0),0);
-              if (actualSum>0) return ['─',` 실제 합계: ${actualSum.toFixed(2)}만원`];
-              return [];
-            }
-          }
-        }
-      },
-      scales:{ x:{grid:{color:'#182a40'},ticks:{color:'#4a6080',font:{size:10}},stacked:true},
-        y:{grid:{color:'#182a40'},ticks:{color:'#4a6080',font:{size:9},callback:v=>v+'만'},stacked:true} }
+  const estLineDataset={label:'예상 합계',type:'line',data:matrix.map(m=>{const sum=activeTickers.reduce((s,t)=>s+(m.estimated[t]||0),0);return sum>0?+(sum/10000).toFixed(2):null;}),borderColor:'#fbbf24',borderWidth:2,segment:{borderDash:()=>[5,4]},pointBackgroundColor:'#fbbf24',pointRadius:4,pointBorderColor:'#0a1525',pointBorderWidth:1.5,fill:false,tension:0.3,yAxisID:'y',order:0};
+  charts['div-bar']=new Chart(document.getElementById('div-bar-chart').getContext('2d'),{
+    type:'bar',data:{labels,datasets:[...barDatasets,estLineDataset]},
+    options:{responsive:true,interaction:{mode:'index',intersect:false},
+      plugins:{legend:{display:false},tooltip:{backgroundColor:'#0c1525',titleColor:'#e2e8f0',bodyColor:'#e2e8f0',callbacks:{
+        label:ctx=>{if(ctx.parsed.y==null)return null;if(ctx.dataset.label==='예상 합계')return` 📍예상: ${ctx.parsed.y.toFixed(2)}만원`;const lbl=ctx.dataset.label==='기타+@'?'기타(+@)':ctx.dataset.label;const mi=matrix[ctx.dataIndex];const exSh=mi?.exSh?.[ctx.dataset.label]??'-';const exYmStr=mi?.exYm?.[ctx.dataset.label];const exDay=mi?.exDay?.[ctx.dataset.label];const exInfo=ctx.dataset.label==='PLUS'&&exYmStr?` (${exYmStr.slice(5)}월 ${exDay}일 락)`:ctx.dataset.label==='KODEX'&&exDay?` (${exDay}일 락)`:'';return` ${lbl}: ${ctx.parsed.y.toFixed(2)}만원 · ${exSh}주${exInfo}`;},
+        afterBody:ctx=>{const s=ctx.filter(c=>c.dataset.label!=='예상 합계').reduce((s,c)=>s+(c.parsed.y||0),0);if(s>0)return['─',` 실제 합계: ${s.toFixed(2)}만원`];return[];}
+      }}},
+      scales:{x:{grid:{color:'#182a40'},ticks:{color:'#4a6080',font:{size:10}},stacked:true},y:{grid:{color:'#182a40'},ticks:{color:'#4a6080',font:{size:9},callback:v=>v+'만'},stacked:true}}
     }
   });
 
-  // 달성률 차트 (exSh 기준)
-  const corePctTickers = ['PLUS','KODEX'].filter(t=>matrix.some(m=>m.actual[t]!=null));
-  if (corePctTickers.length) {
-    const c2 = document.createElement('div'); c2.className='div-chart-box';
-    c2.innerHTML = `
-<div class="div-chart-title">📊 종목별 배당금 달성률 (배당락일 기준)</div>
-<div class="div-chart-sub">실제 ÷ 예상 × 100% · 기준: 락일 직전 보유 수량 · 100%선 = 예상과 동일</div>
+  const corePctTickers=['PLUS','KODEX'].filter(t=>matrix.some(m=>m.actual[t]!=null));
+  if(corePctTickers.length){
+    const c2=document.createElement('div');c2.className='div-chart-box';
+    c2.innerHTML=`<div class="div-chart-title">📊 종목별 배당금 달성률</div>
+<div class="div-chart-sub">실제 ÷ 예상 × 100% · 100%선 = 예상과 동일</div>
 <canvas id="div-pct-chart" height="140"></canvas>`;
     wrap.appendChild(c2);
-
-    const pctDatasets = corePctTickers.map(ticker => {
-      const col = tickerColor(ticker);
-      const timing = ticker==='PLUS'?' [월초]':' [월중]';
-      return { label:ticker+timing, data:matrix.map(m=>{
-        const act=m.actual[ticker], est=m.estimated[ticker];
-        if (act==null||!est) return null;
-        return Math.round(act/est*100);
-      }), backgroundColor:col.fill, borderColor:col.border, borderWidth:1, borderRadius:3 };
+    const pctDatasets=corePctTickers.map(ticker=>{
+      const col=tickerColor(ticker),timing=ticker==='PLUS'?' [월초]':' [월중]';
+      return{label:ticker+timing,data:matrix.map(m=>{const act=m.actual[ticker],est=m.estimated[ticker];if(act==null||!est)return null;return Math.round(act/est*100);}),backgroundColor:col.fill,borderColor:col.border,borderWidth:1,borderRadius:3};
     });
-
-    charts['div-pct'] = new Chart(document.getElementById('div-pct-chart').getContext('2d'), {
-      type:'bar', data:{ labels, datasets:pctDatasets },
-      options:{ responsive:true, interaction:{mode:'index',intersect:false},
-        plugins:{ legend:{display:true,labels:{color:'#e2e8f0',font:{size:10},boxWidth:10}},
-          tooltip:{ backgroundColor:'#0c1525', titleColor:'#e2e8f0', bodyColor:'#e2e8f0',
-            callbacks:{label:ctx=>ctx.parsed.y!=null?` ${ctx.dataset.label}: ${ctx.parsed.y}%`:null} } },
-        scales:{ x:{grid:{color:'#182a40'},ticks:{color:'#4a6080',font:{size:10}}},
-          y:{grid:{color:'#182a40'},ticks:{color:'#4a6080',font:{size:9},callback:v=>v+'%'},min:0} }
-      },
-      plugins:[{ id:'baseline100',
-        afterDraw(chart) {
-          const {ctx, chartArea:{left,right}, scales:{y}} = chart;
-          if (!y||y.getPixelForValue(100)==null) return;
-          const yPos=y.getPixelForValue(100);
-          if (yPos<chart.chartArea.top||yPos>chart.chartArea.bottom) return;
-          ctx.save(); ctx.beginPath(); ctx.setLineDash([6,4]);
-          ctx.strokeStyle='#fbbf24'; ctx.lineWidth=1.5;
-          ctx.moveTo(left,yPos); ctx.lineTo(right,yPos); ctx.stroke(); ctx.restore();
-        }
-      }]
+    charts['div-pct']=new Chart(document.getElementById('div-pct-chart').getContext('2d'),{
+      type:'bar',data:{labels,datasets:pctDatasets},
+      options:{responsive:true,interaction:{mode:'index',intersect:false},plugins:{legend:{display:true,labels:{color:'#e2e8f0',font:{size:10},boxWidth:10}},tooltip:{backgroundColor:'#0c1525',titleColor:'#e2e8f0',bodyColor:'#e2e8f0',callbacks:{label:ctx=>ctx.parsed.y!=null?` ${ctx.dataset.label}: ${ctx.parsed.y}%`:null}}},scales:{x:{grid:{color:'#182a40'},ticks:{color:'#4a6080',font:{size:10}}},y:{grid:{color:'#182a40'},ticks:{color:'#4a6080',font:{size:9},callback:v=>v+'%'},min:0}}},
+      plugins:[{id:'baseline100',afterDraw(chart){const{ctx,chartArea:{left,right},scales:{y}}=chart;if(!y||y.getPixelForValue(100)==null)return;const yPos=y.getPixelForValue(100);if(yPos<chart.chartArea.top||yPos>chart.chartArea.bottom)return;ctx.save();ctx.beginPath();ctx.setLineDash([6,4]);ctx.strokeStyle='#fbbf24';ctx.lineWidth=1.5;ctx.moveTo(left,yPos);ctx.lineTo(right,yPos);ctx.stroke();ctx.restore();}}]
     });
   }
 
-  // 이월 현황 표 (이월분이 있는 월이 하나라도 있으면 표시 / 최근 1개월 노출, 나머지 접기)
-  const hasCarry = matrix.some(m => allTickers.some(t=>(m.carryover[t]||0)>0));
-  if (hasCarry) {
-    const c3 = document.createElement('div'); c3.className='div-chart-box';
-    const carryUid = 'carry-hist-' + Date.now();
+  // ━━━━ 이월 현황 표 — 모바일 최적화 (최신 2개월 기본 표시) ━━━━
+  const hasCarry=matrix.some(m=>allTickers.some(t=>(m.carryover[t]||0)>0));
+  if(hasCarry){
+    const c3=document.createElement('div');c3.className='div-chart-box';
+    const carryUid='carry-hist-'+Date.now();
+    const sortedMatrix=[...matrix];
+    // 최신 2개월 기본 표시
+    const visible2=sortedMatrix.slice(-2).reverse(); // 최신 2개 (최신이 위)
+    const olderList=sortedMatrix.slice(0,-2).reverse(); // 나머지 (최신순)
 
-    function buildCarryRow(m) {
-      let row = `<tr style="border-bottom:1px solid #0d1e30;"><td style="padding:6px 8px;color:#e2e8f0;">${m.label}</td>`;
-      ['PLUS','KODEX'].forEach(t => {
-        const exYmStr  = m.exYm?.[t] ?? m.ym;
-        const exD      = m.exDay[t] ?? '-';
-        const exS      = m.exSh[t]  ?? '-';
-        const carry    = m.carryover[t] || 0;
-        const exLabel  = t === 'PLUS' ? `${exYmStr.slice(5)}월 ${exD}일` : `${exD}일`;
-        row += `<td style="text-align:right;padding:6px 8px;color:#4a6080;">${exLabel}</td>
-<td style="text-align:right;padding:6px 8px;color:#4a6080;">${exS}주</td>
-<td style="text-align:right;padding:6px 8px;color:${carry>0?'#fb923c':'#4a6080'};">${carry>0?'+'+carry+'주':'-'}</td>`;
-      });
-      return row + '</tr>';
+    function buildCarryRow(m){
+      const pExYm=m.exYm?.['PLUS']??prevYm(m.ym);
+      const pExD=m.exDay['PLUS']??'-';
+      const pExS=m.exSh['PLUS']??'-';
+      const pCarry=m.carryover['PLUS']||0;
+      const kExD=m.exDay['KODEX']??'-';
+      const kExS=m.exSh['KODEX']??'-';
+      const kCarry=m.carryover['KODEX']||0;
+      // PLUS: "전월MM/DD일" 형식으로 간결하게
+      const pLabel=`${pExYm.slice(5)}/${pExD}일`;
+      // KODEX: "DD일" 형식
+      const kLabel=`${kExD}일`;
+      return`<tr>
+<td class="carry-table col-ym">${m.label}</td>
+<td class="carry-table col-num" style="color:#4a6080;">${pLabel}</td>
+<td class="carry-table col-num" style="color:#4a6080;">${pExS}주</td>
+<td class="carry-table col-num" style="color:${pCarry>0?'#fb923c':'#4a6080'};">${pCarry>0?'+'+pCarry+'주':'-'}</td>
+<td class="carry-table col-num" style="color:#4a6080;">${kLabel}</td>
+<td class="carry-table col-num" style="color:#4a6080;">${kExS}주</td>
+<td class="carry-table col-num" style="color:${kCarry>0?'#fb923c':'#4a6080'};">${kCarry>0?'+'+kCarry+'주':'-'}</td>
+</tr>`;
     }
 
-    const sortedMatrix = [...matrix];
-    const latest = sortedMatrix[sortedMatrix.length - 1];
-    const older  = sortedMatrix.slice(0, sortedMatrix.length - 1).reverse();
-
-    const thead = `<thead><tr>
-<th style="text-align:left;padding:6px 8px;border-bottom:1px solid #182a40;color:#4a6080;">지급월</th>
-${ ['PLUS','KODEX'].map(t=>`<th style="text-align:right;padding:6px 8px;border-bottom:1px solid #182a40;color:${t==='PLUS'?'#00e5ff':'#a78bfa'};">${t} 배당락일</th><th style="text-align:right;padding:6px 8px;border-bottom:1px solid #182a40;color:${t==='PLUS'?'#00e5ff':'#a78bfa'};">${t} 락일기준 수량</th><th style="text-align:right;padding:6px 8px;border-bottom:1px solid #182a40;color:${t==='PLUS'?'#00e5ff':'#a78bfa'};">${t} 이월(주)</th>`).join('') }
+    const theadHtml=`<thead><tr>
+<th class="carry-table col-ym" style="border-bottom:1px solid #182a40;">지급월</th>
+<th class="carry-table col-num carry-plus-hdr" style="border-bottom:1px solid #182a40;">P락일</th>
+<th class="carry-table col-num carry-plus-hdr" style="border-bottom:1px solid #182a40;">P락수량</th>
+<th class="carry-table col-num carry-plus-hdr" style="border-bottom:1px solid #182a40;">P이월</th>
+<th class="carry-table col-num carry-kodex-hdr" style="border-bottom:1px solid #182a40;">K락일</th>
+<th class="carry-table col-num carry-kodex-hdr" style="border-bottom:1px solid #182a40;">K락수량</th>
+<th class="carry-table col-num carry-kodex-hdr" style="border-bottom:1px solid #182a40;">K이월</th>
 </tr></thead>`;
 
-    const olderHtml = older.length ? `
-<tbody id="${carryUid}-hidden" style="display:none;">
-  ${older.map(buildCarryRow).join('')}
-</tbody>` : '';
+    const olderHtml=olderList.length?`<tbody id="${carryUid}-hidden" style="display:none;">${olderList.map(buildCarryRow).join('')}</tbody>`:'';
+    const toggleBtn=olderList.length?`<div style="text-align:right;margin-top:8px;">
+<button id="${carryUid}-btn" onclick="toggleCarryHist('${carryUid}',${olderList.length})"
+  style="background:transparent;border:1px dashed #182a40;border-radius:6px;color:#4a6080;font-size:10px;font-family:'Space Mono',monospace;padding:4px 12px;cursor:pointer;">
+▼ 이전 기록 ${olderList.length}개월 더 보기
+</button></div>`:'';
 
-    const toggleBtn = older.length ? `
-<div style="text-align:right;margin-top:8px;">
-  <button id="${carryUid}-btn" onclick="toggleCarryHist('${carryUid}',${older.length})"
-    style="background:transparent;border:1px dashed #182a40;border-radius:6px;color:#4a6080;font-size:10px;font-family:'Space Mono',monospace;padding:4px 12px;cursor:pointer;">
-    ▼ 이전 기록 ${older.length}개월 더 보기
-  </button>
-</div>` : '';
-
-    c3.innerHTML = `<div class="div-chart-title">📦 배당락일 이후 매수분 이월 현황</div>
-<div class="div-chart-sub">PLUS: 전월 말 배당락 기준 · KODEX: 당월 중순 배당락 기준 · 최근 1개월 표시</div>
+    c3.innerHTML=`<div class="div-chart-title">📦 배당락일 이후 매수분 이월 현황</div>
+<div class="div-chart-sub" style="line-height:1.8;">
+  <b style="color:#00e5ff;">P이월</b> = 현재 PLUS 보유수량 - 전월락일 기준 수량 (전월락 이후 추가 매수분 → 다음달 배당 포함)<br>
+  <b style="color:#a78bfa;">K이월</b> = 현재 KODEX 보유수량 - 당월락일 기준 수량 (당월락 이후 추가 매수분 → 다음달 배당 포함)
+</div>
 <div style="overflow-x:auto;">
-<table style="width:100%;font-size:10px;font-family:'Space Mono',monospace;border-collapse:collapse;">
-${thead}
-<tbody>${buildCarryRow(latest)}</tbody>
+<table class="carry-table" style="border-collapse:collapse;width:100%;">
+${theadHtml}
+<tbody>${visible2.map(buildCarryRow).join('')}</tbody>
 ${olderHtml}
 </table>
 </div>
@@ -1471,15 +1703,15 @@ ${toggleBtn}`;
 }
 
 // ── 기록 카드 ──
-function buildLogCard(r) {
-  const globalIdx = records.indexOf(r);
-  const prev      = globalIdx > 0 ? records[globalIdx-1] : null;
-  const md        = r.plusSh*156 + r.kodexSh*244;
-  const isLatest  = globalIdx === records.length-1;
-  let delta = '';
-  if (prev) {
-    const dp=r.plusSh-prev.plusSh, dk=r.kodexSh-prev.kodexSh;
-    const dd=md-(prev.plusSh*156+prev.kodexSh*244), dt=r.total-prev.total;
+function buildLogCard(r){
+  const globalIdx=records.indexOf(r);
+  const prev=globalIdx>0?records[globalIdx-1]:null;
+  const md=r.plusSh*156+r.kodexSh*244;
+  const isLatest=globalIdx===records.length-1;
+  let delta='';
+  if(prev){
+    const dp=r.plusSh-prev.plusSh,dk=r.kodexSh-prev.kodexSh;
+    const dd=md-(prev.plusSh*156+prev.kodexSh*244),dt=r.total-prev.total;
     delta=`<div class="log-delta">
 <span class="ld ${dp>0?'ld-plus-up':dp<0?'ld-plus-dn':'ld-plus-neu'}">PLUS ${dp>=0?'+':''}${dp}주</span>
 <span class="ld ${dk>0?'ld-kodex-up':dk<0?'ld-kodex-dn':'ld-kodex-neu'}">KODEX ${dk>=0?'+':''}${dk}주</span>
@@ -1487,7 +1719,7 @@ function buildLogCard(r) {
 <span class="ld ${dt>0?'ld-tot-up':dt<0?'ld-tot-dn':'ld-tot-neu'}">자산 ${dt>=0?'+':''}${(dt/10000).toFixed(0)}만</span>
 </div>`;
   }
-  return `<div class="log-item ${isLatest?'latest':''}">
+  return`<div class="log-item ${isLatest?'latest':''}">
 <button class="log-del" onclick="delRec('${r.date}')">✕</button>
 <div class="log-top"><span class="log-date">${r.date}</span>${isLatest?'<span class="log-badge">LATEST</span>':''}</div>
 <div class="log-nums">
@@ -1500,208 +1732,169 @@ function buildLogCard(r) {
 ${delta}</div>`;
 }
 
-const LOG_PREVIEW = 3;
-function renderLogList(listEl, emptyEl, filterPrefix) {
-  let filtered = filterPrefix ? records.filter(r=>r.date.startsWith(filterPrefix)) : [...records];
-  if (!filtered.length) { listEl.innerHTML=''; emptyEl.style.display='block'; return; }
+const LOG_PREVIEW=3;
+function renderLogList(listEl,emptyEl,filterPrefix){
+  let filtered=filterPrefix?records.filter(r=>r.date.startsWith(filterPrefix)):[...records];
+  if(!filtered.length){listEl.innerHTML='';emptyEl.style.display='block';return;}
   emptyEl.style.display='none';
-  const reversed = [...filtered].reverse();
-  const visible  = reversed.slice(0, LOG_PREVIEW);
-  const hidden   = reversed.slice(LOG_PREVIEW);
-  const uid = 'log-more-'+(filterPrefix||'all').replace(/[^a-z0-9]/gi,'_');
-  let html = visible.map(buildLogCard).join('');
-  if (hidden.length) {
-    html+=`<div class="log-hidden-wrap" id="${uid}-wrap">${hidden.map(buildLogCard).join('')}</div>
+  const reversed=[...filtered].reverse();
+  const visible=reversed.slice(0,LOG_PREVIEW),hidden=reversed.slice(LOG_PREVIEW);
+  const uid='log-more-'+(filterPrefix||'all').replace(/[^a-z0-9]/gi,'_');
+  let html=visible.map(buildLogCard).join('');
+  if(hidden.length){html+=`<div class="log-hidden-wrap" id="${uid}-wrap">${hidden.map(buildLogCard).join('')}</div>
 <button class="log-show-more" id="${uid}-btn" onclick="toggleLogMore('${uid}')">
-<span id="${uid}-label">▼ 이전 기록 ${hidden.length}개 더 보기</span></button>`;
-  }
+<span id="${uid}-label">▼ 이전 기록 ${hidden.length}개 더 보기</span></button>`;}
   listEl.innerHTML=html;
 }
 
-function toggleLogMore(uid) {
-  const wrap=document.getElementById(uid+'-wrap'), btn=document.getElementById(uid+'-btn'), label=document.getElementById(uid+'-label');
-  if (!wrap) return;
+function toggleLogMore(uid){
+  const wrap=document.getElementById(uid+'-wrap'),btn=document.getElementById(uid+'-btn'),label=document.getElementById(uid+'-label');
+  if(!wrap)return;
   const open=wrap.classList.toggle('open');
   label.textContent=open?'▲ 접기':`▼ 이전 기록 ${wrap.querySelectorAll('.log-item').length}개 더 보기`;
-  if (btn) btn.style.borderStyle=open?'solid':'dashed';
+  if(btn)btn.style.borderStyle=open?'solid':'dashed';
 }
 
-function renderStats() {
-  const n=records.length;
-  document.getElementById('s-cnt').textContent=n+'회';
-  if (n>=2) {
+function renderStats(){
+  const n=records.length;document.getElementById('s-cnt').textContent=n+'회';
+  if(n>=2){
     const f=records[0],l=records[n-1];
-    document.getElementById('s-plus').textContent  ='+' +(l.plusSh -f.plusSh )+'주';
-    document.getElementById('s-kodex').textContent ='+' +(l.kodexSh-f.kodexSh)+'주';
+    document.getElementById('s-plus').textContent='+' +(l.plusSh -f.plusSh )+'주';
+    document.getElementById('s-kodex').textContent='+' +(l.kodexSh-f.kodexSh)+'주';
     const dd=(l.plusSh*156+l.kodexSh*244)-(f.plusSh*156+f.kodexSh*244);
-    document.getElementById('s-div').textContent   ='+'+(dd/10000).toFixed(2)+'만';
-  } else { document.getElementById('s-plus').textContent='-'; document.getElementById('s-kodex').textContent='-'; document.getElementById('s-div').textContent='-'; }
+    document.getElementById('s-div').textContent='+'+(dd/10000).toFixed(2)+'만';
+  }else{document.getElementById('s-plus').textContent='-';document.getElementById('s-kodex').textContent='-';document.getElementById('s-div').textContent='-';}
 }
 
-function renderAll() {
-  renderStats(); renderMonthNav();
-  if (nav.type==='month'&&nav.ym) { showSection('month'); renderMonthSection(nav.ym); }
-  else { showSection('all'); renderAllContent(); }
+function renderAll(){
+  renderStats();renderMonthNav();renderTotalReturn();
+  if(nav.type==='month'&&nav.ym){showSection('month');renderMonthSection(nav.ym);}
+  else{showSection('all');renderAllContent();}
 }
 
-function toggleGoals() {
-  const list=document.getElementById('hiddenGoals'), btn=document.getElementById('goal-expand-btn');
-  if (!list) return;
+function toggleGoals(){
+  const list=document.getElementById('hiddenGoals'),btn=document.getElementById('goal-expand-btn');
+  if(!list)return;
   const open=list.classList.toggle('open');
-  if (btn) { btn.classList.toggle('open',open); btn.querySelector('span:first-child').textContent=open?'접기':'다른 시점 보기'; }
+  if(btn){btn.classList.toggle('open',open);btn.querySelector('span:first-child').textContent=open?'접기':'다른 시점·지난 목표 보기';}
 }
-function toggleMilestones() {
-  const list=document.getElementById('ms-hidden-list'), btn=document.getElementById('ms-expand-btn');
-  if (!list) return;
+function toggleMilestones(){
+  const list=document.getElementById('ms-hidden-list'),btn=document.getElementById('ms-expand-btn');
+  if(!list)return;
   const open=list.classList.toggle('open');
-  if (btn) { btn.classList.toggle('open',open); btn.querySelector('span:first-child').textContent=open?'접기':'다른 시점 보기'; }
+  if(btn){btn.classList.toggle('open',open);btn.querySelector('span:first-child').textContent=open?'접기':'중간 시점 보기';}
 }
 
 // ── CRUD / 백업 ──
-function delRec(date) { records=records.filter(r=>r.date!==date); persist(); renderAll(); }
-function clearAll() {
-  if (!confirm('전체 삭제할까요?')) return;
-  records=[]; goals=null; divRates={};
-  localStorage.removeItem(GKEY); localStorage.removeItem(DKEY);
-  persist(); renderAll();
+function delRec(date){records=records.filter(r=>r.date!==date);persist();renderAll();}
+function clearAll(){
+  if(!confirm('전체 삭제할까요?'))return;
+  records=[];goals=null;divRates={};perfData={};
+  localStorage.removeItem(GKEY);localStorage.removeItem(DKEY);localStorage.removeItem(PKEY);
+  persist();renderAll();
 }
-function exportData() {
-  const json=JSON.stringify({records,divRates},null,2);
-  navigator.clipboard.writeText(json).then(()=>toast('클립보드에 복사됐어요!')).catch(()=>{ document.getElementById('paste-area').value=json; toast('아래 텍스트를 복사하세요'); });
+function exportData(){
+  const json=JSON.stringify({records,divRates,perfData},null,2);
+  navigator.clipboard.writeText(json).then(()=>toast('클립보드에 복사됐어요!')).catch(()=>{document.getElementById('paste-area').value=json;toast('아래 텍스트를 복사하세요');});
 }
-function importFile(e) {
-  const f=e.target.files[0]; if (!f) return;
-  const r=new FileReader();
-  r.onload=ev=>{ try{doImport(JSON.parse(ev.target.result));}catch{toast('형식 오류',true);} };
-  r.readAsText(f);
+function importFile(e){
+  const f=e.target.files[0];if(!f)return;
+  const r=new FileReader();r.onload=ev=>{try{doImport(JSON.parse(ev.target.result));}catch{toast('형식 오류',true);}};r.readAsText(f);
 }
-function importText() {
+function importText(){
   const t=document.getElementById('paste-area').value.trim();
-  if (!t) { toast('텍스트를 붙여넣어 주세요',true); return; }
-  try{doImport(JSON.parse(t)); document.getElementById('paste-area').value='';}catch{toast('형식 오류',true);}
+  if(!t){toast('텍스트를 붙여넣어 주세요',true);return;}
+  try{doImport(JSON.parse(t));document.getElementById('paste-area').value='';}catch{toast('형식 오류',true);}
 }
-function doImport(data) {
-  const arr  = Array.isArray(data)?data:(data.records||[]);
-  const dRaw = Array.isArray(data)?{}:(data.divRates||{});
-  if (!Array.isArray(arr)) { toast('올바른 형식이 아니에요',true); return; }
+function doImport(data){
+  const arr=Array.isArray(data)?data:(data.records||[]);
+  const dRaw=Array.isArray(data)?{}:(data.divRates||{});
+  const pRaw=Array.isArray(data)?{}:(data.perfData||{});
+  if(!Array.isArray(arr)){toast('올바른 형식이 아니에요',true);return;}
   const merged=[...records];
-  for (const r of arr) { const i=merged.findIndex(m=>m.date===r.date); if (i>=0) merged[i]=r; else merged.push(r); }
-  merged.sort((a,b)=>a.date.localeCompare(b.date));
-  records=merged;
-  Object.entries(dRaw).forEach(([ticker,months])=>{
-    if (!divRates[ticker]) divRates[ticker]={};
-    Object.entries(months).forEach(([ym,val])=>{ divRates[ticker][ym]={...divRates[ticker][ym],...val}; });
-  });
-  persist(); persistDivRates(); renderAll(); toast(arr.length+'개 기록 복원 완료!');
+  for(const r of arr){const i=merged.findIndex(m=>m.date===r.date);if(i>=0)merged[i]=r;else merged.push(r);}
+  merged.sort((a,b)=>a.date.localeCompare(b.date));records=merged;
+  Object.entries(dRaw).forEach(([ticker,months])=>{if(!divRates[ticker])divRates[ticker]={};Object.entries(months).forEach(([ym,val])=>{divRates[ticker][ym]={...divRates[ticker][ym],...val};});});
+  if(pRaw.PLUS){perfData.PLUS={...perfData.PLUS,...pRaw.PLUS};}
+  if(pRaw.KODEX){perfData.KODEX={...perfData.KODEX,...pRaw.KODEX};}
+  persist();persistDivRates();persistPerf();renderAll();toast(arr.length+'개 기록 복원 완료!');
 }
 
 // ── 유틸 ──
-function formatDateDiff(dateStr) {
-  const today=new Date(); today.setHours(0,0,0,0);
-  const target=new Date(dateStr); target.setHours(0,0,0,0);
+function formatDateDiff(dateStr){
+  const today=new Date();today.setHours(0,0,0,0);
+  const target=new Date(dateStr);target.setHours(0,0,0,0);
   const diff=Math.floor((today-target)/(1000*60*60*24));
-  if (diff===0) return `${dateStr} 기준 (오늘)`;
-  if (diff>0)   return `${dateStr} 기준 (${diff}일 전)`;
-  return `${dateStr} 기준 (${Math.abs(diff)}일 후)`;
+  if(diff===0)return`${dateStr} 기준 (오늘)`;if(diff>0)return`${dateStr} 기준 (${diff}일 전)`;return`${dateStr} 기준 (${Math.abs(diff)}일 후)`;
 }
-function toast(msg, isErr=false) {
-  const t=document.getElementById('toast');
-  t.textContent=msg; t.style.background=isErr?'#fb7185':'#fb923c';
-  t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2400);
+function toast(msg,isErr=false){
+  const t=document.getElementById('toast');t.textContent=msg;t.style.background=isErr?'#fb7185':'#fb923c';t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2400);
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// 스킬 코드 생성기 — DIV:: v2 스키마 (exDay, exSh 포함)
+// 스킬 코드 생성기
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-function sgTab(t) {
-  document.getElementById('sg-div-panel').style.display  = t==='div' ?'block':'none';
-  document.getElementById('sg-save-panel').style.display = t==='save'?'block':'none';
-  document.querySelectorAll('.sgt').forEach((b,i)=>b.classList.toggle('active',['div','save'][i]===t));
+function sgTab(t){
+  ['div','save','perf'].forEach(k=>{document.getElementById('sg-'+k+'-panel').style.display=k===t?'block':'none';});
+  document.querySelectorAll('.sgt').forEach((b,i)=>b.classList.toggle('active',['div','save','perf'][i]===t));
 }
 
-function genDivCode() {
-  const ym      = document.getElementById('sg-ym').value;
-  const pa      = document.getElementById('sg-plus-actual').value;
-  const pe      = document.getElementById('sg-plus-est').value;
-  const pexSh   = document.getElementById('sg-plus-exsh').value;
-  const pexDay  = document.getElementById('sg-plus-exday').value   || DEFAULT_EX_DAY.PLUS;
-  const ka      = document.getElementById('sg-kodex-actual').value;
-  const ke      = document.getElementById('sg-kodex-est').value;
-  const kexSh   = document.getElementById('sg-kodex-exsh').value;
-  const kexDay  = document.getElementById('sg-kodex-exday').value  || DEFAULT_EX_DAY.KODEX;
-  const out     = document.getElementById('sg-div-out');
-
-  if (!ym) { out.textContent='← 연월을 먼저 입력하세요'; return; }
-
-  const rates = {};
-  if (pa || pexSh) {
-    rates['PLUS'] = {};
-    if (pa)    rates['PLUS'].actual = parseInt(pa,10);
-    if (pexSh) rates['PLUS'].exSh   = parseInt(pexSh,10);
-    rates['PLUS'].exDay = parseInt(pexDay,10);
-  }
-  if (ka || kexSh) {
-    rates['KODEX'] = {};
-    if (ka)    rates['KODEX'].actual = parseInt(ka,10);
-    if (kexSh) rates['KODEX'].exSh   = parseInt(kexSh,10);
-    rates['KODEX'].exDay = parseInt(kexDay,10);
-  }
-
-  const est = {};
-  if (pe) est['PLUS']  = parseInt(pe,10);
-  if (ke) est['KODEX'] = parseInt(ke,10);
-
-  const obj = { ym, rates, estimated: est };
-  out.textContent = 'DIV::' + JSON.stringify(obj);
+function genDivCode(){
+  const ym=document.getElementById('sg-ym').value,pa=document.getElementById('sg-plus-actual').value,pe=document.getElementById('sg-plus-est').value;
+  const pexSh=document.getElementById('sg-plus-exsh').value,pexDay=document.getElementById('sg-plus-exday').value||DEFAULT_EX_DAY.PLUS;
+  const ka=document.getElementById('sg-kodex-actual').value,ke=document.getElementById('sg-kodex-est').value;
+  const kexSh=document.getElementById('sg-kodex-exsh').value,kexDay=document.getElementById('sg-kodex-exday').value||DEFAULT_EX_DAY.KODEX;
+  const out=document.getElementById('sg-div-out');
+  if(!ym){out.textContent='← 연월을 먼저 입력하세요';return;}
+  const rates={};
+  if(pa||pexSh){rates['PLUS']={};if(pa)rates['PLUS'].actual=parseInt(pa,10);if(pexSh)rates['PLUS'].exSh=parseInt(pexSh,10);rates['PLUS'].exDay=parseInt(pexDay,10);}
+  if(ka||kexSh){rates['KODEX']={};if(ka)rates['KODEX'].actual=parseInt(ka,10);if(kexSh)rates['KODEX'].exSh=parseInt(kexSh,10);rates['KODEX'].exDay=parseInt(kexDay,10);}
+  const est={};if(pe)est['PLUS']=parseInt(pe,10);if(ke)est['KODEX']=parseInt(ke,10);
+  out.textContent='DIV::'+JSON.stringify({ym,rates,estimated:est});
 }
 
-function genSaveCode() {
-  const date=document.getElementById('sg-date').value;
-  const psh=document.getElementById('sg-psh').value, pp=document.getElementById('sg-pp').value;
-  const ksh=document.getElementById('sg-ksh').value, kp=document.getElementById('sg-kp').value;
-  const div=document.getElementById('sg-div').value, orders=document.getElementById('sg-orders').value;
-  const total=document.getElementById('sg-total').value;
-  const pr=document.getElementById('sg-plus-rate').value, kr=document.getElementById('sg-kodex-rate').value;
+function genSaveCode(){
+  const date=document.getElementById('sg-date').value,psh=document.getElementById('sg-psh').value,pp=document.getElementById('sg-pp').value;
+  const ksh=document.getElementById('sg-ksh').value,kp=document.getElementById('sg-kp').value;
+  const div=document.getElementById('sg-div').value,orders=document.getElementById('sg-orders').value;
+  const total=document.getElementById('sg-total').value,pr=document.getElementById('sg-plus-rate').value,kr=document.getElementById('sg-kodex-rate').value;
   const out=document.getElementById('sg-save-out');
-  if (!date||!psh) { out.textContent='← 날짜와 PLUS 수량은 필수입니다'; return; }
-  const obj={ date, total:+total||0, plusSh:+psh||0, plusP:+pp||0, kodexSh:+ksh||0, kodexP:+kp||0,
-    div:+div||0, orders:+orders||0,
-    divDetail:{ ...(pr?{PLUS:{rate:+pr}}:{}), ...(kr?{KODEX:{rate:+kr}}:{}) } };
+  if(!date||!psh){out.textContent='← 날짜와 PLUS 수량은 필수입니다';return;}
+  const obj={date,total:+total||0,plusSh:+psh||0,plusP:+pp||0,kodexSh:+ksh||0,kodexP:+kp||0,div:+div||0,orders:+orders||0,divDetail:{...(pr?{PLUS:{rate:+pr}}:{}),...(kr?{KODEX:{rate:+kr}}:{})}};
   out.textContent='SAVE::'+JSON.stringify(obj);
 }
 
-function copySkillCode(type) {
+function genPerfCode(){
+  const plusCost=document.getElementById('sg-plus-cost').value;
+  const plusInv=document.getElementById('sg-plus-invested').value;
+  const kodexCost=document.getElementById('sg-kodex-cost').value;
+  const kodexInv=document.getElementById('sg-kodex-invested').value;
+  const out=document.getElementById('sg-perf-out');
+  if(!plusCost&&!plusInv&&!kodexCost&&!kodexInv){out.textContent='← 위 값 입력 시 코드 자동 생성';return;}
+  const obj={};
+  if(plusCost||plusInv){obj.PLUS={};if(plusCost)obj.PLUS.avgCost=+plusCost;if(plusInv)obj.PLUS.invested=+plusInv;}
+  if(kodexCost||kodexInv){obj.KODEX={};if(kodexCost)obj.KODEX.avgCost=+kodexCost;if(kodexInv)obj.KODEX.invested=+kodexInv;}
+  out.textContent='PERF::'+JSON.stringify(obj);
+}
+
+function copySkillCode(type){
   const el=document.getElementById('sg-'+type+'-out');
   const txt=el.textContent.trim();
-  if (!txt||txt.startsWith('←')) { toast('먼저 값을 입력하세요',true); return; }
+  if(!txt||txt.startsWith('←')){toast('먼저 값을 입력하세요',true);return;}
   navigator.clipboard.writeText(txt).then(()=>toast('코드 복사 완료! 앱 클립보드 버튼으로 저장하세요 ✅')).catch(()=>toast('수동으로 복사해주세요',true));
 }
 
-function toggleCarryHist(uid, cnt) {
-  const tbody = document.getElementById(uid+'-hidden');
-  const btn   = document.getElementById(uid+'-btn');
-  if (!tbody || !btn) return;
-  const open = tbody.style.display === 'table-row-group' || tbody.style.display === '';
-  if (open) {
-    tbody.style.display = 'none';
-    btn.textContent = '▼ 이전 기록 '+cnt+'개월 더 보기';
-    btn.style.borderStyle = 'dashed';
-  } else {
-    tbody.style.display = 'table-row-group';
-    btn.textContent = '▲ 접기';
-    btn.style.borderStyle = 'solid';
-    btn.style.color = '#00e5ff';
-    btn.style.borderColor = 'rgba(0,229,255,.4)';
-  }
+function toggleCarryHist(uid,cnt){
+  const tbody=document.getElementById(uid+'-hidden'),btn=document.getElementById(uid+'-btn');
+  if(!tbody||!btn)return;
+  const open=tbody.style.display==='table-row-group'||tbody.style.display==='';
+  if(open){tbody.style.display='none';btn.textContent='▼ 이전 기록 '+cnt+'개월 더 보기';btn.style.borderStyle='dashed';}
+  else{tbody.style.display='table-row-group';btn.textContent='▲ 접기';btn.style.borderStyle='solid';btn.style.color='#00e5ff';btn.style.borderColor='rgba(0,229,255,.4)';}
 }
 
 loadData();
-if (records.length) {
-  const years=[...new Set(records.map(r=>r.date.slice(0,4)))].sort();
-  nav={type:'year',year:years[years.length-1],ym:null};
-}
+if(records.length){const years=[...new Set(records.map(r=>r.date.slice(0,4)))].sort();nav={type:'year',year:years[years.length-1],ym:null};}
 renderAll();
-
 </script>
 </body>
 </html>
