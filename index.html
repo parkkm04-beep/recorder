@@ -792,9 +792,8 @@ function renderTotalReturn() {
   const sec = document.getElementById('total-return-section');
   if(!records.length){ sec.innerHTML=''; return; }
   const latest = records[records.length-1];
-  const cumDiv = calcCumDiv(); // 원
+  const cumDiv = calcCumDiv();
 
-  // 투자원금 정보 (perfData 또는 records 역산)
   const hasCost = perfData && (perfData.PLUS?.avgCost || perfData.PLUS?.invested || perfData.KODEX?.avgCost || perfData.KODEX?.invested);
 
   if(!hasCost) {
@@ -815,7 +814,6 @@ function renderTotalReturn() {
     return;
   }
 
-  // 투자원금 계산
   let plusInvested=0, kodexInvested=0;
   if(perfData.PLUS?.invested) plusInvested = perfData.PLUS.invested;
   else if(perfData.PLUS?.avgCost) plusInvested = perfData.PLUS.avgCost * latest.plusSh;
@@ -823,19 +821,16 @@ function renderTotalReturn() {
   else if(perfData.KODEX?.avgCost) kodexInvested = perfData.KODEX.avgCost * latest.kodexSh;
   const totalInvested = plusInvested + kodexInvested;
 
-  // 평가액
   const plusVal  = latest.plusSh  * (latest.plusP  || 0);
   const kodexVal = latest.kodexSh * (latest.kodexP || 0);
   const totalVal = latest.total || (plusVal + kodexVal);
 
-  // 평가 손익
   const capitalGain = totalVal - totalInvested;
   const totalReturn = capitalGain + cumDiv;
   const totalReturnPct = totalInvested>0 ? (totalReturn/totalInvested*100) : 0;
   const capGainPct     = totalInvested>0 ? (capitalGain/totalInvested*100) : 0;
   const divReturnPct   = totalInvested>0 ? (cumDiv/totalInvested*100) : 0;
 
-  // 종목별 수익률
   const plusAvgCost  = perfData.PLUS?.avgCost  || (plusInvested/Math.max(1,latest.plusSh));
   const kodexAvgCost = perfData.KODEX?.avgCost || (kodexInvested/Math.max(1,latest.kodexSh));
   const plusCapPct   = plusAvgCost>0 ? ((latest.plusP  - plusAvgCost) /plusAvgCost *100) : 0;
@@ -844,14 +839,22 @@ function renderTotalReturn() {
   const trColor = totalReturn>=0?'#34d399':'#fb7185';
   const cgColor = capitalGain>=0?'#00e5ff':'#fb7185';
 
+  const clickStyle = 'cursor:pointer;user-select:none;transition:opacity .15s;';
+  const clickHint  = 'style="font-size:8px;color:#334a60;font-family:\'Space Mono\',monospace;margin-top:3px;">📊 탭하면 차트</div>';
+
   sec.innerHTML = `<div class="sec">📈 총 수익률 (Total Return)</div>
 <div class="total-return-card">
-  <div class="tr-header">
-    <div class="tr-title">📈 Total Return</div>
+  <div class="tr-header" onclick="trToggleChart('total')" style="${clickStyle}opacity:.95;" onmouseenter="this.style.opacity='.75'" onmouseleave="this.style.opacity='.95'">
+    <div>
+      <div class="tr-title">📈 Total Return <span style="font-size:9px;color:#334a60;font-family:'Space Mono',monospace;">▼ 차트</span></div>
+      <div style="font-size:9px;color:#4a6080;margin-top:1px;">수익률 · 배당 포함 총 손익 추이</div>
+    </div>
     <div class="tr-badge">${latest.date} 기준</div>
   </div>
-  <div class="tr-main">
-    <div class="tr-big">
+  <div id="tr-chart-total" style="display:none;"></div>
+
+  <div class="tr-main" style="margin-top:10px;">
+    <div class="tr-big" onclick="trToggleChart('total')" style="${clickStyle}">
       <div class="tr-big-label">총 수익률</div>
       <div class="tr-big-val" style="color:${trColor}">${totalReturn>=0?'+':''}${totalReturnPct.toFixed(2)}%</div>
       <div class="tr-big-sub">${totalReturn>=0?'+':''}${(totalReturn/10000).toFixed(2)}만원</div>
@@ -862,14 +865,15 @@ function renderTotalReturn() {
       <div class="tr-big-sub">배당수익률 ${divReturnPct.toFixed(2)}%</div>
     </div>
   </div>
-  <div class="tr-detail-grid">
+
+  <div class="tr-detail-grid" style="cursor:pointer;" onclick="trToggleChart('assets')" onmouseenter="this.style.opacity='.8'" onmouseleave="this.style.opacity='1'">
     <div class="tr-detail-item">
-      <div class="tr-detail-label">투자원금</div>
+      <div class="tr-detail-label">투자원금 <span style="color:#334a60;font-size:8px;">▼</span></div>
       <div class="tr-detail-val" style="color:#e2e8f0">${(totalInvested/10000).toFixed(0)}만</div>
       <div class="tr-detail-sub">PLUS+KODEX</div>
     </div>
     <div class="tr-detail-item">
-      <div class="tr-detail-label">현재 평가액</div>
+      <div class="tr-detail-label">현재 평가액 <span style="color:#334a60;font-size:8px;">▼</span></div>
       <div class="tr-detail-val" style="color:#fbbf24">${(totalVal/10000).toFixed(0)}만</div>
       <div class="tr-detail-sub">최신 기록 기준</div>
     </div>
@@ -879,19 +883,195 @@ function renderTotalReturn() {
       <div class="tr-detail-sub">${capGainPct>=0?'+':''}${capGainPct.toFixed(2)}%</div>
     </div>
   </div>
+  <div id="tr-chart-assets" style="display:none;"></div>
+
   <div class="tr-ticker-row">
-    <div class="tr-ticker-card">
-      <div class="tr-ticker-name" style="color:#00e5ff">🔵 PLUS</div>
+    <div class="tr-ticker-card" onclick="trToggleChart('plus')" style="${clickStyle}" onmouseenter="this.style.opacity='.75'" onmouseleave="this.style.opacity='1'">
+      <div class="tr-ticker-name" style="color:#00e5ff">🔵 PLUS <span style="font-size:8px;color:#334a60;">▼</span></div>
       <div class="tr-ticker-val" style="color:${plusCapPct>=0?'#00e5ff':'#fb7185'}">${plusCapPct>=0?'+':''}${plusCapPct.toFixed(2)}%</div>
       <div class="tr-ticker-sub">평단 ${plusAvgCost.toLocaleString()}원 → 현재 ${(latest.plusP||0).toLocaleString()}원</div>
     </div>
-    <div class="tr-ticker-card">
-      <div class="tr-ticker-name" style="color:#a78bfa">🟣 KODEX</div>
+    <div class="tr-ticker-card" onclick="trToggleChart('kodex')" style="${clickStyle}" onmouseenter="this.style.opacity='.75'" onmouseleave="this.style.opacity='1'">
+      <div class="tr-ticker-name" style="color:#a78bfa">🟣 KODEX <span style="font-size:8px;color:#334a60;">▼</span></div>
       <div class="tr-ticker-val" style="color:${kodexCapPct>=0?'#a78bfa':'#fb7185'}">${kodexCapPct>=0?'+':''}${kodexCapPct.toFixed(2)}%</div>
       <div class="tr-ticker-sub">평단 ${kodexAvgCost.toLocaleString()}원 → 현재 ${(latest.kodexP||0).toLocaleString()}원</div>
     </div>
   </div>
+  <div id="tr-chart-plus" style="display:none;"></div>
+  <div id="tr-chart-kodex" style="display:none;"></div>
 </div>`;
+
+  // ── 차트 토글 로직 ──
+  // 상태: 현재 열린 패널 키
+  let trOpenPanel = null;
+  let trChartInst = {};
+  const trPanelKeys = ['total','assets','plus','kodex'];
+
+  function trToggleChart(key) {
+    if(trOpenPanel === key) {
+      // 같은 패널 → 닫기
+      document.getElementById('tr-chart-'+key).style.display='none';
+      trOpenPanel = null;
+      if(trChartInst[key]){ try{trChartInst[key].destroy();}catch(e){} trChartInst[key]=null; }
+      return;
+    }
+    // 다른 패널 열려있으면 닫기
+    if(trOpenPanel) {
+      document.getElementById('tr-chart-'+trOpenPanel).style.display='none';
+      if(trChartInst[trOpenPanel]){ try{trChartInst[trOpenPanel].destroy();}catch(e){} trChartInst[trOpenPanel]=null; }
+    }
+    trOpenPanel = key;
+    const panel = document.getElementById('tr-chart-'+key);
+    panel.style.display='block';
+    panel.innerHTML = buildTrChartHtml(key);
+    renderTrChart(key, 'day', trChartInst);
+  }
+  window.trToggleChart = trToggleChart;
+
+  function buildTrChartHtml(key) {
+    const titles = {total:'📈 수익률 추이',assets:'📊 자산 추이',plus:'🔵 PLUS 종가 추이',kodex:'🟣 KODEX 종가 추이'};
+    const canvasId = 'tr-canvas-'+key;
+    return `<div style="background:#0a1525;border-radius:10px;padding:12px;margin-top:10px;">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+    <div style="font-size:11px;font-weight:700;font-family:'Space Mono',monospace;color:#e2e8f0;">${titles[key]}</div>
+    <div style="display:flex;gap:4px;">
+      ${['day','week','month'].map(u=>`<button id="tr-tab-${key}-${u}" onclick="renderTrChart('${key}','${u}')" style="padding:3px 8px;border-radius:5px;border:1px solid #182a40;background:${u==='day'?'#1a3a50':'transparent'};color:${u==='day'?'#00e5ff':'#4a6080'};font-size:9px;font-weight:700;cursor:pointer;font-family:'Space Mono',monospace;">${u==='day'?'일별':u==='week'?'주별':'월별'}</button>`).join('')}
+    </div>
+  </div>
+  <div style="position:relative;height:160px;"><canvas id="${canvasId}" role="img" aria-label="${titles[key]}"></canvas></div>
+  <div style="text-align:center;margin-top:8px;">
+    <button onclick="trToggleChart('${key}')" style="background:transparent;border:1px dashed #182a40;border-radius:6px;color:#4a6080;font-size:10px;font-family:'Space Mono',monospace;padding:4px 16px;cursor:pointer;">▲ 접기</button>
+  </div>
+</div>`;
+  }
+
+  // 각 키별 차트 인스턴스를 전역에 노출 (탭 버튼 onclick에서 접근)
+  ['total','assets','plus','kodex'].forEach(k=>{ window['trChartInst_'+k]=trChartInst; });
+
+  function getAggData(rawDates, rawVals, unit) {
+    if(unit==='day') return {labels:rawDates, vals:rawVals};
+    const map = new Map();
+    rawDates.forEach((d,i)=>{
+      const key = unit==='week'
+        ? (()=>{ const dt=new Date(d); const day=dt.getDay(); const diff=dt.getDate()-day+(day===0?-6:1); const mon=new Date(dt.setDate(diff)); return mon.toISOString().slice(0,10); })()
+        : d.slice(0,7);
+      map.set(key, rawVals[i]); // 마지막 값 사용
+    });
+    return {labels:[...map.keys()], vals:[...map.values()]};
+  }
+
+  function renderTrChart(key, unit) {
+    // 탭 버튼 활성 표시
+    ['day','week','month'].forEach(u=>{
+      const btn=document.getElementById('tr-tab-'+key+'-'+u);
+      if(!btn)return;
+      btn.style.background=u===unit?'#1a3a50':'transparent';
+      btn.style.color=u===unit?'#00e5ff':'#4a6080';
+      btn.style.borderColor=u===unit?'rgba(0,229,255,.3)':'#182a40';
+    });
+    const canvasId='tr-canvas-'+key;
+    const canvas=document.getElementById(canvasId);
+    if(!canvas)return;
+    if(trChartInst[key]){ try{trChartInst[key].destroy();}catch(e){} trChartInst[key]=null; }
+
+    const recs=[...records].sort((a,b)=>a.date.localeCompare(b.date));
+    let rawDates=[], rawVals=[], lineColor='#00e5ff', fillColor='rgba(0,229,255,.08)', yLabel='원';
+    let rawVals2=null; // assets 전용 투자원금 라인
+
+    if(key==='total') {
+      recs.forEach(r=>{
+        const val=(r.total||0)-totalInvested+cumDiv;
+        rawDates.push(r.date); rawVals.push(+(val/10000).toFixed(1));
+      });
+      lineColor=trColor; fillColor=totalReturn>=0?'rgba(52,211,153,.08)':'rgba(251,113,133,.08)'; yLabel='만원';
+    } else if(key==='assets') {
+      rawVals2=[];
+      recs.forEach(r=>{
+        rawDates.push(r.date);
+        rawVals.push(+((r.total||0)/10000).toFixed(1));
+        // 시점별 투자원금: 보유수량 × 평균매입단가
+        const pInv=(perfData.PLUS?.avgCost||0)*r.plusSh;
+        const kInv=(perfData.KODEX?.avgCost||0)*r.kodexSh;
+        rawVals2.push(+((pInv+kInv)/10000).toFixed(1));
+      });
+      lineColor='#fbbf24'; fillColor='rgba(251,191,36,.06)'; yLabel='만원';
+    } else if(key==='plus') {
+      recs.filter(r=>r.plusP).forEach(r=>{ rawDates.push(r.date); rawVals.push(r.plusP); });
+      lineColor='#00e5ff'; fillColor='rgba(0,229,255,.08)'; yLabel='원';
+    } else if(key==='kodex') {
+      recs.filter(r=>r.kodexP).forEach(r=>{ rawDates.push(r.date); rawVals.push(r.kodexP); });
+      lineColor='#a78bfa'; fillColor='rgba(167,139,250,.08)'; yLabel='원';
+    }
+
+    const {labels, vals} = getAggData(rawDates, rawVals, unit);
+    if(!labels.length){ canvas.parentElement.innerHTML='<div style="text-align:center;padding:20px;font-size:11px;color:#4a6080;font-family:\'Space Mono\',monospace;">기록이 부족해요</div>'; return; }
+
+    // 평균매입단가 기준선 (plus/kodex)
+    let refLine=null;
+    if(key==='plus'&&plusAvgCost>0) refLine={val:plusAvgCost,color:'rgba(251,191,36,.6)',label:'평단'};
+    if(key==='kodex'&&kodexAvgCost>0) refLine={val:kodexAvgCost,color:'rgba(251,191,36,.6)',label:'평단'};
+
+    const ptRadius=vals.length>30?0:3;
+    const datasets=[{
+      label:key==='total'?'총 손익':key==='assets'?'평가액':key==='plus'?'PLUS 종가':'KODEX 종가',
+      data:vals, borderColor:lineColor, backgroundColor:fillColor,
+      borderWidth:2, pointRadius:ptRadius, pointBackgroundColor:lineColor,
+      fill:key==='assets'?false:true, tension:0.35
+    }];
+
+    // assets: 투자원금 라인 추가
+    if(key==='assets'&&rawVals2){
+      const {vals:investVals}=getAggData(rawDates,rawVals2,unit);
+      datasets.push({
+        label:'투자원금',
+        data:investVals,
+        borderColor:'rgba(74,96,128,.8)',
+        backgroundColor:'transparent',
+        borderWidth:1.5,
+        borderDash:[5,4],
+        pointRadius:0,
+        fill:false,
+        tension:0.35
+      });
+      // 평가액 fill을 두 라인 사이로 (아래가 투자원금)
+      datasets[0].fill={target:1,above:'rgba(251,191,36,.08)',below:'rgba(251,113,133,.06)'};
+    }
+
+    if(refLine){
+      datasets.push({label:refLine.label,data:labels.map(()=>refLine.val),borderColor:refLine.color,borderWidth:1.5,borderDash:[5,4],pointRadius:0,fill:false,tension:0});
+    }
+
+    trChartInst[key]=new Chart(canvas.getContext('2d'),{
+      type:'line',
+      data:{labels,datasets},
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:key==='assets'||refLine!=null,labels:{color:'#e2e8f0',font:{size:9},boxWidth:10,padding:8}},
+          tooltip:{backgroundColor:'#0c1525',titleColor:'#e2e8f0',bodyColor:'#e2e8f0',borderColor:'#182a40',borderWidth:1,
+            callbacks:{
+              label:c=>{
+                if(c.parsed.y==null)return null;
+                const sign=key==='total'&&c.parsed.y>=0?'+':'';
+                const suffix=yLabel==='만원'?'만원':'원';
+                return` ${c.dataset.label}: ${sign}${c.parsed.y.toLocaleString()}${suffix}`;
+              },
+              afterBody:ctx=>{
+                if(key!=='assets')return[];
+                const evalV=ctx.find(c=>c.dataset.label==='평가액')?.parsed.y;
+                const invV=ctx.find(c=>c.dataset.label==='투자원금')?.parsed.y;
+                if(evalV==null||invV==null)return[];
+                const diff=+(evalV-invV).toFixed(1);
+                const sign=diff>=0?'+':'';
+                return['─',` 평가손익: ${sign}${diff}만원`];
+              },
+              title:ts=>[ts[0].label]
+            }}},
+        scales:{
+          x:{grid:{color:'#182a40'},ticks:{color:'#4a6080',font:{size:8},maxTicksLimit:unit==='day'?8:12,maxRotation:0}},
+          y:{grid:{color:'#182a40'},ticks:{color:'#4a6080',font:{size:8},callback:v=>v.toLocaleString()+(yLabel==='만원'?'만':'')}}
+        }}
+    });
+  }
+  window.renderTrChart = renderTrChart;
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
